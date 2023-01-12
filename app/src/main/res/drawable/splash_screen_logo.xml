@@ -4,6 +4,6 @@
     <item
         android:drawable="@drawable/ohunelo_logo"
         android:gravity="center"
-        android:width="80dp"
-        android:height="80dp"/>
+        android:width="@dimen/_80dp"
+        android:height="@dimen/_80dp"/>
 </layer-list>
