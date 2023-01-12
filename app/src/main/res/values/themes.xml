@@ -3,14 +3,14 @@
     <style name="Theme.Ohunelo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/bright_orange</item>
-        <item name="colorPrimaryVariant">@color/bright_orange</item>
+        <item name="colorPrimaryVariant">@color/dark_orange</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/light_brown</item>
-        <item name="colorSecondaryVariant">@color/dark_brown</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/very_light_red</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
         <!-- Customize your theme here. -->
         <item name="fontFamily">@font/sofiapro_light</item>
     </style>
