@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_launcher_backgroud.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v26/ic_launcher_background.xml" value="0.1305" />
         <entry key="app/src/main/res/drawable/ic_bread_loafs_cook_svgrepo_com_2.xml" value="0.112" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1" />
@@ -14,6 +15,7 @@
         <entry key="app/src/main/res/drawable/splash_screen_bg.xml" value="0.112" />
         <entry key="app/src/main/res/drawable/splash_screen_logo.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_ohunelo.xml" value="0.17036132812500002" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17889492753623187" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
