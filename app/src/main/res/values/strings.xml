@@ -2,4 +2,24 @@
     <string name="app_name">Ohunelo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loading_dashboard">Loading Dashboard</string>
+    <string name="good_morning">Good Morning</string>
+    <string name="good_afternoon">Good Afternoon</string>
+    <string name="good_evening">Good Evening</string>
+    <string name="recipe_image">Recipe Image</string>
+    <string name="recipe_source_image">Recipe Source Image</string>
+    <string name="category">Category</string>
+    <string name="main_course">Main Course</string>
+    <string name="side_dish">Side Dish</string>
+    <string name="dessert">Dessert</string>
+    <string name="appetizer">Appetizer</string>
+    <string name="salad">Salad</string>
+    <string name="bread">Bread</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="soup">Soup</string>
+    <string name="beverage">Beverage</string>
+    <string name="sauce">Sauce</string>
+    <string name="marinade">Marinade</string>
+    <string name="fingerfood">Fingerfood</string>
+    <string name="snack">Snack</string>
 </resources>

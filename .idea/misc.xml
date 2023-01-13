@@ -7,16 +7,27 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v26/ic_launcher_background.xml" value="0.1305" />
         <entry key="app/src/main/res/drawable-v26/ic_launcher_foreground.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable/account_icon.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable/clock_icon.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable/health_score_icon.xml" value="0.12" />
         <entry key="app/src/main/res/drawable/ic_bread_loafs_cook_svgrepo_com_2.xml" value="0.112" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_ohunelo_logo.xml" value="0.112" />
         <entry key="app/src/main/res/drawable/ic_pot_logo.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/loading_icon.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/moon_icon.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ohunelo_logo.xml" value="0.112" />
+        <entry key="app/src/main/res/drawable/randoms_item_constraint_bg.xml" value="0.12" />
         <entry key="app/src/main/res/drawable/splash_screen_bg.xml" value="0.112" />
         <entry key="app/src/main/res/drawable/splash_screen_logo.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/sun_icon.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/temp_const_bg.xml" value="0.1305" />
         <entry key="app/src/main/res/layout/activity_ohunelo.xml" value="0.17036132812500002" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17889492753623187" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2045307443365696" />
+        <entry key="app/src/main/res/layout/randoms_item_layout.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/recipes_by_category_item_layout.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/recycler_header_layout.xml" value="0.1634963768115942" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
