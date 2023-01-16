@@ -65,16 +65,25 @@
                     app:layout_constraintTop_toBottomOf="@+id/time_of_day_text_view"
                     tools:text="Oscar Iyareeeeee" />
 
+                <include
+                    android:id="@+id/random_recipes_recycler_header"
+                    layout="@layout/recycler_header_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/user_name_text_view"
+                    android:layout_marginTop="@dimen/_20dp"
+                     />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/random_recipes_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_0dp"
-                    android:layout_marginTop="@dimen/_25dp"
                     android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_10dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/user_name_text_view"
+                    app:layout_constraintTop_toBottomOf="@+id/random_recipes_recycler_header"
                     tools:listitem="@layout/randoms_item_layout" />
 
                 <TextView
@@ -212,17 +221,24 @@
 
                 </HorizontalScrollView>
 
+                <include
+                    android:id="@+id/recipes_by_category_recycler_header"
+                    layout="@layout/recycler_header_layout"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/chip_group_scroll_view"/>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recipes_by_category_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_0dp"
-                    android:layout_marginTop="@dimen/_15dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/recipes_by_category_item_layout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/chip_group_scroll_view" />
+                    app:layout_constraintTop_toBottomOf="@+id/recipes_by_category_recycler_header" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
