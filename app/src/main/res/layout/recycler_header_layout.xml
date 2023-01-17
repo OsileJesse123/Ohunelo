@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginEnd="@dimen/_18dp"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="See all" />
+            android:text="@string/see_all" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

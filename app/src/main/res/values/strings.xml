@@ -22,4 +22,8 @@
     <string name="marinade">Marinade</string>
     <string name="fingerfood">Fingerfood</string>
     <string name="snack">Snack</string>
+    <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="see_all">See all</string>
+    <string name="drink">Drink</string>
 </resources>
