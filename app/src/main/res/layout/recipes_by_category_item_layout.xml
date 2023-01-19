@@ -1,94 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:cardCornerRadius="@dimen/_20dp"
-    app:cardElevation="3dp"
-    android:layout_width="wrap_content"
-    android:layout_height="200dp"
-    android:layout_marginStart="@dimen/_18dp"
-    android:layout_marginVertical="@dimen/_10dp"
-    >
+<layout>
+    <data>
+        <variable
+            name="recipe"
+            type="com.jesse.ohunelo.data.model.Recipe" />
+    </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/_10dp"
-        android:paddingHorizontal="10dp"
-        android:paddingBottom="@dimen/_15dp"
+    <com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        app:cardCornerRadius="@dimen/_20dp"
+        app:cardElevation="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginStart="@dimen/_18dp"
+        android:layout_marginVertical="@dimen/_10dp"
         >
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/recipe_image_view"
-            android:layout_width="130dp"
-            android:layout_height="@dimen/_0dp"
-            android:contentDescription="@string/recipe_image"
-            android:src="@drawable/pasta_image"
-            android:scaleType="centerCrop"
-            android:theme="@style/cubicImage"
-            app:layout_constraintHeight_percent=".6"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/_10dp"
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="@dimen/_15dp"
+            >
 
-        <TextView
-            android:id="@+id/recipe_name_text_view"
-            style="@style/HeaderTextStyle"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_marginTop="7dp"
-            android:lineSpacingExtra="1.5dp"
-            android:textSize="@dimen/_12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recipe_image_view"
-            tools:text="Asian Chickpea Lettuce Wraps" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/recipe_image_view"
+                android:layout_width="130dp"
+                android:layout_height="@dimen/_0dp"
+                android:contentDescription="@string/recipe_image"
+                android:src="@drawable/pasta_image"
+                android:scaleType="centerCrop"
+                android:theme="@style/cubicImage"
+                app:layout_constraintHeight_percent=".6"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/health_score_text_view"
-            style="@style/SubTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="2dp"
-            android:textSize="@dimen/_12sp"
-            app:drawableStartCompat="@drawable/health_score_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="20 Pts" />
+            <TextView
+                android:id="@+id/recipe_name_text_view"
+                style="@style/HeaderTextStyle"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="7dp"
+                android:lineSpacingExtra="1.5dp"
+                android:textSize="@dimen/_12sp"
+                android:text="@{recipe.title}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recipe_image_view"
+                tools:text="Asian Chickpea Lettuce Wraps" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="@dimen/_5dp"
-            android:layout_height="@dimen/_5dp"
-            android:background="@color/orange_15"
-            android:theme="@style/circularImage"
-            app:layout_constraintBottom_toBottomOf="@+id/health_score_text_view"
-            app:layout_constraintEnd_toStartOf="@+id/clock_image_view"
-            app:layout_constraintStart_toEndOf="@+id/health_score_text_view"
-            app:layout_constraintTop_toTopOf="@+id/health_score_text_view" />
+            <TextView
+                android:id="@+id/health_score_text_view"
+                style="@style/SubTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="2dp"
+                android:textSize="@dimen/_12sp"
+                android:text="@{recipe.formatHealthScore()}"
+                app:drawableStartCompat="@drawable/health_score_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="20 Pts" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/clock_image_view"
-            android:layout_width="@dimen/_15dp"
-            android:layout_height="@dimen/_15dp"
-            android:src="@drawable/clock_icon"
-            android:layout_marginEnd="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ready_in_minutes_text_view"
-            app:tint="@color/orange_15" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="@dimen/_5dp"
+                android:layout_height="@dimen/_5dp"
+                android:background="@color/orange_15"
+                android:theme="@style/circularImage"
+                app:layout_constraintBottom_toBottomOf="@+id/health_score_text_view"
+                app:layout_constraintEnd_toStartOf="@+id/clock_image_view"
+                app:layout_constraintStart_toEndOf="@+id/health_score_text_view"
+                app:layout_constraintTop_toTopOf="@+id/health_score_text_view" />
 
-        <TextView
-            android:id="@+id/ready_in_minutes_text_view"
-            style="@style/SubTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_12sp"
-            tools:text="20 Min"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/clock_image_view"
+                android:layout_width="@dimen/_15dp"
+                android:layout_height="@dimen/_15dp"
+                android:src="@drawable/clock_icon"
+                android:layout_marginEnd="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ready_in_minutes_text_view"
+                app:tint="@color/orange_15" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/ready_in_minutes_text_view"
+                style="@style/SubTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_12sp"
+                tools:text="20 Min"
+                android:text="@{recipe.formatReadyInMinutes()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-</com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

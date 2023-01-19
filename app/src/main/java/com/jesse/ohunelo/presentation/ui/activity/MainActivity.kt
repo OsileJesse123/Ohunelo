@@ -1,4 +1,4 @@
-package com.jesse.ohunelo.presentation.ui
+package com.jesse.ohunelo.presentation.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,19 +7,19 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.jesse.ohunelo.R
-import com.jesse.ohunelo.databinding.ActivityOhuneloBinding
+import com.jesse.ohunelo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class OhuneloActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityOhuneloBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Returns an instance of Splash Screen
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        binding = ActivityOhuneloBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navHost = supportFragmentManager.findFragmentById(R.id.ohunelo_fragment_container)

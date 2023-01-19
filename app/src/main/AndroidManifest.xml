@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ohunelo">
         <activity
-            android:name=".presentation.ui.OhuneloActivity"
+            android:name=".presentation.ui.activity.MainActivity"
             android:theme="@style/SplashTheme"
             android:exported="true">
             <intent-filter>
