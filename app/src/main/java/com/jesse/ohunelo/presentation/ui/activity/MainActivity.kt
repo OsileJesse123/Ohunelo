@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         val navHost = supportFragmentManager.findFragmentById(R.id.ohunelo_fragment_container)
                 as NavHostFragment
         val navController = navHost.navController

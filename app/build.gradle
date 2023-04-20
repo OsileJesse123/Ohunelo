@@ -90,4 +90,7 @@ dependencies {
 
     // Splash Screen
     implementation "androidx.core:core-splashscreen:$splash_screen_version"
+
+    // Swipe to refresh layout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 }
