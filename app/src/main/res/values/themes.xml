@@ -2,24 +2,55 @@
     <!-- Base application theme. -->
     <style name="Theme.Ohunelo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/bright_orange</item>
-        <item name="colorPrimaryVariant">@color/dark_orange</item>
+        <item name="colorPrimary">@color/orange_20</item>
+        <item name="colorPrimaryVariant">@color/orange_30</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/white</item>
-        <item name="colorSecondaryVariant">@color/very_light_red</item>
+        <item name="colorSecondaryVariant">@color/red_10</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="fontFamily">@font/sofiapro_light</item>
+        <item name="android:windowBackground">@color/red_10</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <!-- Splash Screen Theme   -->
     <style name="SplashTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen_logo</item>
-        <item name="windowSplashScreenBackground">@color/bright_orange</item>
+        <item name="windowSplashScreenBackground">@color/orange_20</item>
         <item name="postSplashScreenTheme">@style/Theme.Ohunelo</item>
+    </style>
+
+    <!-- Cubic Image Style-->
+    <style name="cubicImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/_20dp</item>
+    </style>
+
+    <!-- Circular Image Style-->
+    <style name="circularImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- Chip Style-->
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textColor">@color/chip_text_color_state</item>
+        <item name="chipBackgroundColor">@color/chip_bg_color_state</item>
+        <item name="android:fontFamily">@font/sofiapro_light</item>
+    </style>
+
+
+    <style name="HeaderTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/orange_40</item>
+    </style>
+
+    <style name="SubTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/orange_15</item>
     </style>
 
 </resources>
