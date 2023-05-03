@@ -33,7 +33,6 @@
                 android:paddingTop="@dimen/_25dp"
                 >
 
-                <!--android:src="@drawable/sun_icon" app:uiDrawable="@{viewModel.homeUiStateFlow.userGreetingIcon}"-->
                 <ImageView
                     android:id="@+id/time_of_day_image_view"
                     android:layout_width="wrap_content"

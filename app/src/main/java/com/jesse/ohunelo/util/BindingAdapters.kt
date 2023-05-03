@@ -23,3 +23,11 @@ fun setUiDrawable(view: ImageView, uiDrawable: UiDrawable?){
         .getDrawable(resources, uiDrawable.resId, null)) }
     }
 }
+
+@BindingAdapter("app:resizableText")
+fun setResizableText(view: TextView, recipeDescription: String?){
+    recipeDescription?.let {
+        recipeDescription ->
+        view.setResizableText(recipeDescription, 2, true)
+    }
+}

@@ -3,7 +3,7 @@ package com.jesse.ohunelo.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.Recipe
-import com.jesse.ohunelo.data.network.models.AnalyzedInstructions
+import com.jesse.ohunelo.data.network.models.*
 import com.jesse.ohunelo.presentation.uistates.HomeUiState
 import com.jesse.ohunelo.util.UiDrawable
 import com.jesse.ohunelo.util.UiText
@@ -26,6 +26,32 @@ class HomeViewModel @Inject constructor(): ViewModel() {
 
     // todo: when data layer is properly setup changes will be made here
     init {
+        /*
+        * "id": 1034053,
+            "aisle": "Oil, Vinegar, Salad Dressing",
+            "image": "olive-oil.jpg",
+            "consistency": "LIQUID",
+            "name": "extra virgin olive oil",
+            "nameClean": "extra virgin olive oil",
+            "original": "1-2 tbsp extra virgin olive oil",
+            "originalName": "extra virgin olive oil",
+            "amount": 1.0,
+            "unit": "tbsp",
+            "meta": [],
+            "measures": {
+                "us": {
+                    "amount": 1.0,
+                    "unitShort": "Tbsp",
+                    "unitLong": "Tbsp"
+                },
+                "metric": {
+                    "amount": 1.0,
+                    "unitShort": "Tbsp",
+                    "unitLong": "Tbsp"
+                }
+            }
+        }
+        * */
         updateGreeting()
         recipes =  listOf(
             Recipe(
@@ -33,7 +59,28 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 analyzedInstructions = listOf(),
                 cookingMinutes = 20,
                 creditsText = "creditsText",
-                extendedIngredients = listOf(),
+                extendedIngredients = listOf(ExtendedIngredient(id = 1034053,
+                    aisle = "Oil, Vinegar, Salad Dressing", consistency = "LIQUID",
+                    name = "extra virgin olive oil", nameClean = "extra virgin olive oil",
+                    original = "1-2 tbsp extra virgin olive oil", originalName = "extra virgin olive oil",
+                    amount = 1.0, unit = "tbsp", meta = listOf(),
+                    measures = Measures(us = Us(amount = 1.0, unitLong = "Tbsp", unitShort = "Tbsp"),
+                        metric = Metric(amount = 1.0, unitShort = "Tbsp", unitLong = "Tbsp")), image = "olive-oil.jpg"
+                ), ExtendedIngredient(id = 1034053,
+                    aisle = "Oil, Vinegar, Salad Dressing", consistency = "LIQUID",
+                    name = "extra virgin olive oil", nameClean = "extra virgin olive oil",
+                    original = "1-2 tbsp extra virgin olive oil", originalName = "extra virgin olive oil",
+                    amount = 1.0, unit = "tbsp", meta = listOf(),
+                    measures = Measures(us = Us(amount = 1.0, unitLong = "Tbsp", unitShort = "Tbsp"),
+                        metric = Metric(amount = 1.0, unitShort = "Tbsp", unitLong = "Tbsp")), image = "olive-oil.jpg"
+                ), ExtendedIngredient(id = 1034053,
+                    aisle = "Oil, Vinegar, Salad Dressing", consistency = "LIQUID",
+                    name = "extra virgin olive oil", nameClean = "extra virgin olive oil",
+                    original = "1-2 tbsp extra virgin olive oil", originalName = "extra virgin olive oil",
+                    amount = 1.0, unit = "tbsp", meta = listOf(),
+                    measures = Measures(us = Us(amount = 1.0, unitLong = "Tbsp", unitShort = "Tbsp"),
+                        metric = Metric(amount = 1.0, unitShort = "Tbsp", unitLong = "Tbsp")), image = "olive-oil.jpg"
+                )),
                 healthScore = 5,
                 image = "image",
                 imageType = "imageType",
@@ -44,7 +91,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 servings = 2,
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33
+                weightWatcherSmartPoints = 33,
+                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
                 id = 1,
@@ -62,7 +111,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 servings = 2,
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33
+                weightWatcherSmartPoints = 33,
+                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
                 id = 1,
@@ -80,7 +131,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 servings = 2,
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33
+                weightWatcherSmartPoints = 33,
+                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
                 id = 1,
@@ -98,7 +151,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 servings = 2,
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33
+                weightWatcherSmartPoints = 33,
+                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
                 id = 1,
@@ -116,7 +171,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 servings = 2,
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33
+                weightWatcherSmartPoints = 33,
+                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
                 id = 1,
@@ -134,7 +191,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 servings = 2,
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33
+                weightWatcherSmartPoints = 33,
+                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
                 id = 1,
@@ -152,7 +211,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 servings = 2,
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33
+                weightWatcherSmartPoints = 33,
+                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
                 id = 1,
@@ -170,7 +231,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 servings = 2,
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33
+                weightWatcherSmartPoints = 33,
+                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
                 id = 1,
@@ -188,7 +251,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 servings = 2,
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33
+                weightWatcherSmartPoints = 33,
+                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
                 id = 1,
@@ -206,7 +271,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 servings = 2,
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33
+                weightWatcherSmartPoints = 33,
+                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
         )
         _homeUiStateFlow.update {

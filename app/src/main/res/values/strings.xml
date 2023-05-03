@@ -28,4 +28,21 @@
     <string name="drink">Drink</string>
     <string name="random">Random</string>
     <string name="recipes">Recipes</string>
+    <string name="view_more">… View More</string>
+    <string name="view_less">View Less</string>
+    <string name="carbs_percent">%d%% carb</string>
+    <string name="protein_percent">%d%% protein</string>
+    <string name="fat_percent">%d%% fat</string>
+    <string name="carbohydrate_icon">Carbohydrate Icon</string>
+    <string name="protein_icon">Protein Icon</string>
+    <string name="health_score_icon">Health score icon</string>
+    <string name="fat_icon">Pizza icon that represents fat</string>
+    <string name="equipments">Equipments</string>
+    <string name="instructions">Instructions</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="ingredient_image">Ingredient image</string>
+    <plurals name="number_of_items_available">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
 </resources>

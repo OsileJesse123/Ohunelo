@@ -10,5 +10,31 @@
         android:name="com.jesse.ohunelo.presentation.ui.fragment.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home"
-        />
+        >
+
+        <action
+            android:id="@+id/action_homeFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/recipeDetailsFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.RecipeDetailsFragment"
+        android:label="RecipeDetailsFragment"
+        tools:layout="@layout/fragment_recipe_details"
+        >
+
+        <argument
+            android:name="recipe"
+            app:argType="com.jesse.ohunelo.data.model.Recipe" />
+
+    </fragment>
+
+
 </navigation>
