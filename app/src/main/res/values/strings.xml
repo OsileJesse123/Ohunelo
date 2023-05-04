@@ -41,8 +41,16 @@
     <string name="instructions">Instructions</string>
     <string name="ingredients">Ingredients</string>
     <string name="ingredient_image">Ingredient image</string>
+    <string name="analyzed_instruction">Analyzed Instruction</string>
+    <string name="navigate_to_steps_screen_icon">Navigate to steps screen icon</string>
+    <string name="no_instructions">No Instructions</string>
+    <string name="no_ingredients">No Ingredients</string>
     <plurals name="number_of_items_available">
         <item quantity="one">%d item</item>
         <item quantity="other">%d items</item>
+    </plurals>
+    <plurals name="number_of_steps_available">
+        <item quantity="one">%d step</item>
+        <item quantity="other">%d steps</item>
     </plurals>
 </resources>

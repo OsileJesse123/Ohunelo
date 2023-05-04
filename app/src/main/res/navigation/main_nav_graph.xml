@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/recipeDetailsFragment"
-        android:name="com.jesse.ohunelo.presentation.ui.fragment.RecipeDetailsFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.recipe_details.RecipeDetailsFragment"
         android:label="RecipeDetailsFragment"
         tools:layout="@layout/fragment_recipe_details"
         >

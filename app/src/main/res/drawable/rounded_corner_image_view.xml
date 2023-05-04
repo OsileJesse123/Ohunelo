@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This was created for the health score image view in the recipe details screen.
+    A regular ImageView was used because ShapeableImageView caused the image
+    to be small. An ImageView was the solution to this problem but i needed a drawable
+    to curve the corners of the ImageView.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="@dimen/_9dp"/>
+    <solid android:color="@color/orange_10"/>
+</shape>
