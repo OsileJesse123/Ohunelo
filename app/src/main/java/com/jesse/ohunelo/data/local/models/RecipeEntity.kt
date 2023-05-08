@@ -23,7 +23,6 @@ data class RecipeEntity(
     val sourceName: String,
     val title: String,
     val weightWatcherSmartPoints: Int,
-    val caloricBreakdown: CaloricBreakdown,
     val summary: String
 ){
     fun toRecipe() = Recipe(
@@ -43,7 +42,6 @@ data class RecipeEntity(
         sourceName = sourceName,
         title = title,
         weightWatcherSmartPoints = weightWatcherSmartPoints,
-        caloricBreakdown = caloricBreakdown,
         summary = summary
     )
 }

@@ -34,6 +34,10 @@
             android:name="recipe"
             app:argType="com.jesse.ohunelo.data.model.Recipe" />
 
+        <argument
+            android:name="recipeId"
+            app:argType="integer" />
+
         <action
             android:id="@+id/action_recipeDetailsFragment_to_stepsFragment"
             app:destination="@id/stepsFragment"

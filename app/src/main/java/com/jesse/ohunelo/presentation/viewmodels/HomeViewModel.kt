@@ -69,7 +69,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
                 summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
@@ -89,7 +89,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
                 summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
@@ -109,7 +109,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
                 summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
@@ -129,7 +129,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
                 summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
@@ -149,7 +149,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
                 summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
@@ -169,7 +169,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
                 summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
@@ -189,7 +189,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
                 summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
@@ -209,7 +209,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
                 summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
@@ -229,7 +229,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
                 summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
             Recipe(
@@ -249,7 +249,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),
+                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
                 summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             ),
         )

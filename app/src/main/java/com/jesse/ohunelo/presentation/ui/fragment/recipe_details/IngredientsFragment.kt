@@ -12,7 +12,7 @@ import com.jesse.ohunelo.adapters.IngredientAdapter
 import com.jesse.ohunelo.data.network.models.ExtendedIngredient
 import com.jesse.ohunelo.databinding.FragmentIngredientsBinding
 
-class IngredientsFragment(private val ingredients: List<ExtendedIngredient>) : Fragment() {
+class IngredientsFragment(private val ingredients: List<ExtendedIngredient> = listOf()) : Fragment() {
 
     private var _binding: FragmentIngredientsBinding? = null
     private val binding: FragmentIngredientsBinding get() = _binding!!

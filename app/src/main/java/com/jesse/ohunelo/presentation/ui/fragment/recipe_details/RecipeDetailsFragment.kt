@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -15,6 +16,8 @@ import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.ViewPagerAdapter
 import com.jesse.ohunelo.databinding.FragmentRecipeDetailsBinding
 import com.jesse.ohunelo.presentation.ui.fragment.recipe_details.IngredientsFragment
+import com.jesse.ohunelo.presentation.viewmodels.RecipeDetailsViewModel
+import timber.log.Timber
 
 class RecipeDetailsFragment : Fragment() {
 
@@ -26,14 +29,28 @@ class RecipeDetailsFragment : Fragment() {
 
     private val args by navArgs<RecipeDetailsFragmentArgs>()
 
+    private val recipeDetailsViewModel: RecipeDetailsViewModel by viewModels()
+
+    /*override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+
+        //Timber.e("Recipe ID: ${args.recipeId}")
+    }*/
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRecipeDetailsBinding.inflate(inflater, container, false)
 
+        recipeDetailsViewModel.getNutrition(args.recipeId)
+
         binding.apply {
             recipe = args.recipe
+            viewModel = recipeDetailsViewModel
+            lifecycleOwner = viewLifecycleOwner
             executePendingBindings()
         }
 
@@ -96,8 +113,7 @@ class RecipeDetailsFragment : Fragment() {
                     val action = RecipeDetailsFragmentDirections
                         .actionRecipeDetailsFragmentToStepsFragment(analyzedInstruction)
                    findNavController().navigate(action)
-                },
-                IngredientsFragment(args.recipe.extendedIngredients)
+                }
             ))
 
         binding.recipeDetailsViewPager.adapter = viewPagerAdapter
@@ -107,7 +123,6 @@ class RecipeDetailsFragment : Fragment() {
             when(position) {
                 0 -> tab.text = getString(R.string.ingredients)
                 1 -> tab.text = getString(R.string.instructions)
-                2 -> tab.text = getString(R.string.equipments)
             }
         }.attach()
     }

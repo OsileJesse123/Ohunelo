@@ -7,7 +7,12 @@
         <variable
             name="recipe"
             type="com.jesse.ohunelo.data.model.Recipe" />
+
+        <variable
+            name="viewModel"
+            type="com.jesse.ohunelo.presentation.viewmodels.RecipeDetailsViewModel" />
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -138,7 +143,7 @@
                         android:id="@+id/carbs_percent"
                         android:layout_width="@dimen/_0dp"
                         android:layout_height="wrap_content"
-                        android:text="@{recipe.formatCarbsPercent(context)}"
+                        android:text="@{viewModel.nutrition.formatCarbs(context)}"
                         tools:text="65% carbs"
                         android:layout_marginStart="@dimen/_10dp"
                         style="@style/HeaderTextStyle"
@@ -167,7 +172,7 @@
                         style="@style/HeaderTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{recipe.formatProteinPercent(context)}"
+                        android:text="@{viewModel.nutrition.formatProtein(context)}"
                         tools:text="47% protein"
                         android:layout_marginStart="@dimen/_10dp"
                         app:layout_constraintBottom_toBottomOf="@+id/protein_image_view"
@@ -220,7 +225,7 @@
                         style="@style/HeaderTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{recipe.formatFatPercent(context)}"
+                        android:text="@{viewModel.nutrition.formatFat(context)}"
                         tools:text="21% fat"
                         android:layout_marginStart="@dimen/_10dp"
                         app:layout_constraintBottom_toBottomOf="@+id/fat_image_view"
@@ -268,13 +273,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/instructions"
-                                />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/equipments_tab"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/equipments"
                                 />
 
                         </com.google.android.material.tabs.TabLayout>

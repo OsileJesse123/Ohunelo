@@ -13,9 +13,9 @@ import com.jesse.ohunelo.data.network.models.AnalyzedInstructions
 import com.jesse.ohunelo.databinding.FragmentInstructionsBinding
 
 
-class InstructionsFragment(private val analyzedInstructions:List<AnalyzedInstructions>,
-                            private val onAnalyzedInstructionClicked:
-                            ((analyzedInstruction: AnalyzedInstructions) -> Unit)
+class InstructionsFragment(private val analyzedInstructions:List<AnalyzedInstructions> = listOf(),
+                           private val onAnalyzedInstructionClicked:
+                            ((analyzedInstruction: AnalyzedInstructions) -> Unit)? = null
                            ) : Fragment() {
 
     private var _binding: FragmentInstructionsBinding? = null
@@ -56,7 +56,10 @@ class InstructionsFragment(private val analyzedInstructions:List<AnalyzedInstruc
     private fun setupRecycler(){
         _instructionsAdapter = InstructionsAdapter{
             analyzedInstructions ->
-            onAnalyzedInstructionClicked(analyzedInstructions)
+            onAnalyzedInstructionClicked?.let {
+                onAnalyzedInstructionClicked ->
+                onAnalyzedInstructionClicked(analyzedInstructions)
+            }
         }
 
         binding.instructionsRecycler.apply {

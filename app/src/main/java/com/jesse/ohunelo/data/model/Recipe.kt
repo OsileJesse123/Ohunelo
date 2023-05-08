@@ -26,15 +26,10 @@ data class Recipe(
     val sourceName: String,
     val title: String,
     val weightWatcherSmartPoints: Int,
-    val caloricBreakdown: CaloricBreakdown,
+    //val caloricBreakdown: CaloricBreakdown,
     val summary: String
 ): Parcelable{
     fun formatReadyInMinutes() = "$readyInMinutes Min"
     fun formatHealthScore() = "$healthScore Pts"
-    fun formatCarbsPercent(context: Context) =
-        context.getString(R.string.carbs_percent, caloricBreakdown.percentCarbs.toInt())
-    fun formatProteinPercent(context: Context) =
-        context.getString(R.string.protein_percent, caloricBreakdown.percentProtein.toInt())
-    fun formatFatPercent(context: Context) =
-        context.getString(R.string.fat_percent, caloricBreakdown.percentFat.toInt())
+
 }

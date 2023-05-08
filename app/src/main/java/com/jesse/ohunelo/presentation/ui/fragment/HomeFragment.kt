@@ -142,7 +142,8 @@ class HomeFragment : Fragment() {
 
     private fun navigateToRecipeDetail(recipe: Recipe){
         findNavController().navigate(
-            HomeFragmentDirections.actionHomeFragmentToRecipeDetailsFragment(recipe)
+            HomeFragmentDirections.actionHomeFragmentToRecipeDetailsFragment(recipe = recipe,
+                recipeId = recipe.id)
         )
     }
 

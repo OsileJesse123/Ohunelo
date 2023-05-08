@@ -41,8 +41,7 @@ data class RecipeResponse(
     val veryHealthy: Boolean,
     val veryPopular: Boolean,
     val weightWatcherSmartPoints: Int,
-    val winePairing: WinePairing,
-    val nutrition: Nutrition
+    val winePairing: WinePairing
 ){
     fun toRecipeEntity() = RecipeEntity(
         id = id,
@@ -61,7 +60,6 @@ data class RecipeResponse(
         sourceName = sourceName,
         title = title,
         weightWatcherSmartPoints = weightWatcherSmartPoints,
-        caloricBreakdown = nutrition.caloricBreakdown,
         summary = summary
     )
 }
