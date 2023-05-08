@@ -20,4 +20,5 @@ data class Nutrition(
         context.getString(R.string.protein, protein)
     fun formatFat(context: Context) =
         context.getString(R.string.fat, fat)
+    fun formatCalories(context: Context) = context.resources.getString(R.string.calories, calories)
 }

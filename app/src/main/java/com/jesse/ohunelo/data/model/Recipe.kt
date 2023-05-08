@@ -1,10 +1,7 @@
 package com.jesse.ohunelo.data.model
 
-import android.content.Context
 import android.os.Parcelable
-import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.AnalyzedInstructions
-import com.jesse.ohunelo.data.network.models.CaloricBreakdown
 import com.jesse.ohunelo.data.network.models.ExtendedIngredient
 import kotlinx.parcelize.Parcelize
 
@@ -31,5 +28,7 @@ data class Recipe(
 ): Parcelable{
     fun formatReadyInMinutes() = "$readyInMinutes Min"
     fun formatHealthScore() = "$healthScore Pts"
+
+
 
 }

@@ -57,27 +57,27 @@
                 tools:text="Asian Chickpea Lettuce Wraps" />
 
             <TextView
-                android:id="@+id/health_score_text_view"
+                android:id="@+id/calories_text_view"
                 style="@style/SubTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="2dp"
                 android:textSize="@dimen/_12sp"
-                android:text="@{recipe.formatHealthScore()}"
-                app:drawableStartCompat="@drawable/health_score_icon"
+                android:text="@{recipe.nutrition.formatCalories(context)}"
+                app:drawableStartCompat="@drawable/calories_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="20 Pts" />
+                tools:text="20 Kcal" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="@dimen/_5dp"
                 android:layout_height="@dimen/_5dp"
                 android:background="@color/orange_15"
                 android:theme="@style/circularImage"
-                app:layout_constraintBottom_toBottomOf="@+id/health_score_text_view"
+                app:layout_constraintBottom_toBottomOf="@+id/calories_text_view"
                 app:layout_constraintEnd_toStartOf="@+id/clock_image_view"
-                app:layout_constraintStart_toEndOf="@+id/health_score_text_view"
-                app:layout_constraintTop_toTopOf="@+id/health_score_text_view" />
+                app:layout_constraintStart_toEndOf="@+id/calories_text_view"
+                app:layout_constraintTop_toTopOf="@+id/calories_text_view" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/clock_image_view"

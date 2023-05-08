@@ -176,30 +176,30 @@
                         app:layout_constraintTop_toTopOf="@+id/protein_image_view" />
 
                     <ImageView
-                        android:id="@+id/health_score_image_view"
+                        android:id="@+id/calories_amount_image_view"
                         android:layout_width="@dimen/_45dp"
                         android:layout_height="@dimen/_45dp"
                         android:background="@drawable/rounded_corner_image_view"
-                        android:contentDescription="@string/health_score_icon"
-                        android:padding="12dp"
+                        android:contentDescription="@string/amount_of_calories_icon"
+                        android:padding="@dimen/_10dp"
                         app:tint="@color/orange_40"
                         android:layout_marginTop="@dimen/_25dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/carbs_image_view"
-                        app:srcCompat="@drawable/health_score_icon"
+                        app:srcCompat="@drawable/calories_icon"
                         />
 
                     <TextView
-                        android:id="@+id/health_score_point"
+                        android:id="@+id/calories_amount"
                         style="@style/HeaderTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="33 Pts"
-                        android:text="@{recipe.formatHealthScore()}"
+                        tools:text="33 Kcal"
+                        android:text="@{recipe.nutrition.formatCalories(context)}"
                         android:layout_marginStart="@dimen/_10dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/health_score_image_view"
-                        app:layout_constraintStart_toEndOf="@+id/health_score_image_view"
-                        app:layout_constraintTop_toTopOf="@+id/health_score_image_view" />
+                        app:layout_constraintBottom_toBottomOf="@+id/calories_amount_image_view"
+                        app:layout_constraintStart_toEndOf="@+id/calories_amount_image_view"
+                        app:layout_constraintTop_toTopOf="@+id/calories_amount_image_view" />
 
 
                     <com.google.android.material.imageview.ShapeableImageView
@@ -232,7 +232,7 @@
                         android:id="@+id/tab_layout_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/health_score_image_view"
+                        app:layout_constraintTop_toBottomOf="@+id/calories_amount_image_view"
                         android:layout_marginTop="@dimen/_25dp"
                         app:cardCornerRadius="@dimen/_15dp"
                         app:strokeWidth="3dp"
