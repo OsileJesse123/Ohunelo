@@ -1,12 +1,11 @@
 package com.jesse.ohunelo.presentation.ui.fragment.recipe_details
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -15,9 +14,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.ViewPagerAdapter
 import com.jesse.ohunelo.databinding.FragmentRecipeDetailsBinding
-import com.jesse.ohunelo.presentation.ui.fragment.recipe_details.IngredientsFragment
-import com.jesse.ohunelo.presentation.viewmodels.RecipeDetailsViewModel
-import timber.log.Timber
 
 class RecipeDetailsFragment : Fragment() {
 
@@ -29,27 +25,14 @@ class RecipeDetailsFragment : Fragment() {
 
     private val args by navArgs<RecipeDetailsFragmentArgs>()
 
-    private val recipeDetailsViewModel: RecipeDetailsViewModel by viewModels()
-
-    /*override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-
-        //Timber.e("Recipe ID: ${args.recipeId}")
-    }*/
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRecipeDetailsBinding.inflate(inflater, container, false)
 
-        recipeDetailsViewModel.getNutrition(args.recipeId)
-
         binding.apply {
             recipe = args.recipe
-            viewModel = recipeDetailsViewModel
             lifecycleOwner = viewLifecycleOwner
             executePendingBindings()
         }

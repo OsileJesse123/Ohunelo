@@ -26,8 +26,8 @@ data class Recipe(
     val sourceName: String,
     val title: String,
     val weightWatcherSmartPoints: Int,
-    //val caloricBreakdown: CaloricBreakdown,
-    val summary: String
+    val summary: String,
+    val nutrition: Nutrition
 ): Parcelable{
     fun formatReadyInMinutes() = "$readyInMinutes Min"
     fun formatHealthScore() = "$healthScore Pts"

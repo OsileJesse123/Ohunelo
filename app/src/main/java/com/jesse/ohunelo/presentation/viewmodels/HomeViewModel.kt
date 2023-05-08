@@ -2,6 +2,7 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.jesse.ohunelo.R
+import com.jesse.ohunelo.data.model.Nutrition
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.network.models.*
 import com.jesse.ohunelo.presentation.uistates.HomeUiState
@@ -69,8 +70,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
+                    expires = 1L)
             ),
             Recipe(
                 id = 1,
@@ -89,8 +91,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
+                    expires = 1L)
             ),
             Recipe(
                 id = 1,
@@ -109,8 +112,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
+                    expires = 1L)
             ),
             Recipe(
                 id = 1,
@@ -129,8 +133,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
+                    expires = 1L)
             ),
             Recipe(
                 id = 1,
@@ -149,8 +154,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
+                    expires = 1L)
             ),
             Recipe(
                 id = 1,
@@ -169,8 +175,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
+                    expires = 1L)
             ),
             Recipe(
                 id = 1,
@@ -189,8 +196,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
+                    expires = 1L)
             ),
             Recipe(
                 id = 1,
@@ -209,8 +217,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
+                    expires = 1L)
             ),
             Recipe(
                 id = 1,
@@ -229,8 +238,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
+                    expires = 1L)
             ),
             Recipe(
                 id = 1,
@@ -249,8 +259,9 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 sourceName = "Anthony Joshua",
                 title = "Asian Chickpea Lettuce Wraps",
                 weightWatcherSmartPoints = 33,
-                /*caloricBreakdown = CaloricBreakdown(20.0, 30.0, 15.0),*/
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
+                    expires = 1L)
             ),
         )
         _homeUiStateFlow.update {
