@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
@@ -20,7 +21,7 @@ class RecipeDetailsFragment : Fragment() {
     private var _binding: FragmentRecipeDetailsBinding? = null
     private val binding: FragmentRecipeDetailsBinding get() = _binding!!
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
     private lateinit var bottomSheetCallback: BottomSheetCallback
 
     private val args by navArgs<RecipeDetailsFragmentArgs>()
@@ -56,7 +57,7 @@ class RecipeDetailsFragment : Fragment() {
 
             recipeDetailsToolbar.setNavigationOnClickListener {
                 // Reset the bottom sheet to it's initial state which was collapsed
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
             }
 
             backButton.setOnClickListener {
@@ -82,7 +83,7 @@ class RecipeDetailsFragment : Fragment() {
             }
         }
 
-        bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
+        bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
     }
 
     private fun setupViewPager(){
@@ -90,7 +91,12 @@ class RecipeDetailsFragment : Fragment() {
         val viewPagerAdapter = ViewPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle,
             listOf(
                 IngredientsFragment(args.recipe.extendedIngredients),
-                InstructionsFragment(args.recipe.analyzedInstructions),
+                InstructionsFragment(args.recipe.analyzedInstructions){
+                   analyzedInstruction ->
+                    val action = RecipeDetailsFragmentDirections
+                        .actionRecipeDetailsFragmentToStepsFragment(analyzedInstruction)
+                   findNavController().navigate(action)
+                },
                 IngredientsFragment(args.recipe.extendedIngredients)
             ))
 
@@ -108,7 +114,8 @@ class RecipeDetailsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
+        bottomSheetBehavior?.removeBottomSheetCallback(bottomSheetCallback)
+        bottomSheetBehavior = null
         _binding = null
     }
 }

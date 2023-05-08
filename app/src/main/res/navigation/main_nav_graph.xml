@@ -34,6 +34,26 @@
             android:name="recipe"
             app:argType="com.jesse.ohunelo.data.model.Recipe" />
 
+        <action
+            android:id="@+id/action_recipeDetailsFragment_to_stepsFragment"
+            app:destination="@id/stepsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/stepsFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.recipe_details.StepsFragment"
+        android:label="StepsFragment"
+        tools:layout="@layout/fragment_steps"
+        >
+        <argument
+            android:name="analyzedInstructions"
+            app:argType="com.jesse.ohunelo.data.network.models.AnalyzedInstructions" />
     </fragment>
 
 
