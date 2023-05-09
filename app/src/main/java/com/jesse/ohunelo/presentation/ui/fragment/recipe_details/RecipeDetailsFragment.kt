@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -14,6 +15,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.ViewPagerAdapter
 import com.jesse.ohunelo.databinding.FragmentRecipeDetailsBinding
+import com.jesse.ohunelo.presentation.viewmodels.RecipeDetailsViewModel
+import com.jesse.ohunelo.util.BottomSheetBehaviorStateWrapper
+import timber.log.Timber
 
 class RecipeDetailsFragment : Fragment() {
 
@@ -22,6 +26,8 @@ class RecipeDetailsFragment : Fragment() {
 
     private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
     private lateinit var bottomSheetCallback: BottomSheetCallback
+
+    private val viewModel: RecipeDetailsViewModel by viewModels()
 
     private val args by navArgs<RecipeDetailsFragmentArgs>()
 
@@ -46,10 +52,26 @@ class RecipeDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        updateBottomSheetBehaviorState()
+
         setupOnClickListeners()
 
         setupViewPager()
 
+    }
+
+    private fun updateBottomSheetBehaviorState(){
+        // Update bottom sheet behavior state
+        bottomSheetBehavior?.state = when(viewModel.bottomSheetBehaviorState){
+            BottomSheetBehaviorStateWrapper.STATE_COLLAPSED -> {
+                binding.recipeDetailsToolbar.visibility = View.GONE
+                BottomSheetBehavior.STATE_COLLAPSED
+            }
+            BottomSheetBehaviorStateWrapper.STATE_EXPANDED -> {
+                binding.recipeDetailsToolbar.visibility = View.VISIBLE
+                BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
     }
 
     private fun setupOnClickListeners(){
@@ -58,6 +80,8 @@ class RecipeDetailsFragment : Fragment() {
             recipeDetailsToolbar.setNavigationOnClickListener {
                 // Reset the bottom sheet to it's initial state which was collapsed
                 bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+                // Scroll back to top of nested scroll view
+                binding.recipeDetailsNestedScroll.smoothScrollTo(0, 0)
             }
 
             backButton.setOnClickListener {
@@ -70,11 +94,20 @@ class RecipeDetailsFragment : Fragment() {
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.recipeDetailsBottomSheet)
 
+
         bottomSheetCallback = object : BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when(newState){
-                    BottomSheetBehavior.STATE_EXPANDED -> { binding.recipeDetailsToolbar.visibility = View.VISIBLE }
-                    else -> { binding.recipeDetailsToolbar.visibility = View.GONE }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        binding.recipeDetailsToolbar.visibility = View.VISIBLE
+                        viewModel.bottomSheetBehaviorState =
+                            BottomSheetBehaviorStateWrapper.STATE_EXPANDED
+                    }
+                    else -> {
+                        binding.recipeDetailsToolbar.visibility = View.GONE
+                        viewModel.bottomSheetBehaviorState =
+                            BottomSheetBehaviorStateWrapper.STATE_COLLAPSED
+                    }
                 }
             }
 
