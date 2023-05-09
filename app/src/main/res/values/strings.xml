@@ -51,6 +51,7 @@
     <string name="no_steps">No Steps</string>
     <string name="steps">Steps</string>
     <string name="amount_of_calories_icon">amount of calories icon</string>
+    <string name="minutes_short">%d Min</string>
 
 
     <plurals name="number_of_items_available">

@@ -88,7 +88,7 @@
                     android:textColor="@color/white"
                     android:drawablePadding="3dp"
                     android:textStyle="bold"
-                    android:text="@{recipe.formatReadyInMinutes()}"
+                    app:uiText="@{recipe.formatReadyInMinutes()}"
                     app:drawableStartCompat="@drawable/clock_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

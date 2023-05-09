@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="2dp"
                 android:textSize="@dimen/_12sp"
-                android:text="@{recipe.nutrition.formatCalories(context)}"
+                app:uiText="@{recipe.nutrition.formatCalories()}"
                 app:drawableStartCompat="@drawable/calories_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_12sp"
                 tools:text="20 Min"
-                android:text="@{recipe.formatReadyInMinutes()}"
+                app:uiText="@{recipe.formatReadyInMinutes()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

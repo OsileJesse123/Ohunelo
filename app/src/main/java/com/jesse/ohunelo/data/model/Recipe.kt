@@ -1,8 +1,10 @@
 package com.jesse.ohunelo.data.model
 
 import android.os.Parcelable
+import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.AnalyzedInstructions
 import com.jesse.ohunelo.data.network.models.ExtendedIngredient
+import com.jesse.ohunelo.util.UiText
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -26,9 +28,6 @@ data class Recipe(
     val summary: String,
     val nutrition: Nutrition
 ): Parcelable{
-    fun formatReadyInMinutes() = "$readyInMinutes Min"
-    fun formatHealthScore() = "$healthScore Pts"
-
-
+    fun formatReadyInMinutes() = UiText.StringResource(R.string.minutes_short, readyInMinutes)
 
 }
