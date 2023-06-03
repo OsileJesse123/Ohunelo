@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jesse.ohunelo.data.network.models.ExtendedIngredient
 import com.jesse.ohunelo.databinding.IngredientsItemLayoutBinding
 
-class IngredientAdapter: ListAdapter<ExtendedIngredient, IngredientAdapter.IngredientViewHolder>(IngredientDiffUtil()) {
+class IngredientAdapter: ListAdapter<ExtendedIngredient,
+        IngredientAdapter.IngredientViewHolder>(IngredientDiffUtil()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = IngredientsItemLayoutBinding.inflate(layoutInflater, parent, false)
-        return IngredientViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder =
+        IngredientViewHolder.inflateFrom(parent)
+
+
 
     override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {
         holder.bind(getItem(position))
@@ -22,6 +22,15 @@ class IngredientAdapter: ListAdapter<ExtendedIngredient, IngredientAdapter.Ingre
 
     class IngredientViewHolder(private val binding: IngredientsItemLayoutBinding):
         RecyclerView.ViewHolder(binding.root){
+
+        companion object{
+            fun inflateFrom(parent: ViewGroup): IngredientViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = IngredientsItemLayoutBinding.inflate(layoutInflater, parent,
+                    false)
+                return IngredientViewHolder(binding)
+            }
+        }
 
         fun bind(item: ExtendedIngredient) {
             binding.ingredient = item

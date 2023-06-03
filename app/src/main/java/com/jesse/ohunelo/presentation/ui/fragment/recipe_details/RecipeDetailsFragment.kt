@@ -85,7 +85,7 @@ class RecipeDetailsFragment : Fragment() {
             }
 
             backButton.setOnClickListener {
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+                findNavController().navigateUp()
             }
         }
     }

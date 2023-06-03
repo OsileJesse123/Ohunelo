@@ -2,14 +2,13 @@
 <resources>
     <!-- For the naming convention of these colors, the higher the number the darker the shade and
      vice versa-->
-    <color name="brown_20">#1B1213</color>
-    <color name="brown_10">#332827</color>
-    <color name="red_10">#F6F6F6</color>
-    <color name="orange_10">#FADCBD</color>
-    <color name="orange_15">#C3A98E</color>
-    <color name="orange_20">#FFA03D</color>
-    <color name="orange_30">#FFC68036</color>
-    <color name="orange_40">#A56B2D</color>
+    <color name="brown_950">#1B1213</color>
+    <color name="brown_900">#332827</color>
+    <color name="gray_100">#F6F6F6</color>
+    <color name="orange_100">#FADCBD</color>
+    <color name="orange_500">#FFA03D</color>
+    <color name="orange_brown_200">#FFC68036</color>
+    <color name="brown_400">#A56B2D</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

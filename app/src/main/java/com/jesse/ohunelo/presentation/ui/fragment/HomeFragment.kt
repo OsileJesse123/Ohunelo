@@ -114,7 +114,7 @@ class HomeFragment : Fragment() {
                 // todo: Proper implementation for isRefreshing will be added
                 isRefreshing = false
             }
-            setColorSchemeResources(R.color.orange_20)
+            setColorSchemeResources(R.color.orange_500)
         }
     }
 

@@ -16,7 +16,7 @@
             app:navigationIcon="@drawable/arrow_back_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/steps"
-            app:titleTextColor="@color/orange_40"
+            app:titleTextColor="@color/brown_400"
             />
 
         <androidx.recyclerview.widget.RecyclerView
