@@ -28,4 +28,40 @@
     <string name="drink">Drink</string>
     <string name="random">Random</string>
     <string name="recipes">Recipes</string>
+    <string name="view_more">… View More</string>
+    <string name="view_less">View Less</string>
+    <string name="carbs_percent">%d%% carb</string>
+    <string name="protein_percent">%d%% protein</string>
+    <string name="fat_percent">%d%% fat</string>
+    <string name="carbs">%s carb</string>
+    <string name="protein">%s protein</string>
+    <string name="fat">%s fat</string>
+    <string name="calories">%s Kcal</string>
+    <string name="carbohydrate_icon">Carbohydrate Icon</string>
+    <string name="protein_icon">Protein Icon</string>
+    <string name="fat_icon">Pizza icon that represents fat</string>
+    <string name="instructions">Instructions</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="ingredient_image">Ingredient image</string>
+    <string name="analyzed_instruction">Analyzed Instruction</string>
+    <string name="navigate_to_steps_screen_icon">Navigate to steps screen icon</string>
+    <string name="no_instructions">No Instructions</string>
+    <string name="no_ingredients">No Ingredients</string>
+    <string name="step_number_text">Step %d</string>
+    <string name="no_steps">No Steps</string>
+    <string name="steps">Steps</string>
+    <string name="amount_of_calories_icon">amount of calories icon</string>
+    <string name="minutes_short">%d Min</string>
+
+
+    <plurals name="number_of_items_available">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+
+    <plurals name="number_of_steps_available">
+        <item quantity="one">%d step</item>
+        <item quantity="other">%d steps</item>
+    </plurals>
+
 </resources>

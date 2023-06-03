@@ -2,6 +2,7 @@ package com.jesse.ohunelo.data.local.models
 
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.network.models.AnalyzedInstructions
+import com.jesse.ohunelo.data.network.models.CaloricBreakdown
 import com.jesse.ohunelo.data.network.models.ExtendedIngredient
 import com.jesse.ohunelo.data.network.models.WinePairing
 
@@ -21,7 +22,9 @@ data class RecipeEntity(
     val servings: Int,
     val sourceName: String,
     val title: String,
-    val weightWatcherSmartPoints: Int
+    val weightWatcherSmartPoints: Int,
+    val summary: String,
+    val nutritionEntity: NutritionEntity
 ){
     fun toRecipe() = Recipe(
         id = id,
@@ -39,6 +42,8 @@ data class RecipeEntity(
         servings = servings,
         sourceName = sourceName,
         title = title,
-        weightWatcherSmartPoints = weightWatcherSmartPoints
+        weightWatcherSmartPoints = weightWatcherSmartPoints,
+        summary = summary,
+        nutrition = nutritionEntity.toNutrition()
     )
 }

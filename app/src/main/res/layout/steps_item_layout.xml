@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="step"
+            type="com.jesse.ohunelo.data.network.models.Step" />
+
+        <variable
+            name="color"
+            type="Integer" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+        <View
+            android:id="@+id/circular_view"
+            android:layout_width="@dimen/_20dp"
+            android:layout_height="@dimen/_20dp"
+            android:background="@drawable/circular_view_bg"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/_18dp"
+            app:viewBackgroundColor="@{color}"
+            />
+
+        <TextView
+            android:id="@+id/step_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Step 1"
+            android:text="@{step.getStepNumberString(context)}"
+            android:textColor="@color/orange_20"
+            android:textStyle="bold"
+            android:textSize="@dimen/_16sp"
+            app:viewBackgroundColor="@{color}"
+            android:layout_marginStart="@dimen/_16dp"
+            android:layout_marginBottom="@dimen/_4dp"
+            app:layout_constraintStart_toEndOf="@id/circular_view"
+            app:layout_constraintTop_toTopOf="@id/circular_view"
+            app:layout_constraintBottom_toBottomOf="@id/circular_view"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/step_content_card"
+            android:layout_width="@dimen/_0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/step_number"
+            app:layout_constraintStart_toStartOf="@id/step_number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:cardBackgroundColor="@color/orange_20"
+            app:viewBackgroundColor="@{color}"
+            android:layout_marginTop="@dimen/_5dp"
+            app:layout_constraintWidth_percent=".7"
+            app:layout_constraintHorizontal_bias="0"
+            style="@style/Widget.App.CardView"
+            >
+
+            <TextView
+                android:id="@+id/step_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/red_10"
+                android:lineSpacingExtra="3dp"
+                android:text="@{step.step}"
+                tools:text="Confirm that you want to reject this volume of milk after test has been concluded"
+                android:layout_marginHorizontal="@dimen/_15dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="7dp"
+                />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

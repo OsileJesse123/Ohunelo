@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="ingredient"
+            type="com.jesse.ohunelo.data.network.models.ExtendedIngredient" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        app:cardCornerRadius="@dimen/_20dp"
+        android:layout_marginVertical="@dimen/_10dp"
+        app:cardElevation="@dimen/_0dp"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_15dp"
+            >
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ingredient_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/ingredient_image"
+                android:scaleType="centerCrop"
+                android:theme="@style/RoundedImageViewStyle"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/pasta_image" />
+
+            <TextView
+                android:id="@+id/ingredient_name"
+                style="@style/HeaderTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@{ingredient.name}"
+                android:layout_marginStart="@dimen/_20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/ingredient_image"
+                app:layout_constraintStart_toEndOf="@+id/ingredient_image"
+                app:layout_constraintTop_toTopOf="@+id/ingredient_image"
+                tools:text="Tortilla Chips" />
+
+            <TextView
+                android:id="@+id/ingredient_quantity"
+                style="@style/HeaderTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_16sp"
+                android:textStyle="bold"
+                android:text="@{ingredient.formatIngredientQuantity()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="2 cups" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

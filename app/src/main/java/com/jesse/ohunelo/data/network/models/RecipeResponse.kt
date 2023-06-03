@@ -1,6 +1,8 @@
 package com.jesse.ohunelo.data.network.models
 
+import com.jesse.ohunelo.data.local.models.NutritionEntity
 import com.jesse.ohunelo.data.local.models.RecipeEntity
+import com.jesse.ohunelo.data.model.Nutrition
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -43,7 +45,7 @@ data class RecipeResponse(
     val weightWatcherSmartPoints: Int,
     val winePairing: WinePairing
 ){
-    fun toRecipeEntity() = RecipeEntity(
+    fun toRecipeEntity(nutritionEntity: NutritionEntity) = RecipeEntity(
         id = id,
         analyzedInstructions = analyzedInstructions,
         cookingMinutes = cookingMinutes,
@@ -59,6 +61,8 @@ data class RecipeResponse(
         servings = servings,
         sourceName = sourceName,
         title = title,
-        weightWatcherSmartPoints = weightWatcherSmartPoints
+        weightWatcherSmartPoints = weightWatcherSmartPoints,
+        summary = summary,
+        nutritionEntity = nutritionEntity
     )
 }

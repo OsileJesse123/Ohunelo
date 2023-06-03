@@ -14,9 +14,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.RecipeAdapter
+import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.databinding.FragmentHomeBinding
 import com.jesse.ohunelo.presentation.viewmodels.HomeViewModel
 import com.jesse.ohunelo.util.RecipeViewHolderType
@@ -57,8 +59,12 @@ class HomeFragment : Fragment() {
             false)
 
         // Initialize adapters
-        randomRecipeAdapter = RecipeAdapter(RecipeViewHolderType.RANDOM_RECIPE){}
-        recipeByCategoryAdapter = RecipeAdapter(RecipeViewHolderType.RECIPE_BY_CATEGORY){}
+        randomRecipeAdapter = RecipeAdapter(RecipeViewHolderType.RANDOM_RECIPE){
+            navigateToRecipeDetail(it)
+        }
+        recipeByCategoryAdapter = RecipeAdapter(RecipeViewHolderType.RECIPE_BY_CATEGORY){
+            navigateToRecipeDetail(it)
+        }
 
         setupBinding()
 
@@ -132,6 +138,13 @@ class HomeFragment : Fragment() {
             viewModel = homeViewModel
             executePendingBindings()
         }
+    }
+
+    private fun navigateToRecipeDetail(recipe: Recipe){
+        findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToRecipeDetailsFragment(recipe = recipe,
+                recipeId = recipe.id)
+        )
     }
 
     private fun setupRecyclerHeaders(){

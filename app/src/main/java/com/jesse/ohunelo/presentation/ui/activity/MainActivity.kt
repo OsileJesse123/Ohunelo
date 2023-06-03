@@ -2,6 +2,7 @@ package com.jesse.ohunelo.presentation.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -27,6 +28,14 @@ class MainActivity : AppCompatActivity() {
                 as NavHostFragment
         val navController = navHost.navController
         binding.ohuneloBottomNav.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener{
+            _, destination, _ ->
+            when(destination.id){
+                R.id.homeFragment -> { binding.ohuneloBottomNav.visibility = View.VISIBLE }
+                else -> { binding.ohuneloBottomNav.visibility = View.GONE }
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
