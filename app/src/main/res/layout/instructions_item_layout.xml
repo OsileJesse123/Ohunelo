@@ -26,7 +26,7 @@
 
             <TextView
                 android:id="@+id/instruction_name"
-                style="@style/HeaderTextStyle"
+                style="?attr/textAppearanceHeadline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -38,11 +38,9 @@
 
             <TextView
                 android:id="@+id/instruction_quantity"
-                style="@style/HeaderTextStyle"
+                style="?attr/textAppearanceHeadline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_16sp"
-                android:textStyle="bold"
                 android:text="@{instruction.formatStepsSize(context)}"
                 tools:text="2 steps"
                 android:layout_marginTop="@dimen/_4dp"

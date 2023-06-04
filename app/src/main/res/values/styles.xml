@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Splash Screen Theme   -->
-    <style name="SplashTheme" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen_logo</item>
-        <item name="windowSplashScreenBackground">@color/orange_500</item>
-        <item name="postSplashScreenTheme">@style/Theme.Ohunelo</item>
-    </style>
-
     <!-- Cubic Image Style-->
     <style name="cubicImage">
         <item name="cornerFamily">rounded</item>
@@ -24,28 +17,11 @@
     <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textColor">@color/chip_text_color_state</item>
         <item name="chipBackgroundColor">@color/chip_bg_color_state</item>
-        <item name="android:fontFamily">@font/sofiapro_light</item>
-    </style>
-
-    <!-- todo: delete this after typography is sorted-->
-    <style name="HeaderTextStyle" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">?attr/colorSecondaryVariant</item>
-    </style>
-
-    <!-- todo: delete this after typography is sorted-->
-    <style name="SubTextStyle" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/secondary_70</item>
     </style>
 
     <style name="RoundedImageViewStyle">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">20%</item>
-    </style>
-
-    <style name="RecipeDetailsTabLayoutTextAppearance" parent="TextAppearance.Material3.ActionBar.Title">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="fontFamily">@font/sofiapro_light</item>
     </style>
 
     <style name="MaterialCardShapeStyle" parent="ShapeAppearance.MaterialComponents.MediumComponent">

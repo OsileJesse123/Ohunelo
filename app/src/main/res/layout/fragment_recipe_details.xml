@@ -86,15 +86,13 @@
 
                     <TextView
                         android:id="@+id/recipe_name"
-                        style="@style/HeaderTextStyle"
+                        style="?attr/textAppearanceHeadline3"
                         android:layout_width="@dimen/_0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="?attr/actionBarSize"
                         android:ellipsize="none"
                         android:maxLines="2"
                         android:text="@{recipe.title}"
-                        android:textSize="@dimen/_18sp"
-                        android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/ready_in_minutes_text_view"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -102,7 +100,7 @@
 
                     <TextView
                         android:id="@+id/ready_in_minutes_text_view"
-                        style="@style/SubTextStyle"
+                        style="?attr/textAppearanceBody1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
@@ -116,7 +114,7 @@
 
                     <TextView
                         android:id="@+id/recipe_description"
-                        style="@style/SubTextStyle"
+                        style="?attr/textAppearanceBody2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10dp"
@@ -142,7 +140,7 @@
 
                     <TextView
                         android:id="@+id/carbs_percent"
-                        style="@style/HeaderTextStyle"
+                        style="?attr/textAppearanceCaption"
                         android:layout_width="@dimen/_0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10dp"
@@ -170,7 +168,7 @@
 
                     <TextView
                         android:id="@+id/protein_percent"
-                        style="@style/HeaderTextStyle"
+                        style="?attr/textAppearanceCaption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10dp"
@@ -195,7 +193,7 @@
 
                     <TextView
                         android:id="@+id/calories_amount"
-                        style="@style/HeaderTextStyle"
+                        style="?attr/textAppearanceCaption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10dp"
@@ -224,7 +222,7 @@
 
                     <TextView
                         android:id="@+id/fat_percent"
-                        style="@style/HeaderTextStyle"
+                        style="?attr/textAppearanceCaption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10dp"
@@ -258,7 +256,7 @@
                             app:tabMode="fixed"
                             app:tabRippleColor="#00FFFFFF"
                             app:tabSelectedTextColor="?attr/colorBackgroundCustom"
-                            app:tabTextAppearance="@style/RecipeDetailsTabLayoutTextAppearance"
+                            app:tabTextAppearance="?attr/textAppearanceHeadline4"
                             app:tabTextColor="?attr/colorSecondaryVariant">
 
                             <com.google.android.material.tabs.TabItem
