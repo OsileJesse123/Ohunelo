@@ -9,40 +9,44 @@ import com.jesse.ohunelo.data.network.models.AnalyzedInstructions
 import com.jesse.ohunelo.data.network.models.Step
 import com.jesse.ohunelo.databinding.InstructionsItemLayoutBinding
 
-class InstructionsAdapter(private val onAnalyzedInstruction: ((analyzedInstructions:
+class InstructionsAdapter(private val onAnalyzedInstructionClicked: ((analyzedInstructions:
                                                                AnalyzedInstructions) -> Unit)):
     ListAdapter<AnalyzedInstructions, InstructionsAdapter.
 InstructionsViewHolder>(InstructionsDiffUtil()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InstructionsViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = InstructionsItemLayoutBinding.inflate(layoutInflater, parent, false)
-        return InstructionsViewHolder(binding, onAnalyzedInstruction)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InstructionsViewHolder =
+        InstructionsViewHolder.inflateFrom(parent)
 
     override fun onBindViewHolder(holder: InstructionsViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onAnalyzedInstructionClicked)
     }
 
-    class InstructionsViewHolder(private val binding: InstructionsItemLayoutBinding,
-                                 private val onAnalyzedInstruction: ((analyzedInstructions:
-                                                                      AnalyzedInstructions) -> Unit)):
+    class InstructionsViewHolder(private val binding: InstructionsItemLayoutBinding):
         ViewHolder(binding.root){
 
         private var analyzedInstructions: AnalyzedInstructions? = null
 
-        init {
-            binding.root.setOnClickListener {
-                analyzedInstructions?.let {
-                        analyzedInstructions -> onAnalyzedInstruction(analyzedInstructions)
-                }
+        companion object {
+            fun inflateFrom(parent: ViewGroup): InstructionsViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = InstructionsItemLayoutBinding.inflate(layoutInflater, parent, false)
+                return InstructionsViewHolder(binding)
             }
+
         }
 
-        fun bind(item: AnalyzedInstructions) {
-            binding.instruction = item
+        fun bind(item: AnalyzedInstructions, onAnalyzedInstructionClicked: ((analyzedInstructions:
+                                                                      AnalyzedInstructions) -> Unit)) {
+            binding.apply {
+                instruction = item
+                root.setOnClickListener {
+                    analyzedInstructions?.let {
+                            analyzedInstructions -> onAnalyzedInstructionClicked(analyzedInstructions)
+                    }
+                }
+                executePendingBindings()
+            }
             analyzedInstructions = item
-            binding.executePendingBindings()
         }
 
     }

@@ -16,23 +16,18 @@ class RecipeAdapter(private val viewHolderType: RecipeViewHolderType,
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
         return when(viewHolderType){
             RecipeViewHolderType.RANDOM_RECIPE -> {
-                val binding = RandomsItemLayoutBinding
-                    .inflate(layoutInflater, parent, false)
-                RecipeViewHolder.RandomRecipesViewHolder(binding, onItemClicked)
+                RecipeViewHolder.RandomRecipesViewHolder.inflateFrom(parent)
             }
             RecipeViewHolderType.RECIPE_BY_CATEGORY -> {
-                val binding = RecipesByCategoryItemLayoutBinding
-                    .inflate(layoutInflater, parent, false)
-                RecipeViewHolder.RecipesByCategoryViewHolder(binding, onItemClicked)
+                RecipeViewHolder.RecipesByCategoryViewHolder.inflateFrom(parent)
             }
         }
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onItemClicked)
     }
 
     class RecipeDiffUtil: DiffUtil.ItemCallback<Recipe>(){

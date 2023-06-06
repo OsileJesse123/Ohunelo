@@ -1,24 +1,21 @@
 package com.jesse.ohunelo.adapters
 
-import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.appcompat.R.attr
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.jesse.ohunelo.R
+import com.google.android.material.color.MaterialColors
 import com.jesse.ohunelo.data.network.models.Step
 import com.jesse.ohunelo.databinding.StepsItemLayoutBinding
 
 class StepsAdapter: ListAdapter<Step, StepsAdapter.StepsViewHolder> (StepsDiffUtil()){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StepsViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = StepsItemLayoutBinding.inflate(layoutInflater, parent, false)
-        return StepsViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StepsViewHolder =
+        StepsViewHolder.inflateFrom(parent)
 
     override fun onBindViewHolder(holder: StepsViewHolder, position: Int) {
         holder.bind(getItem(position), position)
@@ -26,20 +23,28 @@ class StepsAdapter: ListAdapter<Step, StepsAdapter.StepsViewHolder> (StepsDiffUt
 
     class StepsViewHolder(private val binding: StepsItemLayoutBinding): RecyclerView.ViewHolder(binding.root){
 
+        companion object{
+            fun inflateFrom(parent: ViewGroup): StepsViewHolder{
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = StepsItemLayoutBinding.inflate(layoutInflater, parent,
+                    false)
+                return StepsViewHolder(binding)
+            }
+        }
         fun bind(item: Step, position: Int) {
             binding.step = item
 
             // Calculate the darker shade of the background color based on the position
-            val backgroundColor = darkenColor(binding.root.context, R.color.orange_20,
-                position * 0.1f)
+            val backgroundColor = darkenColor(attr.colorPrimary,
+                position * 0.1f, binding.root)
 
             binding.color = backgroundColor
 
             binding.executePendingBindings()
         }
 
-        private fun darkenColor(context: Context, colorRes: Int, factor: Float): Int {
-            val colorInt = ContextCompat.getColor(context, colorRes)
+        private fun darkenColor(colorRes: Int, factor: Float, view: View): Int {
+            val colorInt = MaterialColors.getColor(view, colorRes)
 
             // We get the RGB value of the original color
             val red = Color.red(colorInt)

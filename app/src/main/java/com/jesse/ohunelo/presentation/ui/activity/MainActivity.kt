@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -38,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.ohunelo_fragment_container)
-        return navController.navigateUp()
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Timber.e("On Back pressed gets called!")
     }
 }

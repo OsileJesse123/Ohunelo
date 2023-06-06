@@ -39,19 +39,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_18dp"
                     tools:src="@drawable/moon_icon"
+                    app:tint="?attr/colorPrimary"
                     app:uiDrawable="@{viewModel.homeUiStateFlow.userGreetingIcon}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/time_of_day_text_view"
-                    style="@style/HeaderTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_2dp"
                     android:layout_marginBottom="@dimen/_2dp"
                     android:paddingBottom="2dp"
                     android:drawablePadding="2dp"
+                    style="?attr/textAppearanceOverline"
                     app:uiText="@{viewModel.homeUiStateFlow.userGreetingText}"
                     app:layout_constraintTop_toTopOf="@+id/time_of_day_image_view"
                     app:layout_constraintStart_toEndOf="@+id/time_of_day_image_view"
@@ -62,9 +63,8 @@
                     android:id="@+id/user_name_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_20sp"
                     android:textStyle="bold"
-                    style="@style/HeaderTextStyle"
+                    style="?attr/textAppearanceHeadline2"
                     android:text="@{userName}"
                     android:layout_marginStart="@dimen/_18dp"
                     android:layout_marginTop="2dp"
@@ -100,9 +100,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/category"
                     android:layout_marginStart="@dimen/_18dp"
-                    android:textSize="@dimen/_18sp"
-                    android:textStyle="bold"
-                    style="@style/HeaderTextStyle"
+                    style="?attr/textAppearanceHeadline4"
+                    android:textColor="?attr/colorSecondaryVariant"
                     android:layout_marginTop="@dimen/_20dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/random_recipes_recycler" />
@@ -130,7 +129,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/main_course"
-                            style="@style/ChipStyle"
                             android:checked="true"
                             />
 
@@ -138,7 +136,6 @@
                             android:id="@+id/side_dish_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:text="@string/side_dish"/>
 
                         <com.google.android.material.chip.Chip
@@ -146,84 +143,72 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/dessert"
-                            style="@style/ChipStyle"
                             />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/appetizer_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:text="@string/appetizer"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/salad_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:text="@string/salad"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/bread_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:text="@string/bread"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/breakfast_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:text="@string/breakfast"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/soup_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:text="@string/soup"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/beverage_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:text="@string/beverage"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/sauce_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:text="@string/sauce"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/marinade_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:text="@string/marinade"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/fingerfood_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:text="@string/fingerfood"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/snack_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:text="@string/snack"/>
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/drink_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/ChipStyle"
                             android:layout_marginEnd="@dimen/_20dp"
                             android:text="@string/drink"/>
 
