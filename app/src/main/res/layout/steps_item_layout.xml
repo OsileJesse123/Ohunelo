@@ -57,7 +57,7 @@
             android:layout_marginTop="@dimen/_5dp"
             app:layout_constraintWidth_percent=".7"
             app:layout_constraintHorizontal_bias="0"
-            style="@style/Widget.App.CardView"
+            style="@style/Widget.App.StepsMaterialCardView"
             >
 
             <TextView
@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="?attr/colorOnPrimary"
-                style="?attr/textAppearanceBody2"
+                style="?attr/textAppearanceBody1"
                 android:lineSpacingExtra="3dp"
                 android:text="@{step.step}"
                 tools:text="Confirm that you want to reject this volume of milk after test has been concluded"

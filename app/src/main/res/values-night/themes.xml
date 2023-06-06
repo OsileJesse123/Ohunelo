@@ -16,8 +16,11 @@
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/gray_100</item>
         <item name="android:textColor">@color/brown_400</item>
-        <item name="chipStyle">@style/ChipStyle</item>
+        <item name="chipStyle">@style/Widget.Ohunelo.Chip</item>
         <item name="colorBackgroundCustom">@color/gray_100</item>
+        <item name="colorPrimaryLightVariant">@color/orange_100</item>
+        <item name="materialCardViewStyle">@style/Widget.Ohunelo.MaterialCardView</item>
+        <item name="bottomSheetStyle">@style/Widget.Ohunelo.BottomSheet</item>
     </style>
 
     <!-- Splash Screen Theme   -->

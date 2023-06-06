@@ -1,40 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Cubic Image Style-->
-    <style name="cubicImage">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">@dimen/_20dp</item>
-    </style>
-
-    <!-- Circular Image Style-->
-    <style name="circularImage">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
-
     <!-- Chip Style-->
-    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+    <style name="Widget.Ohunelo.Chip" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textColor">@color/chip_text_color_state</item>
         <item name="chipBackgroundColor">@color/chip_bg_color_state</item>
     </style>
 
-    <style name="RoundedImageViewStyle">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">20%</item>
+    <!-- Steps Material Card View Style-->
+    <style name="Widget.App.StepsMaterialCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="shapeAppearance">@style/ShapeAppearanceOverlay.Ohunelo.StepsMaterialCardView</item>
     </style>
 
-    <style name="MaterialCardShapeStyle" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerFamilyBottomLeft">rounded</item>
-        <item name="cornerFamilyBottomRight">rounded</item>
-        <item name="cornerFamilyTopRight">rounded</item>
-        <item name="cornerFamilyTopLeft">cut</item>
-        <item name="cornerSize">10dp</item>
-        <item name="cornerSizeTopLeft">@dimen/_0dp</item>
+    <!-- Material Card View Style -->
+    <style name="Widget.Ohunelo.MaterialCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Ohunelo.AllViews</item>
     </style>
 
-    <style name="Widget.App.CardView" parent="Widget.MaterialComponents.CardView">
-        <item name="shapeAppearance">@style/MaterialCardShapeStyle</item>
+    <!-- Bottom Sheet Style-->
+    <style name="Widget.Ohunelo.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Ohunelo.AllViews</item>
+        <item name="background">?attr/colorSurface</item>
+        <item name="backgroundTint">?attr/colorSurface</item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
     </style>
 
 </resources>
