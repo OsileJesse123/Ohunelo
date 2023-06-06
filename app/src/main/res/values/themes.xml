@@ -17,10 +17,12 @@
 
         <!-- Customize your theme here. -->
         <item name="android:colorBackground">@color/gray_100</item>
-        <item name="chipStyle">@style/ChipStyle</item>
+        <item name="chipStyle">@style/Widget.Ohunelo.Chip</item>
         <item name="colorSurface">@color/white</item>
         <item name="colorBackgroundCustom">@color/gray_100</item>
         <item name="colorPrimaryLightVariant">@color/orange_100</item>
+        <item name="materialCardViewStyle">@style/Widget.Ohunelo.MaterialCardView</item>
+        <item name="bottomSheetStyle">@style/Widget.Ohunelo.BottomSheet</item>
 
         <!-- Typography -->
         <item name="textAppearanceHeadline1">@style/TextAppearance.Ohunelo.Headline1</item>

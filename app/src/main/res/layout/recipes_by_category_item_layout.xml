@@ -9,7 +9,6 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        app:cardCornerRadius="@dimen/_20dp"
         app:cardElevation="3dp"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
@@ -70,7 +69,7 @@
                 android:layout_width="@dimen/_5dp"
                 android:layout_height="@dimen/_5dp"
                 android:background="@color/secondary_70"
-                android:theme="@style/circularImage"
+                android:theme="@style/ShapeAppearanceOverlay.Ohunelo.ImageView.Circular"
                 app:layout_constraintBottom_toBottomOf="@+id/calories_text_view"
                 app:layout_constraintEnd_toStartOf="@+id/clock_image_view"
                 app:layout_constraintStart_toEndOf="@+id/calories_text_view"
