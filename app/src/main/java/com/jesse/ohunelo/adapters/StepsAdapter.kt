@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.color.MaterialColors
 import com.jesse.ohunelo.data.network.models.Step
-import com.jesse.ohunelo.databinding.StepsItemLayoutBinding
+import com.jesse.ohunelo.databinding.StepsItemBinding
 
 class StepsAdapter: ListAdapter<Step, StepsAdapter.StepsViewHolder> (StepsDiffUtil()){
 
@@ -21,12 +21,12 @@ class StepsAdapter: ListAdapter<Step, StepsAdapter.StepsViewHolder> (StepsDiffUt
         holder.bind(getItem(position), position)
     }
 
-    class StepsViewHolder(private val binding: StepsItemLayoutBinding): RecyclerView.ViewHolder(binding.root){
+    class StepsViewHolder(private val binding: StepsItemBinding): RecyclerView.ViewHolder(binding.root){
 
         companion object{
             fun inflateFrom(parent: ViewGroup): StepsViewHolder{
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = StepsItemLayoutBinding.inflate(layoutInflater, parent,
+                val binding = StepsItemBinding.inflate(layoutInflater, parent,
                     false)
                 return StepsViewHolder(binding)
             }

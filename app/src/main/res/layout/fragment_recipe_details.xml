@@ -7,6 +7,15 @@
         <variable
             name="recipe"
             type="com.jesse.ohunelo.data.model.Recipe" />
+
+        <!-- This used to set the margin of the individual view, this was done
+            because of the fragments in the view pager. For a cleaner design and also for
+            a more cleaner and maintainable way of setting the margin horizontal of the
+            individual views.
+        -->
+        <variable
+            name="fragmentViewMargin"
+            type="Integer" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -31,20 +40,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/linear_layout_gradient_bg"
-                android:paddingTop="@dimen/_18dp"
+                android:paddingTop="@dimen/grid_3"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/back_button"
                     android:layout_width="46dp"
                     android:layout_height="50dp"
-                    android:layout_marginStart="@dimen/_30dp"
+                    app:marginStartInt="@{fragmentViewMargin}"
                     android:backgroundTint="?attr/colorBackgroundCustom"
                     app:cornerRadius="@dimen/_10dp"
                     app:elevation="@dimen/_0dp"
                     app:icon="@drawable/arrow_back_icon"
-                    app:iconTint="?attr/colorSecondaryVariant" />
-
+                    app:iconTint="?attr/colorSecondaryVariant"
+                    />
 
             </LinearLayout>
 
@@ -66,7 +75,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fillViewport="true"
-                android:paddingHorizontal="@dimen/_30dp"
                 >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,7 +85,7 @@
                         android:id="@+id/grey_view"
                         android:layout_width="@dimen/_0dp"
                         android:layout_height="5dp"
-                        android:layout_marginTop="@dimen/_16dp"
+                        android:layout_marginTop="@dimen/grid_2"
                         android:background="@drawable/rounded_view_bg"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
@@ -93,6 +101,7 @@
                         android:ellipsize="none"
                         android:maxLines="2"
                         android:text="@{recipe.title}"
+                        app:marginStartInt="@{fragmentViewMargin}"
                         app:layout_constraintEnd_toStartOf="@id/ready_in_minutes_text_view"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -103,10 +112,11 @@
                         style="?attr/textAppearanceBody1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:drawablePadding="2dp"
+                        android:layout_marginTop="@dimen/grid_0_5"
+                        android:drawablePadding="@dimen/grid_0_5"
                         app:drawableStartCompat="@drawable/clock_icon"
                         app:drawableTint="@color/secondary_70"
+                        app:marginEndInt="@{fragmentViewMargin}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/recipe_name"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:uiText="@{recipe.formatReadyInMinutes()}"
@@ -117,20 +127,23 @@
                         style="?attr/textAppearanceBody2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10dp"
-                        android:lineSpacingExtra="10dp"
+                        android:layout_marginTop="@dimen/grid_1_5"
+                        android:lineSpacingExtra="@dimen/grid_1_5"
+                        app:marginStartInt="@{fragmentViewMargin}"
+                        app:marginEndInt="@{fragmentViewMargin}"
                         app:layout_constraintTop_toBottomOf="@id/recipe_name"
                         app:resizableText="@{recipe.summary}"
                         tools:text="Recipe Description!!!!" />
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/carbs_image_view"
-                        android:layout_width="@dimen/_45dp"
-                        android:layout_height="@dimen/_45dp"
-                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="@dimen/grid_2"
                         android:background="?attr/colorPrimaryLightVariant"
                         android:contentDescription="@string/carbohydrate_icon"
                         android:scaleType="centerInside"
+                        app:marginStartInt="@{fragmentViewMargin}"
                         android:theme="@style/ShapeAppearanceOverlay.Ohunelo.ImageView.Cubic"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recipe_description"
@@ -143,7 +156,7 @@
                         style="?attr/textAppearanceCaption"
                         android:layout_width="@dimen/_0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10dp"
+                        android:layout_marginStart="@dimen/grid_1"
                         app:layout_constraintBottom_toBottomOf="@id/carbs_image_view"
                         app:layout_constraintStart_toEndOf="@id/carbs_image_view"
                         app:layout_constraintTop_toTopOf="@id/carbs_image_view"
@@ -152,9 +165,9 @@
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/protein_image_view"
-                        android:layout_width="@dimen/_45dp"
-                        android:layout_height="@dimen/_45dp"
-                        android:layout_marginStart="@dimen/_60dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginStart="@dimen/grid_7"
                         android:background="?attr/colorPrimaryLightVariant"
                         android:contentDescription="@string/protein_icon"
                         android:scaleType="centerInside"
@@ -171,7 +184,7 @@
                         style="?attr/textAppearanceCaption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10dp"
+                        android:layout_marginStart="@dimen/grid_1"
                         app:layout_constraintBottom_toBottomOf="@+id/protein_image_view"
                         app:layout_constraintStart_toEndOf="@+id/protein_image_view"
                         app:layout_constraintTop_toTopOf="@+id/protein_image_view"
@@ -180,13 +193,14 @@
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/calories_amount_image_view"
-                        android:layout_width="@dimen/_45dp"
-                        android:layout_height="@dimen/_45dp"
-                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="@dimen/grid_2"
                         android:background="?attr/colorPrimaryLightVariant"
                         android:tint="?attr/colorSecondaryVariant"
                         android:theme="@style/ShapeAppearanceOverlay.Ohunelo.ImageView.Cubic"
                         android:scaleType="center"
+                        app:marginStartInt="@{fragmentViewMargin}"
                         android:contentDescription="@string/amount_of_calories_icon"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/carbs_image_view"
@@ -198,7 +212,7 @@
                         style="?attr/textAppearanceCaption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10dp"
+                        android:layout_marginStart="@dimen/grid_1"
                         app:layout_constraintBottom_toBottomOf="@+id/calories_amount_image_view"
                         app:layout_constraintStart_toEndOf="@+id/calories_amount_image_view"
                         app:layout_constraintTop_toTopOf="@+id/calories_amount_image_view"
@@ -207,9 +221,9 @@
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/fat_image_view"
-                        android:layout_width="@dimen/_45dp"
-                        android:layout_height="@dimen/_45dp"
-                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="@dimen/grid_2"
                         android:background="?attr/colorPrimaryLightVariant"
                         android:contentDescription="@string/fat_icon"
                         android:scaleType="centerInside"
@@ -226,7 +240,7 @@
                         style="?attr/textAppearanceCaption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10dp"
+                        android:layout_marginStart="@dimen/grid_1"
                         app:layout_constraintBottom_toBottomOf="@+id/fat_image_view"
                         app:layout_constraintStart_toEndOf="@+id/fat_image_view"
                         app:layout_constraintTop_toTopOf="@+id/fat_image_view"
@@ -237,12 +251,15 @@
                         android:id="@+id/tab_layout_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_marginTop="@dimen/grid_3"
                         app:cardBackgroundColor="?attr/colorPrimaryLightVariant"
                         app:cardElevation="@dimen/_0dp"
                         app:layout_constraintTop_toBottomOf="@+id/calories_amount_image_view"
                         app:strokeColor="?attr/colorPrimaryLightVariant"
-                        app:strokeWidth="3dp">
+                        app:strokeWidth="3dp"
+                        app:marginStartInt="@{fragmentViewMargin}"
+                        app:marginEndInt="@{fragmentViewMargin}"
+                        >
 
                         <com.google.android.material.tabs.TabLayout
                             android:id="@+id/recipe_details_tab_layout"
@@ -280,7 +297,7 @@
                         android:id="@+id/recipe_details_view_pager"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_0dp"
-                        android:layout_marginTop="@dimen/_25dp"
+                        android:layout_marginTop="@dimen/grid_3"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHeight_percent=".5"
                         app:layout_constraintTop_toBottomOf="@+id/tab_layout_card" />
@@ -296,7 +313,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:visibility="gone"
-            android:paddingTop="@dimen/_5dp"
+            android:paddingTop="@dimen/grid_0_5"
             android:background="?attr/colorBackgroundCustom"
             app:navigationIcon="@drawable/close_icon"
             app:navigationIconTint="?attr/colorSecondaryVariant"

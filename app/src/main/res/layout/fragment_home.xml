@@ -30,14 +30,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:context=".presentation.ui.fragment.HomeFragment"
-                android:paddingTop="@dimen/_25dp"
+                android:paddingTop="@dimen/grid_3"
+                android:clipToPadding="false"
+                android:clipChildren="false"
+                android:paddingHorizontal="@dimen/grid_2"
                 >
 
                 <ImageView
                     android:id="@+id/time_of_day_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_18dp"
                     tools:src="@drawable/moon_icon"
                     app:tint="?attr/colorPrimary"
                     app:uiDrawable="@{viewModel.homeUiStateFlow.userGreetingIcon}"
@@ -48,10 +50,10 @@
                     android:id="@+id/time_of_day_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_2dp"
-                    android:layout_marginBottom="@dimen/_2dp"
-                    android:paddingBottom="2dp"
-                    android:drawablePadding="2dp"
+                    android:layout_marginStart="@dimen/grid_0_25"
+                    android:layout_marginBottom="@dimen/grid_0_25"
+                    android:paddingBottom="@dimen/grid_0_25"
+                    android:drawablePadding="@dimen/grid_0_25"
                     style="?attr/textAppearanceOverline"
                     app:uiText="@{viewModel.homeUiStateFlow.userGreetingText}"
                     app:layout_constraintTop_toTopOf="@+id/time_of_day_image_view"
@@ -66,19 +68,18 @@
                     android:textStyle="bold"
                     style="?attr/textAppearanceHeadline2"
                     android:text="@{userName}"
-                    android:layout_marginStart="@dimen/_18dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="@dimen/grid_0_25"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/time_of_day_text_view"
                     tools:text="Oscar Iyareeeeee" />
 
                 <include
                     android:id="@+id/random_recipes_recycler_header"
-                    layout="@layout/recycler_header_layout"
+                    layout="@layout/recycler_header_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/user_name_text_view"
-                    android:layout_marginTop="@dimen/_20dp"
+                    android:layout_marginTop="@dimen/grid_2"
                     />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -86,23 +87,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_0dp"
                     android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/_10dp"
-                    android:layout_marginEnd="@dimen/_10dp"
+                    android:layout_marginTop="@dimen/grid_1"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/random_recipes_recycler_header"
-                    tools:listitem="@layout/randoms_item_layout" />
+                    tools:listitem="@layout/randoms_item" />
 
                 <TextView
                     android:id="@+id/category_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/category"
-                    android:layout_marginStart="@dimen/_18dp"
                     style="?attr/textAppearanceHeadline4"
                     android:textColor="?attr/colorSecondaryVariant"
-                    android:layout_marginTop="@dimen/_20dp"
+                    android:layout_marginTop="@dimen/grid_2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/random_recipes_recycler" />
 
@@ -112,14 +111,12 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/category_text_view"
                     android:scrollbars="none"
-                    android:layout_marginEnd="@dimen/_10dp"
                     >
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/category_chip_group"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/_18dp"
                         app:singleLine="true"
                         app:singleSelection="true"
                         >
@@ -209,7 +206,7 @@
                             android:id="@+id/drink_chip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/_20dp"
+                            android:layout_marginEnd="@dimen/grid_2"
                             android:text="@string/drink"/>
 
 
@@ -219,7 +216,7 @@
 
                 <include
                     android:id="@+id/recipes_by_category_recycler_header"
-                    layout="@layout/recycler_header_layout"
+                    layout="@layout/recycler_header_item"
                     android:layout_marginTop="@dimen/_10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -230,9 +227,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_0dp"
                     android:orientation="horizontal"
-                    android:layout_marginEnd="@dimen/_10dp"
+                    android:layout_marginEnd="@dimen/grid_1"
+                    android:clipToPadding="false"
+                    android:paddingEnd="@dimen/grid_0_25"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/recipes_by_category_item_layout"
+                    tools:listitem="@layout/recipes_by_category_item"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recipes_by_category_recycler_header" />

@@ -1,13 +1,10 @@
 package com.jesse.ohunelo.adapters
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.jesse.ohunelo.adapters.viewholders.RecipeViewHolder
 import com.jesse.ohunelo.data.model.Recipe
-import com.jesse.ohunelo.databinding.RandomsItemLayoutBinding
-import com.jesse.ohunelo.databinding.RecipesByCategoryItemLayoutBinding
 import com.jesse.ohunelo.util.RecipeViewHolderType
 
 class RecipeAdapter(private val viewHolderType: RecipeViewHolderType,

@@ -39,6 +39,7 @@ class RecipeDetailsFragment : Fragment() {
 
         binding.apply {
             recipe = args.recipe
+            fragmentViewMargin = getDimensionPixelSize()
             lifecycleOwner = viewLifecycleOwner
             executePendingBindings()
         }
@@ -141,6 +142,10 @@ class RecipeDetailsFragment : Fragment() {
                 1 -> tab.text = getString(R.string.instructions)
             }
         }.attach()
+    }
+
+    private fun getDimensionPixelSize():Int{
+        return resources.getDimensionPixelSize(R.dimen.grid_3)
     }
 
     override fun onDestroyView() {

@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="_80dp">80dp</dimen>
-    <dimen name="_25dp">25dp</dimen>
-    <dimen name="_18dp">18dp</dimen>
+
+    <!-- sp -->
+    <dimen name="_11sp">11sp</dimen>
+    <dimen name="_12sp">12sp</dimen>
+    <dimen name="_14sp">14sp</dimen>
+    <dimen name="_16sp">16sp</dimen>
     <dimen name="_18sp">18sp</dimen>
     <dimen name="_20sp">20sp</dimen>
-    <dimen name="_16sp">16sp</dimen>
-    <dimen name="_5dp">5dp</dimen>
-    <dimen name="_15dp">15dp</dimen>
-    <dimen name="_10dp">10dp</dimen>
-    <dimen name="_20dp">20dp</dimen>
-    <dimen name="_8dp">8dp</dimen>
-    <dimen name="_0dp">0dp</dimen>
-    <dimen name="_12sp">12sp</dimen>
-    <dimen name="_2dp">2dp</dimen>
-    <dimen name="_30dp">30dp</dimen>
-    <dimen name="_16dp">16dp</dimen>
-    <dimen name="_35dp">35dp</dimen>
-    <dimen name="_45dp">45dp</dimen>
-    <dimen name="_60dp">60dp</dimen>
-    <dimen name="_9dp">9dp</dimen>
-    <dimen name="_14sp">14sp</dimen>
-    <dimen name="_4dp">4dp</dimen>
-    <dimen name="_11sp">11sp</dimen>
     <dimen name="_22sp">22sp</dimen>
+
+    <!-- dp -->
+    <dimen name="_0dp">0dp</dimen>
+    <dimen name="_5dp">5dp</dimen>
+    <dimen name="_9dp">9dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
+    <dimen name="_18dp">18dp</dimen>
+    <dimen name="_20dp">20dp</dimen>
+    <dimen name="_80dp">80dp</dimen>
+
+    <!--2dp sub grid-->
+    <dimen name="grid_0_25">2dp</dimen>
+    <dimen name="grid_0_5">4dp</dimen>
+
+    <!--8dp grid-->
+    <dimen name="grid_1">8dp</dimen>
+    <dimen name="grid_1_5">12dp</dimen>
+    <dimen name="grid_2">16dp</dimen>
+    <dimen name="grid_3">24dp</dimen>
+    <dimen name="grid_4">32dp</dimen>
+    <dimen name="grid_7">56dp</dimen>
+
 </resources>
