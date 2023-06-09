@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jesse.ohunelo.data.network.models.ExtendedIngredient
-import com.jesse.ohunelo.databinding.IngredientsItemLayoutBinding
+import com.jesse.ohunelo.databinding.IngredientsItemBinding
 
 class IngredientAdapter: ListAdapter<ExtendedIngredient,
         IngredientAdapter.IngredientViewHolder>(IngredientDiffUtil()) {
@@ -20,13 +20,13 @@ class IngredientAdapter: ListAdapter<ExtendedIngredient,
         holder.bind(getItem(position))
     }
 
-    class IngredientViewHolder(private val binding: IngredientsItemLayoutBinding):
+    class IngredientViewHolder(private val binding: com.jesse.ohunelo.databinding.IngredientsItemBinding):
         RecyclerView.ViewHolder(binding.root){
 
         companion object{
             fun inflateFrom(parent: ViewGroup): IngredientViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = IngredientsItemLayoutBinding.inflate(layoutInflater, parent,
+                val binding = IngredientsItemBinding.inflate(layoutInflater, parent,
                     false)
                 return IngredientViewHolder(binding)
             }

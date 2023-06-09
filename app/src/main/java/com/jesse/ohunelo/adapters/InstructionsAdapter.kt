@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.jesse.ohunelo.data.network.models.AnalyzedInstructions
 import com.jesse.ohunelo.data.network.models.Step
-import com.jesse.ohunelo.databinding.InstructionsItemLayoutBinding
+import com.jesse.ohunelo.databinding.InstructionsItemBinding
 
 class InstructionsAdapter(private val onAnalyzedInstructionClicked: ((analyzedInstructions:
                                                                AnalyzedInstructions) -> Unit)):
@@ -21,7 +21,7 @@ InstructionsViewHolder>(InstructionsDiffUtil()) {
         holder.bind(getItem(position), onAnalyzedInstructionClicked)
     }
 
-    class InstructionsViewHolder(private val binding: InstructionsItemLayoutBinding):
+    class InstructionsViewHolder(private val binding: InstructionsItemBinding):
         ViewHolder(binding.root){
 
         private var analyzedInstructions: AnalyzedInstructions? = null
@@ -29,7 +29,7 @@ InstructionsViewHolder>(InstructionsDiffUtil()) {
         companion object {
             fun inflateFrom(parent: ViewGroup): InstructionsViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = InstructionsItemLayoutBinding.inflate(layoutInflater, parent, false)
+                val binding = InstructionsItemBinding.inflate(layoutInflater, parent, false)
                 return InstructionsViewHolder(binding)
             }
 

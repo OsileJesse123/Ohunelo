@@ -2,11 +2,14 @@ package com.jesse.ohunelo.util
 
 import android.content.res.ColorStateList
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.marginStart
 import androidx.databinding.BindingAdapter
 import com.google.android.material.card.MaterialCardView
+import timber.log.Timber
 
 @BindingAdapter("app:uiText")
 fun setUiText(view: TextView, uiText: UiText?){
@@ -43,3 +46,34 @@ fun setViewBackgroundColor(view: View, color: Int?){
         }
     }
 }
+
+@BindingAdapter("app:marginStartInt", "app:marginEndInt", requireAll = false)
+fun setMarginHorizontalInt(view: View, marginStartInteger: Int? = null, marginEndInteger: Int? = null){
+
+    Timber.e("Margin function is called!")
+    marginStartInteger?.let {
+        marginStartInteger ->
+        // Get the existing layout params of the view
+        val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+
+        // Set the start margin
+        layoutParams.marginStart = marginStartInteger
+
+        // Apply the updated layout params to the view
+        view.layoutParams = layoutParams
+    }
+    marginEndInteger?.let {
+        marginEndInteger ->
+        // Get the existing layout params of the view
+        val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+
+        // Set the end margin
+        layoutParams.marginEnd = marginEndInteger
+
+        // Apply the updated layout params to the view
+        view.layoutParams = layoutParams
+    }
+
+}
+
+
