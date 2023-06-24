@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.fragment.recipe_details.InstructionsFragment"
-        android:paddingHorizontal="@dimen/grid_3"
+        android:paddingHorizontal="@dimen/grid_2"
         >
 
         <TextView

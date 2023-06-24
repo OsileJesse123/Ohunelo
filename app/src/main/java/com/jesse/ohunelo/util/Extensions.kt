@@ -3,8 +3,10 @@ package com.jesse.ohunelo.util
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.view.View
+import android.view.WindowInsetsController
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
+import androidx.fragment.app.Fragment
 import com.jesse.ohunelo.R
 import kotlin.math.roundToInt
 

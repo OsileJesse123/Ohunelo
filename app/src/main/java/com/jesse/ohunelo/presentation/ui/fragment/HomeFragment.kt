@@ -75,11 +75,15 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerHeaders()
-
         setupRecyclers()
 
         setupSwipeToRefreshLayout()
+
+        // Set See All TextView onClickListener
+        binding.seeAllTextView.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToSeeAllRecipesFragment(homeViewModel.selectedRecipeCategory)
+            findNavController().navigate(action)
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -147,11 +151,6 @@ class HomeFragment : Fragment() {
         )
     }
 
-    private fun setupRecyclerHeaders(){
-        binding.randomRecipesRecyclerHeader.title = getString(R.string.random)
-        binding.recipesByCategoryRecyclerHeader.title = getString(R.string.recipes)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         randomRecipeAdapter = null
@@ -159,4 +158,9 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+}
+
+// This Interface was created to handle Chip clicks directly from the xml using binding adapters
+interface OnRecipeCategorySelectedListener{
+    fun onRecipeCategorySelected(selectedRecipeCategory: String)
 }

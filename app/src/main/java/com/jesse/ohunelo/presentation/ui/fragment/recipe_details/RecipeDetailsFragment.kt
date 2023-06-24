@@ -17,8 +17,9 @@ import com.jesse.ohunelo.adapters.ViewPagerAdapter
 import com.jesse.ohunelo.databinding.FragmentRecipeDetailsBinding
 import com.jesse.ohunelo.presentation.viewmodels.RecipeDetailsViewModel
 import com.jesse.ohunelo.util.BottomSheetBehaviorStateWrapper
-import timber.log.Timber
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipeDetailsFragment : Fragment() {
 
     private var _binding: FragmentRecipeDetailsBinding? = null
@@ -145,7 +146,7 @@ class RecipeDetailsFragment : Fragment() {
     }
 
     private fun getDimensionPixelSize():Int{
-        return resources.getDimensionPixelSize(R.dimen.grid_3)
+        return resources.getDimensionPixelSize(R.dimen.grid_2)
     }
 
     override fun onDestroyView() {

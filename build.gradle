@@ -9,6 +9,7 @@ buildscript {
         leakcanary_version = '2.9.1'
         hilt_version = '2.38.1'
         splash_screen_version = '1.0.0'
+        paging_version = "3.1.1"
     }
 
     dependencies {

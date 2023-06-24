@@ -12,14 +12,14 @@
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_marginVertical="@dimen/_10dp"
+        android:layout_marginVertical="@dimen/grid_1"
         app:cardElevation="@dimen/_0dp"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/_15dp"
+            android:padding="@dimen/grid_2"
             >
 
 
@@ -32,7 +32,6 @@
                 android:text="@{instruction.formatName(context)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-
                 tools:text="Bourbon Molasses Butter" />
 
             <TextView
@@ -42,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{instruction.formatStepsSize(context)}"
                 tools:text="2 steps"
-                android:layout_marginTop="@dimen/_4dp"
+                android:layout_marginTop="@dimen/grid_0_5"
                 app:layout_constraintTop_toBottomOf="@+id/instruction_name"
                 app:layout_constraintStart_toStartOf="parent"
                 />

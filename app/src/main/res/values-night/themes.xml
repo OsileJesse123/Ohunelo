@@ -1,26 +1,46 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Base application theme. -->
     <style name="Theme.Ohunelo" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/orange_500</item>
         <item name="colorPrimaryVariant">@color/orange_brown_200</item>
         <item name="colorOnPrimary">@color/white</item>
+
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/orange_brown_200</item>
         <item name="colorSecondaryVariant">@color/brown_400</item>
         <item name="colorOnSecondary">@color/white</item>
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor" >@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowLightStatusBar">true</item>
+
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@color/gray_100</item>
-        <item name="android:textColor">@color/brown_400</item>
+        <item name="android:colorBackground">@color/gray_100</item>
         <item name="chipStyle">@style/Widget.Ohunelo.Chip</item>
+        <item name="colorSurface">@color/white</item>
         <item name="colorBackgroundCustom">@color/gray_100</item>
         <item name="colorPrimaryLightVariant">@color/orange_100</item>
         <item name="materialCardViewStyle">@style/Widget.Ohunelo.MaterialCardView</item>
         <item name="bottomSheetStyle">@style/Widget.Ohunelo.BottomSheet</item>
+
+        <!-- Typography -->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.Ohunelo.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.Ohunelo.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.Ohunelo.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.Ohunelo.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.Ohunelo.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.Ohunelo.Headline6</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.Ohunelo.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.Ohunelo.Body2</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.Ohunelo.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.Ohunelo.Subtitle2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.Ohunelo.Button</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.Ohunelo.Caption</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.Ohunelo.Overline</item>
+
+
     </style>
 
     <!-- Splash Screen Theme   -->

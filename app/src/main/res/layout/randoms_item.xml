@@ -12,7 +12,7 @@
         android:layout_height="240dp"
         xmlns:tools="http://schemas.android.com/tools"
         app:cardElevation="@dimen/_0dp"
-        android:layout_marginStart="@dimen/_18dp"
+        android:layout_marginEnd="@dimen/grid_2"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,9 +32,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_0dp"
-                android:paddingTop="@dimen/_5dp"
-                android:paddingBottom="@dimen/_10dp"
-                android:paddingHorizontal="@dimen/_15dp"
+                android:paddingTop="@dimen/grid_0_5"
+                android:paddingBottom="@dimen/grid_1"
+                android:paddingHorizontal="@dimen/grid_2"
                 android:background="@drawable/randoms_item_constraint_bg"
                 android:theme="@style/Theme.Ohunelo"
                 app:layout_constraintHeight_percent=".4"
@@ -71,7 +71,7 @@
                     android:id="@+id/recipe_source_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
+                    android:layout_marginStart="@dimen/grid_0_25"
                     style="?attr/textAppearanceBody2"
                     android:textColor="?attr/colorOnPrimary"
                     android:text="@{recipe.sourceName}"
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     style="?attr/textAppearanceBody2"
                     android:textColor="?attr/colorOnPrimary"
-                    android:drawablePadding="3dp"
+                    android:drawablePadding="@dimen/grid_0_25"
                     app:uiText="@{recipe.formatReadyInMinutes()}"
                     app:drawableStartCompat="@drawable/clock_icon"
                     app:layout_constraintBottom_toBottomOf="parent"

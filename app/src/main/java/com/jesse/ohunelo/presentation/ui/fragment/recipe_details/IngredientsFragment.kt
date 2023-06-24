@@ -11,7 +11,9 @@ import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.IngredientAdapter
 import com.jesse.ohunelo.data.network.models.ExtendedIngredient
 import com.jesse.ohunelo.databinding.FragmentIngredientsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class IngredientsFragment(private val ingredients: List<ExtendedIngredient> = listOf()) : Fragment() {
 
     private var _binding: FragmentIngredientsBinding? = null
