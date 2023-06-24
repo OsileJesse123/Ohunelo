@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <data>
+        <variable
+            name="recipe"
+            type="com.jesse.ohunelo.data.model.Recipe" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/recipe_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/pasta_image"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/recipe_image"
+                />
+
+            <ImageView
+                android:id="@+id/close_dialog_image_view"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/cancel_icon"
+                android:layout_marginTop="@dimen/grid_2"
+                android:layout_marginEnd="@dimen/grid_2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:tint="@color/gray_100_alpha_80" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/details_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_0dp"
+                android:background="@color/brown_950_alpha_70"
+                android:padding="@dimen/grid_2"
+                app:layout_constraintHeight_percent=".5"
+                app:layout_constraintVertical_bias="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/more_details_text_view"
+                >
+
+                <TextView
+                    android:id="@+id/recipe_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Asian Vegan..."
+                    android:text="@{recipe.title}"
+                    style="?attr/textAppearanceHeadline5"
+                    android:textColor="?attr/colorOnSecondary"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/recipe_description"
+                    style="?attr/textAppearanceBody2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/grid_0_5"
+                    android:text="@{recipe.summary}"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:maxLines="4"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="@dimen/recipe_summary_line_spacing_extra_dialog_box"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recipe_title"
+                    tools:text="This is Recipe Number 1" />
+
+                <TextView
+                    android:id="@+id/calories_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:uiText="@{recipe.nutrition.formatCalories()}"
+                    tools:text="120 kcals"
+                    style="?attr/textAppearanceSubtitle1"
+                    android:textColor="?attr/colorOnSecondary"
+                    app:drawableTint="@color/gray_100"
+                    app:drawableStartCompat="@drawable/calories_icon"
+                    android:drawablePadding="@dimen/grid_0_5"
+                    app:layout_constraintTop_toBottomOf="@+id/recipe_description"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                     />
+
+                <TextView
+                    android:id="@+id/protein_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:uiText="@{recipe.nutrition.formatCarbs()}"
+                    tools:text="90 Carbs"
+                    style="?attr/textAppearanceSubtitle1"
+                    android:textColor="?attr/colorOnSecondary"
+                    app:drawableTint="@color/gray_100"
+                    app:drawableStartCompat="@drawable/carbohydrate_icon"
+                    android:drawablePadding="@dimen/grid_0_5"
+                    android:layout_marginTop="@dimen/grid_0_5"
+                    app:layout_constraintTop_toBottomOf="@+id/recipe_description"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/more_details_text_view"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/more_details"
+                style="@style/TextAppearance.Ohunelo.Button"
+                android:gravity="center"
+                android:background="?attr/colorPrimary"
+                android:paddingVertical="@dimen/grid_1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

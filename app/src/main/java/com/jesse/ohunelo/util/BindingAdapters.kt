@@ -4,12 +4,15 @@ import android.content.res.ColorStateList
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.marginStart
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
+import androidx.paging.LoadState
 import com.google.android.material.card.MaterialCardView
-import timber.log.Timber
+import com.google.android.material.chip.Chip
+import com.jesse.ohunelo.presentation.ui.fragment.OnRecipeCategorySelectedListener
 
 @BindingAdapter("app:uiText")
 fun setUiText(view: TextView, uiText: UiText?){
@@ -50,7 +53,6 @@ fun setViewBackgroundColor(view: View, color: Int?){
 @BindingAdapter("app:marginStartInt", "app:marginEndInt", requireAll = false)
 fun setMarginHorizontalInt(view: View, marginStartInteger: Int? = null, marginEndInteger: Int? = null){
 
-    Timber.e("Margin function is called!")
     marginStartInteger?.let {
         marginStartInteger ->
         // Get the existing layout params of the view
@@ -74,6 +76,28 @@ fun setMarginHorizontalInt(view: View, marginStartInteger: Int? = null, marginEn
         view.layoutParams = layoutParams
     }
 
+}
+
+@BindingAdapter("app:onRecipeCategorySelected")
+fun onRecipeCategorySelected(view: Chip, onRecipeCategorySelectedListener: OnRecipeCategorySelectedListener?){
+    view.setOnClickListener {
+        onRecipeCategorySelectedListener?.let {
+                onRecipeCategorySelectedListener ->
+            onRecipeCategorySelectedListener.onRecipeCategorySelected(view.text.toString())
+        }
+    }
+}
+
+@BindingAdapter("app:viewVisibility")
+fun setViewVisibility(view: View, loadState: LoadState?){
+    loadState?.let {
+        loadState ->
+        if (view is ProgressBar){
+            view.isVisible = loadState is LoadState.Loading
+        } else {
+            view.isVisible = loadState is LoadState.Error
+        }
+    }
 }
 
 

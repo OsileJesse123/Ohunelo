@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <data>
         <variable
@@ -21,27 +22,34 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.fragment.recipe_details.RecipeDetailsFragment">
+        tools:context=".presentation.ui.fragment.recipe_details.RecipeDetailsFragment"
+        >
+
+
 
         <!-- This layout contains the back button and image being displayed-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <ImageView
+                android:id="@+id/recipe_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/pasta_image"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/recipe_image"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/linear_layout_gradient_bg"
                 android:paddingTop="@dimen/grid_3"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                >
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/back_button"
@@ -74,7 +82,6 @@
                 android:id="@+id/recipe_details_nested_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fillViewport="true"
                 >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -128,7 +135,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/grid_1_5"
-                        android:lineSpacingExtra="@dimen/grid_1_5"
+                        android:lineSpacingExtra="@dimen/recipe_summary_line_spacing_extra"
                         app:marginStartInt="@{fragmentViewMargin}"
                         app:marginEndInt="@{fragmentViewMargin}"
                         app:layout_constraintTop_toBottomOf="@id/recipe_name"
@@ -318,6 +325,7 @@
             app:navigationIcon="@drawable/close_icon"
             app:navigationIconTint="?attr/colorSecondaryVariant"
             />
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

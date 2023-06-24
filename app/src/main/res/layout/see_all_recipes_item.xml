@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="recipe"
+            type="com.jesse.ohunelo.data.model.Recipe" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/grid_12"
+        app:cardCornerRadius="@dimen/_20dp"
+        android:elevation="@dimen/_0dp"
+        >
+
+        <ImageView
+            android:id="@+id/recipe_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/pasta_image"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/recipe_image"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/brown_950_alpha_50"
+            />
+
+        <TextView
+            android:id="@+id/recipe_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Asian Vegan"
+            android:text="@{recipe.title}"
+            android:textColor="?attr/colorOnPrimary"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:maxLines="1"
+            style="?attr/textAppearanceBody1"
+            android:layout_marginHorizontal="@dimen/grid_2"
+            />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

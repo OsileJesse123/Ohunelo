@@ -11,8 +11,10 @@ import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.InstructionsAdapter
 import com.jesse.ohunelo.data.network.models.AnalyzedInstructions
 import com.jesse.ohunelo.databinding.FragmentInstructionsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class InstructionsFragment(private val analyzedInstructions:List<AnalyzedInstructions> = listOf(),
                            private val onAnalyzedInstructionClicked:
                             ((analyzedInstruction: AnalyzedInstructions) -> Unit)? = null

@@ -52,6 +52,10 @@
     <string name="steps">Steps</string>
     <string name="amount_of_calories_icon">amount of calories icon</string>
     <string name="minutes_short">%d Min</string>
+    <string name="retry">Retry</string>
+    <string name="error_image">Error Image</string>
+    <string name="try_again">Try Again</string>
+    <string name="more_details">More Details</string>
 
 
     <plurals name="number_of_items_available">

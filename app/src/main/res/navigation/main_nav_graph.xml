@@ -21,6 +21,15 @@
             app:popExitAnim="@anim/fade_out"
             />
 
+        <action
+            android:id="@+id/action_homeFragment_to_seeAllRecipesFragment"
+            app:destination="@id/seeAllRecipesFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+
     </fragment>
 
     <fragment
@@ -58,6 +67,27 @@
         <argument
             android:name="analyzedInstructions"
             app:argType="com.jesse.ohunelo.data.network.models.AnalyzedInstructions" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/seeAllRecipesFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.SeeAllRecipesFragment"
+        android:label="SeeAllRecipesFragment"
+        tools:layout="@layout/fragment_see_all_recipes"
+        >
+
+        <argument
+            android:name="recipeCategory"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_seeAllRecipesFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
     </fragment>
 
 

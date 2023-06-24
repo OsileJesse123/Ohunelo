@@ -1,6 +1,7 @@
 package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.Nutrition
 import com.jesse.ohunelo.data.model.Recipe
@@ -13,7 +14,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +29,8 @@ class HomeViewModel @Inject constructor(): ViewModel() {
     // todo: this acts a source of recipe data for now and would be removed soon
    private var recipes = listOf<Recipe>()
 
+   var selectedRecipeCategory = ""
+       private set
     // todo: when data layer is properly setup changes will be made here
     init {
         updateGreeting()
@@ -264,6 +270,7 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                     expires = 1L)
             ),
         )
+        selectedRecipeCategory = "Main Course"
         _homeUiStateFlow.update {
             state ->
             state.copy(randomRecipes = recipes, recipesByCategory = recipes)
@@ -290,5 +297,12 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 userGreetingIcon = UiDrawable(R.drawable.moon_icon)) }}
         }
 
+    }
+
+    fun onRecipeCategorySelected(selectedRecipeCategory: String){
+        viewModelScope.launch {
+            this@HomeViewModel.selectedRecipeCategory = selectedRecipeCategory
+            Timber.e("Selected Recipe: ${selectedRecipeCategory.lowercase(Locale.getDefault())}")
+        }
     }
 }

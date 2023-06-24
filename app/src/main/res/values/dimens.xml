@@ -30,5 +30,9 @@
     <dimen name="grid_3">24dp</dimen>
     <dimen name="grid_4">32dp</dimen>
     <dimen name="grid_7">56dp</dimen>
+    <dimen name="grid_12">96dp</dimen>
+
+    <dimen name="recipe_summary_line_spacing_extra">12dp</dimen>
+    <dimen name="recipe_summary_line_spacing_extra_dialog_box">6dp</dimen>
 
 </resources>
