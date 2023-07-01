@@ -30,8 +30,12 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener{
             _, destination, _ ->
+
             when(destination.id){
                 R.id.homeFragment -> {
+                    binding.ohuneloBottomNav.visibility = View.VISIBLE
+                }
+                R.id.searchRecipeFragment -> {
                     binding.ohuneloBottomNav.visibility = View.VISIBLE
                 }
                 else -> {
@@ -40,6 +44,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
 
 }

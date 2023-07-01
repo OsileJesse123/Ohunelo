@@ -90,5 +90,12 @@
             />
     </fragment>
 
+    <fragment
+        android:id="@+id/searchRecipeFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.SearchRecipeFragment"
+        android:label="SearchRecipeFragment"
+        tools:layout="@layout/fragment_search_recipe"
+        />
+
 
 </navigation>

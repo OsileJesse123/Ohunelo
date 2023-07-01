@@ -25,6 +25,7 @@
                 app:titleTextAppearance="?attr/textAppearanceHeadline2"
                 android:background="?attr/colorBackgroundCustom"
                 app:layout_scrollFlags="scroll|enterAlways"
+                app:titleCentered="true"
                 />
 
         </com.google.android.material.appbar.AppBarLayout>

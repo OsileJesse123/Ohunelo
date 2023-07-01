@@ -17,6 +17,7 @@
             app:title="@string/steps"
             app:titleTextColor="@color/brown_400"
             app:titleTextAppearance="?attr/textAppearanceHeadline2"
+            app:titleCentered="true"
             />
 
         <androidx.recyclerview.widget.RecyclerView
