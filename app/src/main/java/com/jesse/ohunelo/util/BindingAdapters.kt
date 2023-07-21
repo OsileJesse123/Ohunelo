@@ -81,6 +81,8 @@ fun setMarginHorizontalInt(view: View, marginStartInteger: Int? = null, marginEn
 @BindingAdapter("app:onRecipeCategorySelected")
 fun onRecipeCategorySelected(view: Chip, onRecipeCategorySelectedListener: OnRecipeCategorySelectedListener?){
     view.setOnClickListener {
+       val chip =  it as Chip
+        chip.isChecked = true
         onRecipeCategorySelectedListener?.let {
                 onRecipeCategorySelectedListener ->
             onRecipeCategorySelectedListener.onRecipeCategorySelected(view.text.toString())

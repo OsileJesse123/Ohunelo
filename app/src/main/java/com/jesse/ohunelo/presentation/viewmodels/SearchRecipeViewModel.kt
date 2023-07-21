@@ -11,10 +11,9 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
-class SeeAllRecipesViewModel @Inject constructor(
+class SearchRecipeViewModel @Inject constructor(
     recipeRepository: RecipeRepository
 ): ViewModel() {
 
-    var recipes: Flow<PagingData<Recipe>> = recipeRepository.getPagedRecipes().cachedIn(viewModelScope)
-
+    val recipes: Flow<PagingData<Recipe>> = recipeRepository.getPagedRecipes().cachedIn(viewModelScope)
 }

@@ -56,6 +56,9 @@
     <string name="error_image">Error Image</string>
     <string name="try_again">Try Again</string>
     <string name="more_details">More Details</string>
+    <string name="search_recipe">Search Recipe...</string>
+    <string name="go_back_to_previous_screen">Go back to previous screen</string>
+    <string name="navigate_to_recipe_details_screen">navigate to recipe details screen</string>
 
 
     <plurals name="number_of_items_available">
