@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.databinding.SearchRecipeItemBinding
 
-class SearchRecipeAdapter:
+class SearchRecipeAdapter(
+    private val navigateToRecipeDetails: (recipe: Recipe) -> Unit
+):
     PagingDataAdapter<Recipe, SearchRecipeAdapter.SearchRecipeViewHolder>(SearchRecipeDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchRecipeViewHolder {
@@ -18,15 +20,18 @@ class SearchRecipeAdapter:
     override fun onBindViewHolder(holder: SearchRecipeViewHolder, position: Int) {
         getItem(position)?.let {
             recipe ->
-            holder.bind(recipe) }
+            holder.bind(recipe, navigateToRecipeDetails) }
     }
 
     class SearchRecipeViewHolder(private val binding: SearchRecipeItemBinding):
         RecyclerView.ViewHolder(binding.root){
 
-            fun bind(recipe: Recipe){
+            fun bind(recipe: Recipe, navigateToRecipeDetails: (recipe: Recipe) -> Unit){
                 binding.apply {
                     setRecipe(recipe)
+                    binding.root.setOnClickListener {
+                        navigateToRecipeDetails(recipe)
+                    }
                     executePendingBindings()
                 }
             }

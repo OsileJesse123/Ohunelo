@@ -92,10 +92,48 @@
 
     <fragment
         android:id="@+id/searchRecipeFragment"
-        android:name="com.jesse.ohunelo.presentation.ui.fragment.SearchRecipeFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.search.SearchRecipeFragment"
         android:label="SearchRecipeFragment"
         tools:layout="@layout/fragment_search_recipe"
-        />
+        >
+
+        <action
+            android:id="@+id/action_searchRecipeFragment_to_searchRecipeDisplayFragment"
+            app:destination="@id/searchRecipeDisplayFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+
+        <action
+            android:id="@+id/action_searchRecipeFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchRecipeDisplayFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.search.SearchRecipeDisplayFragment"
+        android:label="SearchRecipeDisplayFragment"
+        tools:layout="@layout/fragment_search_recipe_display"
+        >
+
+        <action
+            android:id="@+id/action_searchRecipeDisplayFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+
+    </fragment>
 
 
 </navigation>

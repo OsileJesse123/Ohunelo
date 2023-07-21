@@ -1,9 +1,10 @@
-package com.jesse.ohunelo.presentation.ui.fragment
+package com.jesse.ohunelo.presentation.ui.fragment.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -11,8 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.SearchRecipeAdapter
 import com.jesse.ohunelo.adapters.SeeAllRecipesLoadStateAdapter
@@ -24,6 +25,7 @@ import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpannedGridLayoutManag
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class SearchRecipeFragment : Fragment() {
@@ -43,7 +45,12 @@ class SearchRecipeFragment : Fragment() {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_recipe, container,
             false)
 
-        _searchRecipeAdapter = SearchRecipeAdapter()
+        _searchRecipeAdapter = SearchRecipeAdapter{
+            recipe ->
+            val action = SearchRecipeFragmentDirections
+                .actionSearchRecipeFragmentToRecipeDetailsFragment(recipe = recipe, recipeId = recipe.id)
+            findNavController().navigate(action)
+        }
 
         // Inflate the layout for this fragment
         return binding.root
@@ -79,6 +86,11 @@ class SearchRecipeFragment : Fragment() {
             }
         }
 
+        binding.searchRecipeToolBar.setOnClickListener {
+            findNavController().navigate(SearchRecipeFragmentDirections
+                .actionSearchRecipeFragmentToSearchRecipeDisplayFragment())
+        }
+
     }
 
     private fun setupRecycler(){
@@ -102,11 +114,16 @@ class SearchRecipeFragment : Fragment() {
                 }
             }
             addItemDecoration(SpaceItemDecorator(spacing))
+            postponeEnterTransition()
+            doOnPreDraw {
+                startPostponedEnterTransition()
+            }
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _searchRecipeAdapter = null
         _binding = null
     }
 }

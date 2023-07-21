@@ -25,4 +25,9 @@
         <item name="cardBackgroundColor">?attr/colorSurface</item>
     </style>
 
+    <!-- Search Display TextInputEditText Style-->
+    <style name="ThemeOverlay.Ohunelo.TextInputEditText.Outlined" parent="">
+        <item name="colorPrimary">?attr/colorSecondaryVariant</item>
+    </style>
+
 </resources>
