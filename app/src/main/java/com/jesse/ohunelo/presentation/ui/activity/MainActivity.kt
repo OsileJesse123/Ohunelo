@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.searchRecipeFragment -> {
                     showBottomNavigationView()
                 }
-                R.id.notificatonFragment ->{
+                R.id.notificationFragment ->{
                     showBottomNavigationView()
                 }
                 else -> {

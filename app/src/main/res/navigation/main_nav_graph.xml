@@ -135,10 +135,10 @@
 
     </fragment>
     <fragment
-        android:id="@+id/notificatonFragment"
-        android:name="com.jesse.ohunelo.presentation.ui.fragment.NotificatonsFragment"
-        android:label="NotificatonFragment"
-        tools:layout="@layout/fragment_notificatons"
+        android:id="@+id/notificationFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.NotificationsFragment"
+        android:label="NotificationFragment"
+        tools:layout="@layout/fragment_notifications"
         />
 
 

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.NotificationsAdapter
 import com.jesse.ohunelo.data.model.Notification
-import com.jesse.ohunelo.databinding.FragmentNotificatonsBinding
+import com.jesse.ohunelo.databinding.FragmentNotificationsBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.NotificationExpandedItemDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.NotificationsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,10 +23,10 @@ import timber.log.Timber
 
 
 @AndroidEntryPoint
-class NotificatonsFragment : Fragment() {
+class NotificationsFragment : Fragment() {
 
-    private var _binding: FragmentNotificatonsBinding? = null
-    private val binding: FragmentNotificatonsBinding get() = _binding!!
+    private var _binding: FragmentNotificationsBinding? = null
+    private val binding: FragmentNotificationsBinding get() = _binding!!
 
     private val viewModel by viewModels<NotificationsViewModel>()
 
@@ -38,7 +38,7 @@ class NotificatonsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notificatons, container,
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notifications, container,
             false)
 
         _notificationsAdapter = NotificationsAdapter{

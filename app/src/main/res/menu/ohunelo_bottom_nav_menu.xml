@@ -12,7 +12,7 @@
         android:icon="@drawable/search_icon_selector"/>
 
     <item
-        android:id="@+id/notificatonFragment"
+        android:id="@+id/notificationFragment"
         android:title="@string/notifications"
         android:icon="@drawable/notification_icon_selector"/>
 
