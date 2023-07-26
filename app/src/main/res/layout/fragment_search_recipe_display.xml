@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.fragment.search.SearchRecipeDisplayFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/search_display_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_80dp"
+            app:liftOnScroll="true"
+            android:background="?attr/colorBackgroundCustom">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|enterAlways"
+                >
+
+                <ImageButton
+                    android:id="@+id/navigation_button"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorBackgroundCustom"
+                    android:contentDescription="@string/go_back_to_previous_screen"
+                    android:src="@drawable/arrow_back_icon"
+                    app:layout_constraintWidth_percent=".13"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/search_display_input_layout"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/search_display_input_layout"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="wrap_content"
+                    app:endIconMode="clear_text"
+                    app:endIconDrawable="@drawable/close_icon"
+                    app:boxBackgroundColor="?attr/colorOnSecondary"
+                    app:boxCornerRadiusBottomEnd="@dimen/_10dp"
+                    app:boxCornerRadiusBottomStart="@dimen/_10dp"
+                    app:boxCornerRadiusTopEnd="@dimen/_10dp"
+                    app:boxCornerRadiusTopStart="@dimen/_10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/navigation_button"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="@dimen/grid_2"
+                    app:boxStrokeWidth="@dimen/_0dp"
+                    app:boxStrokeWidthFocused="@dimen/_0dp"
+                    app:hintEnabled="false"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:theme="@style/ThemeOverlay.Ohunelo.TextInputEditText.Outlined"
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/search_display_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:hint="@string/search_recipe"
+
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/search_display_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/search_recipe_display_item"
+                    android:layout_marginHorizontal="@dimen/grid_2"
+                    />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/error_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    >
+
+                    <ImageView
+                        android:id="@+id/error_image"
+                        android:layout_width="@dimen/_0dp"
+                        android:layout_height="@dimen/_0dp"
+                        android:src="@drawable/error_icon"
+                        android:contentDescription="@string/error_image"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintWidth_percent=".5"
+                        app:layout_constraintHeight_percent=".2"
+                        app:layout_constraintVertical_bias=".15"
+                        app:tint="?attr/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/error_message_text"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="@+id/error_image"
+                        app:layout_constraintStart_toStartOf="@+id/error_image"
+                        app:layout_constraintTop_toBottomOf="@+id/error_image"
+                        tools:text="Network Error"
+                        android:layout_marginTop="@dimen/grid_1"
+                        />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/try_again_button"
+                        android:layout_width="@dimen/_0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/try_again"
+                        app:layout_constraintWidth_percent=".7"
+                        app:cornerRadius="@dimen/_20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/error_message_text"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/loading_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

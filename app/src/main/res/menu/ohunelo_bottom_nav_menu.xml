@@ -11,4 +11,9 @@
         android:title="@string/search"
         android:icon="@drawable/search_icon_selector"/>
 
+    <item
+        android:id="@+id/notificatonFragment"
+        android:title="@string/notifications"
+        android:icon="@drawable/notification_icon_selector"/>
+
 </menu>

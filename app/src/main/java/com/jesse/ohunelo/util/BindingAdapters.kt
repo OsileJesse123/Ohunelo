@@ -102,4 +102,17 @@ fun setViewVisibility(view: View, loadState: LoadState?){
     }
 }
 
+@BindingAdapter("app:indicatorVisibility")
+fun setIndicatorVisibility(view: ImageView, notificationHasBeenRead: Boolean?){
+    notificationHasBeenRead?.let {
+        notificationHasBeenRead ->
+        if (notificationHasBeenRead){
+            view.visibility = View.GONE
+        } else {
+            view.visibility = View.VISIBLE
+        }
+
+    }
+}
+
 

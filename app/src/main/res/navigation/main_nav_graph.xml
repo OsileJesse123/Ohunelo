@@ -134,6 +134,12 @@
             />
 
     </fragment>
+    <fragment
+        android:id="@+id/notificatonFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.NotificatonsFragment"
+        android:label="NotificatonFragment"
+        tools:layout="@layout/fragment_notificatons"
+        />
 
 
 </navigation>
