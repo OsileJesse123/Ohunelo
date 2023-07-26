@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="recipe"
+            type="com.jesse.ohunelo.data.model.Recipe" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/_0dp"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="@dimen/grid_1"
+            android:paddingStart="@dimen/grid_1"
+            android:paddingEnd="@dimen/grid_1"
+            >
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/recipe_image"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="90dp"
+                android:contentDescription="@string/recipe_image"
+                android:src="@drawable/pasta_image"
+                android:scaleType="centerCrop"
+                android:theme="@style/cubicImage"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintWidth_percent=".25"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/recipe_name"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/grid_2"
+                android:layout_marginTop="@dimen/grid_1"
+                style="?attr/textAppearanceHeadline5"
+                android:fontFamily="@font/montserrat_bold"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="@{recipe.title}"
+                app:layout_constraintWidth_percent=".5"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/recipe_image"
+                app:layout_constraintTop_toTopOf="@+id/recipe_image"
+                tools:text="Asian Chickpea Lettuce Wraps" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/recipe_source_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/account_icon_filled"
+                android:theme="@style/ShapeAppearanceOverlay.Ohunelo.ImageView.Circular"
+                android:tint="?attr/colorPrimary"
+                android:layout_marginStart="@dimen/grid_2"
+                android:layout_marginBottom="@dimen/grid_1"
+                app:layout_constraintBottom_toBottomOf="@+id/recipe_image"
+                app:layout_constraintStart_toEndOf="@+id/recipe_image" />
+
+            <TextView
+                android:id="@+id/recipe_source_name"
+                style="@style/TextAppearance.Ohunelo.Subtitle2"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/grid_0_5"
+                android:text="@{recipe.sourceName}"
+                app:layout_constraintBottom_toBottomOf="@+id/recipe_source_profile"
+                app:layout_constraintStart_toEndOf="@+id/recipe_source_profile"
+                app:layout_constraintTop_toTopOf="@+id/recipe_source_profile"
+                tools:text="Full Belly Sisters"
+                />
+
+            <ImageView
+                android:id="@+id/navigate_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/navigate_image_bg"
+                android:padding="5dp"
+                android:contentDescription="@string/navigate_to_recipe_details_screen"
+                android:src="@drawable/arrow_forward_icon"
+                app:tint="?attr/colorOnSecondary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

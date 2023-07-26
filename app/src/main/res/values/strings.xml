@@ -59,6 +59,15 @@
     <string name="search_recipe">Search Recipe...</string>
     <string name="go_back_to_previous_screen">Go back to previous screen</string>
     <string name="navigate_to_recipe_details_screen">navigate to recipe details screen</string>
+    <string name="notifications">Notifications</string>
+    <string name="notification_type_image">Notification type image</string>
+    <string name="food_joke">Food Joke</string>
+    <string name="food_trivia">Food Trivia</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="older">Older</string>
+    <string name="close_expanded_notification">Close Expanded Notification</string>
+    <string name="notification_type_icon">Notification Type icon</string>
 
 
     <plurals name="number_of_items_available">
