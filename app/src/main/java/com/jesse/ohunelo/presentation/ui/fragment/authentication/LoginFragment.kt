@@ -40,6 +40,10 @@ class LoginFragment : Fragment() {
         binding.forgotPasswordText.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToResetPasswordFragment())
         }
+
+        binding.registerText.setOnClickListener {
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+        }
     }
 
     override fun onDestroyView() {
