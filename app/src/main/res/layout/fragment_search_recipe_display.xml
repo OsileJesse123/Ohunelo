@@ -67,7 +67,7 @@
                         android:imeOptions="actionSearch"
                         android:inputType="text"
                         android:hint="@string/search_recipe"
-
+                        android:textAppearance="?attr/textAppearanceCaption"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>

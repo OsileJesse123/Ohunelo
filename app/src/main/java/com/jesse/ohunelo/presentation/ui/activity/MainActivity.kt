@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -37,18 +39,28 @@ class MainActivity : AppCompatActivity() {
             binding.ohuneloBottomNav.height.toFloat())
         animator.duration = 300
 
-        navController.addOnDestinationChangedListener{
-            _, destination, _ ->
-            when(destination.id){
+        // Add a ViewTreeObserver to get the height of the bottom navigation view when it becomes visible
+        binding.ohuneloBottomNav.viewTreeObserver.addOnGlobalLayoutListener {
+            addOnDestinationChangedListener(navController)
+        }
+
+    }
+
+    private fun addOnDestinationChangedListener(navController: NavController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
                 R.id.homeFragment -> {
                     showBottomNavigationView()
                 }
+
                 R.id.searchRecipeFragment -> {
                     showBottomNavigationView()
                 }
-                R.id.notificationFragment ->{
+
+                R.id.notificationFragment -> {
                     showBottomNavigationView()
                 }
+
                 else -> {
                     hideBottomNavigationView()
                 }
@@ -69,7 +81,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun hideBottomNavigationView(){
         val translationY = binding.ohuneloBottomNav.translationY
+        Timber.e("Hide Bottom")
         if(translationY == 0f){
+            Timber.e("Hide Bottom, i hid it")
             animateBottomNavigationView(
                 0f,
                 binding.ohuneloBottomNav.height.toFloat(),
@@ -79,6 +93,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun animateBottomNavigationView(from: Float, to: Float, hideBottomNavView: Boolean) {
+        Timber.e("Hide Bottom, Bottom Height $to")
         if (previousTranslationY != to) {
             animator.cancel()
             animator.setFloatValues(from, to)
@@ -91,8 +106,10 @@ class MainActivity : AppCompatActivity() {
                 override fun onAnimationEnd(animation: Animator?) {
                     if (hideBottomNavView){
                         binding.ohuneloBottomNav.visibility = View.GONE
+                        Timber.e("Hide Bottom, is gone")
                     } else {
                         binding.ohuneloBottomNav.visibility = View.VISIBLE
+                        Timber.e("Hide Bottom, did not hide")
                     }
                 }
 
