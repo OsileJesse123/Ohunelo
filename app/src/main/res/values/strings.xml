@@ -68,6 +68,21 @@
     <string name="older">Older</string>
     <string name="close_expanded_notification">Close Expanded Notification</string>
     <string name="notification_type_icon">Notification Type icon</string>
+    <string name="login">Login</string>
+    <string name="email_address">Email Address</string>
+    <string name="enter_email_address">Enter Email Address</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="or">Or</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="google_icon">Google icon</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="facebook_icon">Facebook Icon</string>
+    <string name="twitter_icon">Twitter Icon</string>
+    <string name="login_with_twitter">Login with Twitter</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
 
 
     <plurals name="number_of_items_available">

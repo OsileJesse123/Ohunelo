@@ -9,7 +9,7 @@
             name="recipe"
             type="com.jesse.ohunelo.data.model.Recipe" />
 
-        <!-- This used to set the margin of the individual view, this was done
+        <!-- This is used to set the margin of the individual view, this was done
             because of the fragments in the view pager. For a cleaner design and also for
             a more cleaner and maintainable way of setting the margin horizontal of the
             individual views.
