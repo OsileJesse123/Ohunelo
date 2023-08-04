@@ -29,8 +29,16 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setOnClickListeners()
+    }
+
+    private fun setOnClickListeners() {
         binding.loginButton.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+        }
+
+        binding.forgotPasswordText.setOnClickListener {
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToResetPasswordFragment())
         }
     }
 
