@@ -160,7 +160,23 @@
             app:popUpTo="@id/loginFragment"
             />
 
+        <action
+            android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.authentication.ResetPasswordFragment"
+        android:label="ResetPasswordFragment"
+        tools:layout="@layout/fragment_reset_password"
+        />
 
 
 </navigation>
