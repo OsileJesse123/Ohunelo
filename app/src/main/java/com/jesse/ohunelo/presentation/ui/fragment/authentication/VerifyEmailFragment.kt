@@ -8,21 +8,20 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.jesse.ohunelo.R
-import com.jesse.ohunelo.databinding.FragmentRegisterBinding
+import com.jesse.ohunelo.databinding.FragmentVerifyEmailBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class RegisterFragment : Fragment() {
+@AndroidEntryPoint
+class VerifyEmailFragment : Fragment() {
 
-    private var _binding: FragmentRegisterBinding? = null
-    private val binding: FragmentRegisterBinding get() = _binding!!
+    private var _binding: FragmentVerifyEmailBinding? = null
+    private val binding: FragmentVerifyEmailBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container,
-            false)
-
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_verify_email, container, false)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -30,15 +29,11 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setOnClickListeners()
+        setupOnClickListeners()
     }
 
-    private fun setOnClickListeners(){
-        binding.continueButton.setOnClickListener {
-            findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToVerifyEmailFragment())
-        }
-
-        binding.loginText.setOnClickListener {
+    private fun setupOnClickListeners(){
+        binding.verifyEmailToolBar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
     }

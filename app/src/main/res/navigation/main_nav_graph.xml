@@ -186,11 +186,30 @@
         android:label="ResetPasswordFragment"
         tools:layout="@layout/fragment_reset_password"
         />
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.jesse.ohunelo.presentation.ui.fragment.authentication.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register"
+        >
+
+        <action
+            android:id="@+id/action_registerFragment_to_verifyEmailFragment"
+            app:destination="@id/verifyEmailFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/verifyEmailFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.authentication.VerifyEmailFragment"
+        android:label="VerifyEmailFragment"
+        tools:layout="@layout/fragment_verify_email"
         />
 
 
