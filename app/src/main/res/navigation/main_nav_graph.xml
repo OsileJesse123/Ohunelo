@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@+id/loginFragment">
+    app:startDestination="@+id/onboardingFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -211,6 +211,26 @@
         android:label="VerifyEmailFragment"
         tools:layout="@layout/fragment_verify_email"
         />
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.authentication.OnboardingFragment"
+        android:label="OnboardingFragment"
+        tools:layout="@layout/fragment_onboarding"
+        >
+
+        <action
+            android:id="@+id/action_onboardingFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/onboardingFragment"
+            />
+
+    </fragment>
 
 
 </navigation>
