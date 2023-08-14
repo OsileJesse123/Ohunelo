@@ -101,6 +101,13 @@
     <string name="verify_your_email_instruction_1">We have just sent an email verification link to your email. Please check your email and click on the link to verify your email address.</string>
     <string name="verify_your_email_instruction_2">If not auto redirected after verification, click on the continue button below.</string>
     <string name="resend_e_mail_link">Resend E-mail link</string>
+    <string name="start_cooking">Start Cooking</string>
+    <string name="content_title_1">Begin Your Culinary Adventure</string>
+    <string name="content_title_2">Discover some of the best recipes you needed</string>
+    <string name="content_title_3">Cooking Simplified</string>
+    <string name="content_description_1">Embark on a journey of flavors and create memorable meals that will impress</string>
+    <string name="content_description_2">5000+ healthy recipes made by people for your healthy life</string>
+    <string name="content_description_3">Follow easy step-by-step guides to create amazing meals effortlessly</string>
 
 
     <plurals name="number_of_items_available">

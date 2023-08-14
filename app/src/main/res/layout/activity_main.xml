@@ -27,6 +27,7 @@
             app:menu="@menu/ohunelo_bottom_nav_menu"
             app:labelVisibilityMode="unlabeled"
             android:layout_gravity="bottom"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
