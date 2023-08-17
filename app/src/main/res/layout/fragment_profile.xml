@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.fragment.ProfileFragment">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/profile_tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIconTint="?attr/colorSecondaryVariant"
+            app:titleTextColor="?attr/colorSecondaryVariant"
+            app:titleTextAppearance="?attr/textAppearanceHeadline2"
+            android:background="?attr/colorBackgroundCustom"
+            app:titleCentered="true"
+            app:title="@string/profile"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/user_initial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="1dp"
+            style="?attr/textAppearanceHeadline2"
+            android:textColor="?attr/colorOnPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image_layout"
+            app:layout_constraintEnd_toEndOf="@+id/profile_image_layout"
+            app:layout_constraintStart_toStartOf="@+id/profile_image_layout"
+            app:layout_constraintTop_toTopOf="@+id/profile_image_layout"
+            tools:text="H"
+            android:text="H" />
+
+        <RelativeLayout
+            android:id="@+id/profile_image_layout"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="@dimen/grid_2"
+            android:layout_marginTop="@dimen/grid_3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_tool_bar">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profile_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/colorPrimary"
+                android:theme="@style/ShapeAppearanceOverlay.Ohunelo.ImageView.Circular"
+                />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/edit_profile_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:cardElevation="@dimen/_0dp"
+                app:cardBackgroundColor="@color/grey"
+                app:strokeColor="?attr/colorOnPrimary"
+                app:strokeWidth="2dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true">
+
+                <ImageView
+                    android:id="@+id/edit_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/edit_icon"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/edit_profile_icon" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/user_name"
+            style="?attr/textAppearanceHeadline2"
+            android:layout_marginBottom="@dimen/grid_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/grid_1"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image_layout"
+            app:layout_constraintStart_toEndOf="@+id/profile_image_layout"
+            app:layout_constraintTop_toTopOf="@+id/profile_image_layout"
+            tools:text="Harrison Harold"
+            android:text="Harrison Harold" />
+
+        <TextView
+            android:id="@+id/user_email"
+            style="?attr/textAppearanceSubtitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/grid_1"
+            app:layout_constraintStart_toEndOf="@+id/profile_image_layout"
+            app:layout_constraintTop_toBottomOf="@+id/user_name"
+            tools:text="haroldharrison@yahoo.com"
+            android:text="haroldharrison@yahoo.com" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"
+            android:layout_marginTop="@dimen/grid_4"
+            app:layout_constraintTop_toBottomOf="@+id/profile_image_layout"
+            />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/log_out_card"
+            style="@style/Widget.App.ProfileOptionsCardView"
+            android:layout_width="@dimen/_0dp"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="?attr/colorBackgroundCustom"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/grey"
+            android:layout_marginTop="@dimen/grid_4"
+            android:layout_marginHorizontal="@dimen/grid_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/grid_2"
+                android:paddingVertical="@dimen/grid_1"
+                android:clipToPadding="false"
+                >
+
+                <ImageView
+                    android:id="@+id/log_out_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/logout_icon"
+                    android:src="@drawable/logout_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/red_600" />
+
+                <TextView
+                    android:id="@+id/log_out_text"
+                    style="?attr/textAppearanceBody1"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/log_out"
+                    android:textColor="@color/red_600"
+                    android:layout_marginStart="@dimen/grid_1"
+                    app:layout_constraintTop_toTopOf="@+id/log_out_image"
+                    app:layout_constraintBottom_toBottomOf="@id/log_out_image"
+                    app:layout_constraintStart_toEndOf="@+id/log_out_image" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

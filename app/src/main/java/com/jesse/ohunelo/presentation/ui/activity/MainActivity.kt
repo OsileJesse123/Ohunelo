@@ -61,6 +61,9 @@ class MainActivity : AppCompatActivity() {
                     showBottomNavigationView()
                 }
 
+                R.id.profileFragment -> {
+                    showBottomNavigationView()
+                }
                 else -> {
                     hideBottomNavigationView()
                 }

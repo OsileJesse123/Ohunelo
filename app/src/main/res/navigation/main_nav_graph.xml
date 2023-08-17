@@ -232,5 +232,11 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile"
+        />
 
 </navigation>
