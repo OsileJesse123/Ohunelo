@@ -108,6 +108,10 @@
     <string name="content_description_1">Embark on a journey of flavors and create memorable meals that will impress</string>
     <string name="content_description_2">5000+ healthy recipes made by people for your healthy life</string>
     <string name="content_description_3">Follow easy step-by-step guides to create amazing meals effortlessly</string>
+    <string name="profile">Profile</string>
+    <string name="log_out">Log Out</string>
+    <string name="logout_icon">Logout icon</string>
+    <string name="edit_profile_icon">edit profile icon</string>
 
 
     <plurals name="number_of_items_available">

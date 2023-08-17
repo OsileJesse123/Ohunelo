@@ -30,4 +30,9 @@
         <item name="colorPrimary">?attr/colorSecondaryVariant</item>
     </style>
 
+    <!-- Profile Options Card View Style-->
+    <style name="Widget.App.ProfileOptionsCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="shapeAppearance">@style/ShapeAppearanceOverlay.Ohunelo.ProfileOptionsCardView</item>
+    </style>
+
 </resources>
