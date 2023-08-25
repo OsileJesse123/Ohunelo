@@ -49,8 +49,6 @@ class LoginFragment : Fragment() {
 
         setOnClickListeners()
 
-        setOnTextChangedListeners()
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loginUiStateFlow.collect{
@@ -77,6 +75,10 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        setOnTextChangedListeners()
+    }
     private fun setOnClickListeners() {
         binding.loginButton.setOnClickListener {
             viewModel.login()
