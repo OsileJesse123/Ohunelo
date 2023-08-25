@@ -12,6 +12,7 @@ import androidx.databinding.BindingAdapter
 import androidx.paging.LoadState
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
+import com.google.android.material.textfield.TextInputLayout
 import com.jesse.ohunelo.presentation.ui.fragment.OnRecipeCategorySelectedListener
 
 @BindingAdapter("app:uiText")
@@ -113,6 +114,11 @@ fun setIndicatorVisibility(view: ImageView, notificationHasBeenRead: Boolean?){
         }
 
     }
+}
+
+@BindingAdapter("app:errorMessageText")
+fun setErrorMessageText(view: TextInputLayout, errorMessage: UiText?){
+    view.error = errorMessage?.asString(view.context)
 }
 
 
