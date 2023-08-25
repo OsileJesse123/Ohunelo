@@ -2,6 +2,8 @@ package com.jesse.ohunelo.di
 
 import com.jesse.ohunelo.data.repository.RecipeRepository
 import com.jesse.ohunelo.data.repository.RecipeRepositoryImpl
+import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
+import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +29,12 @@ object AppModule {
     @DefaultDispatcher
     @Provides
     fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
+
+    @Provides
+    fun provideValidateEmailUseCase(): ValidateEmailUseCase = ValidateEmailUseCase()
+
+    @Provides
+    fun provideValidatePasswordUseCase(): ValidatePasswordUseCase = ValidatePasswordUseCase()
 }
 
 

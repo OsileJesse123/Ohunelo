@@ -112,6 +112,9 @@
     <string name="log_out">Log Out</string>
     <string name="logout_icon">Logout icon</string>
     <string name="edit_profile_icon">edit profile icon</string>
+    <string name="this_field_cannot_be_blank">This field cannot be blank</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="password_must_contain">Password must contain at least 1 digit, symbol and be at least 8 characters long</string>
 
 
     <plurals name="number_of_items_available">

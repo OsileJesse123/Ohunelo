@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.jesse.ohunelo.presentation.viewmodels.LoginViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -65,6 +71,7 @@
                     app:hintEnabled="false"
                     app:errorEnabled="true"
                     android:textColorHint="@color/orange_100"
+                    app:errorMessageText="@{viewModel.loginUiStateFlow.emailError}"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     >
 
@@ -112,6 +119,7 @@
                     app:hintEnabled="false"
                     app:errorEnabled="true"
                     android:textColorHint="@color/orange_100"
+                    app:errorMessageText="@{viewModel.loginUiStateFlow.passwordError}"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     >
 
