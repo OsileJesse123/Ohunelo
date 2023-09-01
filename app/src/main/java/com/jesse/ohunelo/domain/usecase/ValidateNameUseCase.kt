@@ -4,7 +4,7 @@ import com.jesse.ohunelo.R
 import com.jesse.ohunelo.util.UiText
 import javax.inject.Inject
 
-class ValidateUsernameUseCase @Inject constructor(){
+class ValidateNameUseCase @Inject constructor(){
 
     operator fun invoke(username: String): ValidationResult{
         if (username.isBlank()){
@@ -16,7 +16,7 @@ class ValidateUsernameUseCase @Inject constructor(){
         if (!isUsernamePatternValid(username)){
             return ValidationResult(
                 successful = false,
-                errorMessage = UiText.StringResource(R.string.this_field_cannot_be_blank)
+                errorMessage = UiText.StringResource(R.string.name_should)
             )
         }
         return ValidationResult(successful = true)
@@ -24,14 +24,13 @@ class ValidateUsernameUseCase @Inject constructor(){
 
     private fun isUsernamePatternValid(username: String): Boolean {
         /*
-        * The regular expression pattern ^(?=\\S{8,16}$)(?!.*\\s{2,}).*\\S$ checks for the following conditions:
-        ^: Start of the string.
-        (?=\\S{8,16}$): Positive lookahead assertion to ensure the string has 8 to 16 non-whitespace characters.
-        (?!.*\\s{2,}): Negative lookahead assertion to prevent more than one consecutive blank space.
-        .*\\S: Match any character (except whitespace) at least once.
-        $: End of the string.
+        * ^ and $: These symbols indicate the start and end of the string, respectively, ensuring that the regex matches the entire string.
+          [a-zA-Z]: This part allows only letters, both uppercase and lowercase. No numbers or symbols are allowed.
+          {1,8}: This specifies that the username should be between 1 and 8 characters long.
+          So, this regex pattern enforces your criteria for a username: it's no longer than 8
+          characters, doesn't allow blank spaces, and only allows letters (no numbers or symbols).
         * */
-        val regexPattern = Regex("^(?=\\S{8,16}$)(?!.*\\s{2,}).*\\S$")
+        val regexPattern = Regex("^[a-zA-Z]{1,8}\$")
         return regexPattern.matches(username)
     }
 }
