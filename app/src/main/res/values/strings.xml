@@ -115,6 +115,9 @@
     <string name="this_field_cannot_be_blank">This field cannot be blank</string>
     <string name="invalid_email">Invalid email</string>
     <string name="password_must_contain">Password must contain at least 1 digit, symbol and be at least 8 characters long</string>
+    <string name="name_should">Name should be at most 8 characters long, no whitespaces, numbers and symbols are allowed</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
 
 
     <plurals name="number_of_items_available">
