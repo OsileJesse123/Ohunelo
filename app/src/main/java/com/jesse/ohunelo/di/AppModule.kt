@@ -4,6 +4,8 @@ import com.jesse.ohunelo.data.repository.RecipeRepository
 import com.jesse.ohunelo.data.repository.RecipeRepositoryImpl
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
+import com.jesse.ohunelo.util.EmailMatcher
+import com.jesse.ohunelo.util.EmailMatcherImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +24,10 @@ object AppModule {
     fun providesRecipeRepository(recipeRepositoryImpl: RecipeRepositoryImpl): RecipeRepository =
         recipeRepositoryImpl
 
+    @Provides
+    @Singleton
+    fun providesEmailMatcher(emailMatcherImpl: EmailMatcherImpl): EmailMatcher = emailMatcherImpl
+
     @IODispatcher
     @Provides
     fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
@@ -31,7 +37,8 @@ object AppModule {
     fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Provides
-    fun provideValidateEmailUseCase(): ValidateEmailUseCase = ValidateEmailUseCase()
+    fun provideValidateEmailUseCase(emailMatcher: EmailMatcher):
+            ValidateEmailUseCase = ValidateEmailUseCase(emailMatcher)
 
     @Provides
     fun provideValidatePasswordUseCase(): ValidatePasswordUseCase = ValidatePasswordUseCase()

@@ -6,14 +6,14 @@ import javax.inject.Inject
 
 class ValidatePasswordUseCase @Inject constructor(){
 
-    operator fun invoke(password: String): ValidationResult{
+    operator fun invoke(password: String, shouldValidatePasswordPattern: Boolean): ValidationResult{
         if (password.isBlank()){
             return ValidationResult(
                 successful = false,
                 errorMessage = UiText.StringResource(R.string.this_field_cannot_be_blank)
             )
         }
-        if(!isPasswordPatterValid(password)){
+        if(!isPasswordPatterValid(password) && shouldValidatePasswordPattern){
             return ValidationResult(
                 successful = false,
                 errorMessage = UiText.StringResource(R.string.password_must_contain)
