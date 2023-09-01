@@ -119,6 +119,7 @@
                     app:hintEnabled="false"
                     app:errorEnabled="true"
                     android:textColorHint="@color/orange_100"
+                    app:errorIconDrawable="@null"
                     app:errorMessageText="@{viewModel.loginUiStateFlow.passwordError}"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     >
