@@ -5,6 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -23,8 +24,8 @@ android {
     buildTypes {
 
         debug{
-            applicationIdSuffix '.debug'
-            versionNameSuffix '-debug'
+            /*applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'*/
             minifyEnabled false
         }
 
@@ -98,4 +99,13 @@ dependencies {
 
     // Paging
     implementation "androidx.paging:paging-runtime:$paging_version"
+
+    // Firebase BOM
+    implementation platform('com.google.firebase:firebase-bom:32.2.3')
+
+    // Firebase Analytics
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth-ktx")
 }

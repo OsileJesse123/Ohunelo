@@ -2,6 +2,8 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.domain.usecase.ValidateNameUseCase
@@ -14,13 +16,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val validateEmailUseCase: ValidateEmailUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
-    private val validateNameUseCase: ValidateNameUseCase
+    private val validateNameUseCase: ValidateNameUseCase,
+    private val authenticationRepository: AuthenticationRepository
 ): ViewModel() {
 
     private val _registerUiStateFlow: MutableStateFlow<RegisterUiState> =
@@ -97,13 +102,69 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun register(){
-        if(_registerUiStateFlow.value.isFormValid()){
-            _registerUiStateFlow.update {
+        viewModelScope.launch {
+            if(_registerUiStateFlow.value.isFormValid()){
+                _registerUiStateFlow.update {
                     registerUiState ->
-                registerUiState.copy(
-                    navigateToNextScreen = true
-                )
+                    registerUiState.copy(
+                        isEnabled = false
+                        )
+                }
+                val registerResult = authenticationRepository.registerUserWithEmailAndPassword(
+                    firstName = _registerUiStateFlow.value.firstName.replaceFirstChar {
+                        // This converts the first letter to capital letter
+                        if (it.isLowerCase()) {
+                            it.titlecase(
+                                Locale.getDefault()
+                            )
+                        } else {
+                            it.toString()
+                        }
+                    },
+                    lastName = _registerUiStateFlow.value.lastName.replaceFirstChar {
+                        // This converts the first letter to capital letter
+                        if (it.isLowerCase()) {
+                            it.titlecase(
+                                Locale.getDefault()
+                            )
+                        } else {
+                            it.toString()
+                        }
+                    },
+                    email = _registerUiStateFlow.value.email,
+                    password = _registerUiStateFlow.value.password)
+
+                when(registerResult){
+                    is OhuneloResult.Success -> {
+                        Timber.e("ViewModel Registration Successful, user: (${registerResult.data})")
+                        _registerUiStateFlow.update {
+                                registerUiState ->
+                            registerUiState.copy(
+                                navigateToNextScreen = true,
+                                isEnabled = true
+                            )
+                        }
+                    }
+                    is OhuneloResult.Error -> {
+                        _registerUiStateFlow.update {
+                                registerUiState ->
+                            registerUiState.copy(
+                                showErrorMessage = Pair(true, registerResult.errorMessage),
+                                isEnabled = true
+                            )
+                        }
+                    }
+                }
             }
+        }
+    }
+
+    fun onErrorMessageShown(){
+        _registerUiStateFlow.update {
+                registerUiState ->
+            registerUiState.copy(
+                showErrorMessage = Pair(false, null)
+            )
         }
     }
 
@@ -111,7 +172,7 @@ class RegisterViewModel @Inject constructor(
         _registerUiStateFlow.update {
                 registerUiState ->
             registerUiState.copy(
-                navigateToNextScreen = false
+                navigateToNextScreen = false,
             )
         }
     }

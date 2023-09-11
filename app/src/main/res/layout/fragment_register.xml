@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -11,7 +11,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+
+            >
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/register_tool_bar"
@@ -73,6 +75,7 @@
                         app:errorMessageText="@{viewModel.registerUiStateFlow.firstNameError}"
                         android:textColorHint="@color/orange_100"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -118,6 +121,7 @@
                         app:errorMessageText="@{viewModel.registerUiStateFlow.lastNameError}"
                         android:textColorHint="@color/orange_100"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -163,6 +167,7 @@
                         app:errorMessageText="@{viewModel.registerUiStateFlow.emailError}"
                         android:textColorHint="@color/orange_100"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -212,6 +217,7 @@
                         app:errorMessageText="@{viewModel.registerUiStateFlow.passwordError}"
                         android:textColorHint="@color/orange_100"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -232,11 +238,13 @@
                         android:layout_height="@dimen/grid_8"
                         android:backgroundTint="?attr/colorSecondary"
                         android:text="@string/continue_text"
+                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         android:layout_marginTop="@dimen/grid_4"
                         app:cornerRadius="@dimen/_15dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/enter_password_input_layout" />
+                        app:layout_constraintTop_toBottomOf="@+id/enter_password_input_layout"
+                        />
 
                     <TextView
                         android:id="@+id/or_text"
@@ -256,6 +264,7 @@
                         android:layout_marginTop="@dimen/grid_4"
                         app:cardCornerRadius="@dimen/_15dp"
                         app:cardElevation="@dimen/_10dp"
+                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/or_text">
@@ -298,6 +307,7 @@
                         android:layout_marginTop="@dimen/grid_2"
                         app:cardCornerRadius="@dimen/_15dp"
                         app:cardElevation="@dimen/_10dp"
+                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         app:cardBackgroundColor="@color/facebook_blue"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -341,6 +351,7 @@
                         app:cardCornerRadius="@dimen/_15dp"
                         app:cardElevation="@dimen/_10dp"
                         app:cardBackgroundColor="@color/twitter_blue"
+                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         app:layout_constraintVertical_bias="0"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -403,6 +414,7 @@
                             android:layout_marginStart="@dimen/grid_0_5"
                             style="?attr/textAppearanceHeadline5"
                             android:textColor="?attr/colorPrimary"
+                            android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                             />
 
                     </LinearLayout>
@@ -411,7 +423,26 @@
 
             </androidx.core.widget.NestedScrollView>
 
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>
+
+<!--
+
+<FrameLayout
+                android:id="@+id/overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#66000000"
+                app:layoutVisibility="@{viewModel.registerUiStateFlow.enabled}"
+                >
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="?attr/colorOnSecondary"/>
+            </FrameLayout>
+-->

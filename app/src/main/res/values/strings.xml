@@ -118,7 +118,10 @@
     <string name="name_should">Name should be at most 8 characters long, no whitespaces, numbers and symbols are allowed</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
-
+    <string name="user_registered_but_user_null">User registration successful, but no user was created</string>
+    <string name="registration_failed">Registration failed</string>
+    <string name="email_already_in_use">The email address is already in use by another account.</string>
+    <string name="internal_error_occured">An internal error has occurred</string>
 
     <plurals name="number_of_items_available">
         <item quantity="one">%d item</item>
