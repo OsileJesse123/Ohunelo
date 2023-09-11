@@ -1,5 +1,9 @@
 package com.jesse.ohunelo.di
 
+import com.jesse.ohunelo.data.network.AuthenticationService
+import com.jesse.ohunelo.data.network.FirebaseAuthenticationService
+import com.jesse.ohunelo.data.repository.AuthenticationRepository
+import com.jesse.ohunelo.data.repository.AuthenticationRepositoryImpl
 import com.jesse.ohunelo.data.repository.RecipeRepository
 import com.jesse.ohunelo.data.repository.RecipeRepositoryImpl
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
@@ -26,6 +30,11 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideAuthenticationRepository(authenticationRepositoryImpl: AuthenticationRepositoryImpl):
+            AuthenticationRepository = authenticationRepositoryImpl
+
+    @Provides
+    @Singleton
     fun providesEmailMatcher(emailMatcherImpl: EmailMatcherImpl): EmailMatcher = emailMatcherImpl
 
     @IODispatcher
@@ -42,6 +51,10 @@ object AppModule {
 
     @Provides
     fun provideValidatePasswordUseCase(): ValidatePasswordUseCase = ValidatePasswordUseCase()
+
+    @Provides
+    @Singleton
+    fun provideAuthenticationService(authenticationService: FirebaseAuthenticationService): AuthenticationService = authenticationService
 }
 
 
