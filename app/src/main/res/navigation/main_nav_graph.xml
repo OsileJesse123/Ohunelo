@@ -210,7 +210,18 @@
         android:name="com.jesse.ohunelo.presentation.ui.fragment.authentication.VerifyEmailFragment"
         android:label="VerifyEmailFragment"
         tools:layout="@layout/fragment_verify_email"
-        />
+        >
+
+        <action
+            android:id="@+id/action_verifyEmailFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+
+    </fragment>
 
     <fragment
         android:id="@+id/onboardingFragment"

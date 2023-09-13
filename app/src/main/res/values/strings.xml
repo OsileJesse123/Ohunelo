@@ -121,7 +121,9 @@
     <string name="user_registered_but_user_null">User registration successful, but no user was created</string>
     <string name="registration_failed">Registration failed</string>
     <string name="email_already_in_use">The email address is already in use by another account.</string>
-    <string name="internal_error_occured">An internal error has occurred</string>
+    <string name="send_email_link_failed">Send Email verification link failed</string>
+    <string name="too_many_requests">Requests from this device have been blocked due to unusual activity. Try again later.</string>
+    <string name="network_error_occured">A network error has occurred.</string>
 
     <plurals name="number_of_items_available">
         <item quantity="one">%d item</item>

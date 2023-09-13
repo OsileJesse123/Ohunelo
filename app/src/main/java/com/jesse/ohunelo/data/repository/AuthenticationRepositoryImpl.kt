@@ -25,4 +25,16 @@ class AuthenticationRepositoryImpl @Inject constructor(
                 email = email, password = password)
         }
     }
+
+    override suspend fun verifyUserEmail(): OhuneloResult<Boolean> {
+        return withContext(ioDispatcher){
+            authenticationService.verifyUserEmail()
+        }
+    }
+
+    override suspend fun hasTheUserBeenVerified(): Boolean {
+        return withContext(ioDispatcher){
+            authenticationService.hasTheUserBeenVerified()
+        }
+    }
 }
