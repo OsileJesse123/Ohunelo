@@ -111,7 +111,9 @@ class RegisterViewModel @Inject constructor(
                         )
                 }
                 val registerResult = authenticationRepository.registerUserWithEmailAndPassword(
-                    firstName = _registerUiStateFlow.value.firstName.replaceFirstChar {
+                    // Ensure that first and last name have first letter as capital letter and remaining letters
+                    // as small letters
+                    firstName = _registerUiStateFlow.value.firstName.lowercase(Locale.ROOT).replaceFirstChar {
                         // This converts the first letter to capital letter
                         if (it.isLowerCase()) {
                             it.titlecase(
@@ -121,7 +123,7 @@ class RegisterViewModel @Inject constructor(
                             it.toString()
                         }
                     },
-                    lastName = _registerUiStateFlow.value.lastName.replaceFirstChar {
+                    lastName = _registerUiStateFlow.value.lastName.lowercase(Locale.ROOT).replaceFirstChar {
                         // This converts the first letter to capital letter
                         if (it.isLowerCase()) {
                             it.titlecase(

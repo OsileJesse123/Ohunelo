@@ -19,6 +19,7 @@ import com.jesse.ohunelo.databinding.FragmentRegisterBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
 import com.jesse.ohunelo.presentation.uistates.RegisterUiState
 import com.jesse.ohunelo.presentation.viewmodels.RegisterViewModel
+import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -66,7 +67,7 @@ class RegisterFragment : Fragment() {
                         viewModel.onNavigationToNextScreen()
                     }
                     if (registerUiState.showErrorMessage.first){
-                        showErrorMessage(registerUiState)
+                        showErrorMessage(registerUiState.showErrorMessage.second)
                     }
                     // If all other views are not enabled, then the loader should be shown
                     if (!registerUiState.isEnabled){
@@ -74,7 +75,6 @@ class RegisterFragment : Fragment() {
                     }
                     // If all other views are enabled, then the loader should be hidden
                     else{
-
                         hideLoader()
                     }
                 }
@@ -82,10 +82,10 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun showErrorMessage(registerUiState: RegisterUiState) {
+    private fun showErrorMessage(errorMessage: UiText?) {
         Toast.makeText(
             requireContext(),
-            registerUiState.showErrorMessage.second?.asString(requireContext()),
+            errorMessage?.asString(requireContext()),
             Toast.LENGTH_LONG
         ).show()
         viewModel.onErrorMessageShown()
