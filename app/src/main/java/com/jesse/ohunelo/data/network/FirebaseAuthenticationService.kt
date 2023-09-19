@@ -21,6 +21,7 @@ class FirebaseAuthenticationService @Inject constructor(): AuthenticationService
 
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     override suspend fun getUser(): AuthUser? {
+        firebaseAuth.sendPasswordResetEmail("")
         return firebaseAuth.currentUser?.let {
             firebaseUser ->
             AuthUser(
@@ -141,6 +142,23 @@ class FirebaseAuthenticationService @Inject constructor(): AuthenticationService
         } catch (e: Exception){
             Timber.e("Has user been verified failed, Exception: $e")
             false
+        }
+    }
+
+    override suspend fun sendPasswordResetEmail(email: String): OhuneloResult<UiText> {
+        return try {
+            firebaseAuth.sendPasswordResetEmail(email).await()
+            OhuneloResult.Success(UiText.StringResource(R.string.reset_password_email))
+        }
+        catch (e: FirebaseAuthInvalidUserException){
+            OhuneloResult.Error(UiText.StringResource(R.string.no_user_record_corresponding))
+        }
+        catch (e: FirebaseNetworkException){
+            OhuneloResult.Error(UiText.StringResource(R.string.network_error_occured))
+        }
+        catch (e: Exception){
+            Timber.e("Has user been verified failed, Exception: $e")
+            OhuneloResult.Error(UiText.StringResource(R.string.reset_password_email_failed))
         }
     }
 

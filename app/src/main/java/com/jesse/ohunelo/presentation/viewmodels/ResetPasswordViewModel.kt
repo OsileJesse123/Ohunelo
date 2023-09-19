@@ -2,6 +2,8 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.presentation.uistates.ResetPasswordUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ResetPasswordViewModel @Inject constructor(
     private val validateEmailUseCase: ValidateEmailUseCase,
+    private val authenticationRepository: AuthenticationRepository
 ): ViewModel() {
 
     private val _resetPasswordUiStateFlow: MutableStateFlow<ResetPasswordUiState> = MutableStateFlow(ResetPasswordUiState())
@@ -38,13 +41,47 @@ class ResetPasswordViewModel @Inject constructor(
         }
     }
 
-    fun submit(){
-        if(_resetPasswordUiStateFlow.value.isFormValid()){
-            _resetPasswordUiStateFlow.update {
+    fun onMessageShown(){
+        _resetPasswordUiStateFlow.update {
                 resetPasswordUiState ->
-                resetPasswordUiState.copy(
-                    showConfirmationMessage = true
-                )
+            resetPasswordUiState.copy(
+                showConfirmationMessage = Pair(false, null),
+                showErrorMessage = Pair(false, null)
+            )
+        }
+    }
+
+    fun submit(){
+        viewModelScope.launch {
+            if(_resetPasswordUiStateFlow.value.isFormValid()){
+                _resetPasswordUiStateFlow.update {
+                        resetPasswordUiState ->
+                    resetPasswordUiState.copy(
+                        isEnabled = false
+                    )
+                }
+                val result = authenticationRepository.sendPasswordResetEmail(email =
+                _resetPasswordUiStateFlow.value.email)
+                when(result){
+                    is OhuneloResult.Success -> {
+                        _resetPasswordUiStateFlow.update {
+                                resetPasswordUiState ->
+                            resetPasswordUiState.copy(
+                                isEnabled = true,
+                                showConfirmationMessage = Pair(true, result.data)
+                            )
+                        }
+                    }
+                    is OhuneloResult.Error -> {
+                        _resetPasswordUiStateFlow.update {
+                                resetPasswordUiState ->
+                            resetPasswordUiState.copy(
+                                isEnabled = true,
+                                showConfirmationMessage = Pair(true, result.errorMessage)
+                            )
+                        }
+                    }
+                }
             }
         }
     }
