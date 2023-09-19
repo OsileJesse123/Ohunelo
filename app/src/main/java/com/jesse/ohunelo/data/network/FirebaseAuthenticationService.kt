@@ -4,6 +4,8 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -18,6 +20,17 @@ import javax.inject.Inject
 class FirebaseAuthenticationService @Inject constructor(): AuthenticationService {
 
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    override suspend fun getUser(): AuthUser? {
+        return firebaseAuth.currentUser?.let {
+            firebaseUser ->
+            AuthUser(
+                id = firebaseUser.uid,
+                isEmailVerified =  firebaseUser.isEmailVerified,
+                email = firebaseUser.email,
+                userName = firebaseUser.displayName
+            )
+        }
+    }
 
     override suspend fun registerUserWithEmailAndPassword(firstName: String, lastName: String, email: String, password: String): OhuneloResult<AuthUser> {
         return try {
@@ -49,6 +62,46 @@ class FirebaseAuthenticationService @Inject constructor(): AuthenticationService
             Timber.e("Registration Failed, Exception: $e")
             OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.registration_failed))
         }
+    }
+
+    override suspend fun loginUserWithEmailAndPassword(
+        email: String,
+        password: String
+    ): OhuneloResult<AuthUser> {
+        return try{
+            val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            val user = result.user
+
+            if (user != null){
+                // If login task is successful and user is not null
+                OhuneloResult.Success(AuthUser(
+                    id = user.uid,
+                    isEmailVerified =  user.isEmailVerified,
+                    email = user.email,
+                    userName = user.displayName
+                ))
+            } else {
+                // If login task is successful and user is null
+                OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
+            }
+        }
+        catch (e: FirebaseAuthInvalidCredentialsException){
+            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.invalid_credentials))
+        }
+        catch (e: FirebaseAuthInvalidUserException){
+            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.invalid_user))
+        }
+        catch (e: FirebaseNetworkException){
+            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.network_error_occured))
+        }
+        catch (e: Exception){
+            Timber.e("Login Failed, Exception: $e")
+            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.login_failed))
+        }
+    }
+
+    override suspend fun logout() {
+        firebaseAuth.signOut()
     }
 
     override suspend fun verifyUserEmail(): OhuneloResult<Boolean> {

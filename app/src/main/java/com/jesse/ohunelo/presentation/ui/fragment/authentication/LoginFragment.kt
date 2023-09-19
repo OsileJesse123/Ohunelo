@@ -5,6 +5,7 @@ import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,7 +16,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.FragmentLoginBinding
+import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.LoginViewModel
+import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -26,6 +29,8 @@ class LoginFragment : Fragment() {
     private val binding: FragmentLoginBinding get() = _binding!!
 
     private val viewModel by viewModels<LoginViewModel>()
+
+    private var loader: LoaderDialogFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +52,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loader = LoaderDialogFragment()
+
         setOnClickListeners()
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -56,8 +63,47 @@ class LoginFragment : Fragment() {
                     if (loginUiState.navigateToNextScreen){
                         findNavController()
                             .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+                        viewModel.onNavigationToNextScreen()
+                    }
+                    if (loginUiState.showErrorMessage.first){
+                        showErrorMessage(loginUiState.showErrorMessage.second)
+                    }
+                    // If all other views are not enabled, then the loader should be shown
+                    if (!loginUiState.isEnabled){
+                        showLoader()
+                    }
+                    // If all other views are enabled, then the loader should be hidden
+                    else{
+                        hideLoader()
                     }
                 }
+            }
+        }
+    }
+
+    private fun showErrorMessage(errorMessage: UiText?) {
+        Toast.makeText(
+            requireContext(),
+            errorMessage?.asString(requireContext()),
+            Toast.LENGTH_LONG
+        ).show()
+        viewModel.onErrorMessageShown()
+    }
+
+    private fun showLoader(){
+        loader?.let {
+            loader ->
+            if(!loader.isAdded){
+                loader.show(childFragmentManager, LoaderDialogFragment.TAG)
+            }
+        }
+    }
+
+    private fun hideLoader(){
+        loader?.let {
+                loader ->
+            if(loader.isAdded){
+                loader.dismiss()
             }
         }
     }

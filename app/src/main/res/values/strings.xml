@@ -119,11 +119,18 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="user_registered_but_user_null">User registration successful, but no user was created</string>
+    <string name="user_logged_in_but_user_null">Login failed, user not found</string>
     <string name="registration_failed">Registration failed</string>
+    <string name="login_failed">Login failed</string>
     <string name="email_already_in_use">The email address is already in use by another account.</string>
     <string name="send_email_link_failed">Send Email verification link failed</string>
-    <string name="too_many_requests">Requests from this device have been blocked due to unusual activity. Try again later.</string>
-    <string name="network_error_occured">A network error has occurred.</string>
+    <string name="too_many_requests">Requests from this device have been blocked due to unusual activity. Try again later</string>
+    <string name="network_error_occured">A network error has occurred</string>
+    <string name="invalid_user">There is no user record corresponding to this identifier</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="confirm">Confirm</string>
+    <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
+    <string name="back">Back</string>
 
     <plurals name="number_of_items_available">
         <item quantity="one">%d item</item>

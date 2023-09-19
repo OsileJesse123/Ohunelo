@@ -2,6 +2,8 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.LoginUiState
@@ -13,12 +15,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val validateEmailUseCase: ValidateEmailUseCase,
-    private val validatePasswordUseCase: ValidatePasswordUseCase
+    private val validatePasswordUseCase: ValidatePasswordUseCase,
+    private val authenticationRepository: AuthenticationRepository
 ): ViewModel() {
 
     private val _loginUiStateFlow: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState())
@@ -31,6 +35,12 @@ class LoginViewModel @Inject constructor(
     private var validationJob: Job? = null
 
     private val delayTime = 500L
+
+    /*init {
+        viewModelScope.launch {
+            Timber.e("The user: ${authenticationRepository.getUser()}")
+        }
+    }*/
 
     fun onEmailTextChanged(emailText: String){
         validationJob?.cancel()
@@ -64,13 +74,58 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login(){
-        if(_loginUiStateFlow.value.isFormValid()){
-           _loginUiStateFlow.update {
-               loginUiState ->
-               loginUiState.copy(
-                   navigateToNextScreen = true
-               )
-           }
+        viewModelScope.launch {
+            if(_loginUiStateFlow.value.isFormValid()){
+                _loginUiStateFlow.update {
+                        loginUiState ->
+                    loginUiState.copy(
+                        isEnabled = false
+                    )
+                }
+                val loginResult = authenticationRepository.loginUserWithEmailAndPassword(
+                    email = _loginUiStateFlow.value.email,
+                    password = _loginUiStateFlow.value.password
+                )
+                when(loginResult){
+                    is OhuneloResult.Success -> {
+                        Timber.e("ViewModel Login Successful, user: ${loginResult.data}")
+                        _loginUiStateFlow.update {
+                                loginUiState ->
+                            loginUiState.copy(
+                                navigateToNextScreen = true,
+                                isEnabled = true
+                            )
+                        }
+                    }
+                    is OhuneloResult.Error -> {
+                        _loginUiStateFlow.update {
+                                loginUiState ->
+                            loginUiState.copy(
+                                showErrorMessage = Pair(true, loginResult.errorMessage),
+                                isEnabled = true
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun onErrorMessageShown(){
+        _loginUiStateFlow.update {
+                loginUiStateFlow ->
+            loginUiStateFlow.copy(
+                showErrorMessage = Pair(false, null)
+            )
+        }
+    }
+
+    fun onNavigationToNextScreen(){
+        _loginUiStateFlow.update {
+                loginUiStateFlow ->
+            loginUiStateFlow.copy(
+                navigateToNextScreen = false,
+            )
         }
     }
 }
