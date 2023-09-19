@@ -5,7 +5,13 @@ import com.jesse.ohunelo.data.network.models.OhuneloResult
 
 interface AuthenticationRepository {
 
+    suspend fun getUser(): AuthUser?
+
     suspend fun registerUserWithEmailAndPassword(firstName: String, lastName: String, email: String, password: String): OhuneloResult<AuthUser>
+
+    suspend fun loginUserWithEmailAndPassword(email: String, password: String): OhuneloResult<AuthUser>
+
+    suspend fun logout()
 
     suspend fun verifyUserEmail(): OhuneloResult<Boolean>
 

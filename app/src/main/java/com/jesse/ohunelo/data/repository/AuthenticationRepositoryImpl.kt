@@ -12,6 +12,11 @@ class AuthenticationRepositoryImpl @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     private val authenticationService: AuthenticationService
 ): AuthenticationRepository {
+    override suspend fun getUser(): AuthUser? {
+        return withContext(ioDispatcher){
+            authenticationService.getUser()
+        }
+    }
 
     override suspend fun registerUserWithEmailAndPassword(
         firstName: String,
@@ -23,6 +28,21 @@ class AuthenticationRepositoryImpl @Inject constructor(
             authenticationService.registerUserWithEmailAndPassword(
                 firstName = firstName, lastName = lastName,
                 email = email, password = password)
+        }
+    }
+
+    override suspend fun loginUserWithEmailAndPassword(
+        email: String,
+        password: String
+    ): OhuneloResult<AuthUser> {
+        return withContext(ioDispatcher){
+            authenticationService.loginUserWithEmailAndPassword(email = email, password = password)
+        }
+    }
+
+    override suspend fun logout() {
+        withContext(ioDispatcher){
+            authenticationService.logout()
         }
     }
 

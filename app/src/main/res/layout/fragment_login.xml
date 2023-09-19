@@ -73,6 +73,7 @@
                     android:textColorHint="@color/orange_100"
                     app:errorMessageText="@{viewModel.loginUiStateFlow.emailError}"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -122,6 +123,7 @@
                     app:errorIconDrawable="@null"
                     app:errorMessageText="@{viewModel.loginUiStateFlow.passwordError}"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -143,6 +145,7 @@
                     android:text="@string/forgot_password"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:layout_marginTop="@dimen/grid_0_25"
+                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/enter_password_input_layout" />
 
@@ -154,6 +157,7 @@
                     android:text="@string/login"
                     android:layout_marginTop="@dimen/grid_4"
                     app:cornerRadius="@dimen/_15dp"
+                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/forgot_password_text" />
@@ -176,6 +180,7 @@
                     android:layout_marginTop="@dimen/grid_4"
                     app:cardCornerRadius="@dimen/_15dp"
                     app:cardElevation="@dimen/_10dp"
+                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/or_text">
@@ -218,6 +223,7 @@
                     android:layout_marginTop="@dimen/grid_2"
                     app:cardCornerRadius="@dimen/_15dp"
                     app:cardElevation="@dimen/_10dp"
+                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
                     app:cardBackgroundColor="@color/facebook_blue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -261,6 +267,7 @@
                     app:cardCornerRadius="@dimen/_15dp"
                     app:cardElevation="@dimen/_10dp"
                     app:cardBackgroundColor="@color/twitter_blue"
+                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
                     app:layout_constraintVertical_bias="0"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

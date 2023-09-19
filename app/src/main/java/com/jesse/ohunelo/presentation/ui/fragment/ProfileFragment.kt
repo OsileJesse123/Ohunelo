@@ -6,14 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.FragmentProfileBinding
+import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LogoutDialogFragment
+import com.jesse.ohunelo.presentation.viewmodels.ProfileViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding: FragmentProfileBinding get() = _binding!!
+
+    private val viewModel by viewModels<ProfileViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +32,27 @@ class ProfileFragment : Fragment() {
             R.layout.fragment_profile, container, false)
         // Inflate the layout for this fragment
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setOnClickListeners()
+    }
+
+    private fun setOnClickListeners(){
+        binding.logOutCard.setOnClickListener {
+            showLogoutDialog()
+        }
+    }
+
+    private fun showLogoutDialog(){
+        LogoutDialogFragment(
+            confirmOnClickListener = {
+                viewModel.logout()
+                findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment())
+            }
+        ).show(childFragmentManager, LogoutDialogFragment.TAG)
     }
 
     override fun onDestroyView() {

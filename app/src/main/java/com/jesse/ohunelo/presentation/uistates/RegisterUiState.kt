@@ -18,10 +18,9 @@ data class RegisterUiState(
      * **/
     val showErrorMessage: Pair<Boolean, UiText?> = Pair(false, null),
     /**
-     * This determines whether or not views in the RegisterFragment should be enabled or not
+     * This determines whether or not views in the Fragment should be enabled or not
      * **/
     val isEnabled: Boolean = true,
-    val loaderIsShowing: Boolean = false
 ){
     fun isFormValid(): Boolean =
     // So long as firstName, lastName, email and password are not empty and firstNameError, lastNameError, emailError and passwordError are null then,
