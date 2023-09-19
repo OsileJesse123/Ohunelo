@@ -2,6 +2,7 @@ package com.jesse.ohunelo.data.network
 
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.util.UiText
 
 interface AuthenticationService {
 
@@ -11,4 +12,5 @@ interface AuthenticationService {
     suspend fun logout()
     suspend fun verifyUserEmail(): OhuneloResult<Boolean>
     suspend fun hasTheUserBeenVerified(): Boolean
+    suspend fun sendPasswordResetEmail(email: String): OhuneloResult<UiText>
 }

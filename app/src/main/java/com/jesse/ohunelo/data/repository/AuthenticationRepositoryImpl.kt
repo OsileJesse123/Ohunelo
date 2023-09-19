@@ -4,6 +4,7 @@ import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.AuthenticationService
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.IODispatcher
+import com.jesse.ohunelo.util.UiText
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -55,6 +56,12 @@ class AuthenticationRepositoryImpl @Inject constructor(
     override suspend fun hasTheUserBeenVerified(): Boolean {
         return withContext(ioDispatcher){
             authenticationService.hasTheUserBeenVerified()
+        }
+    }
+
+    override suspend fun sendPasswordResetEmail(email: String): OhuneloResult<UiText> {
+        return withContext(ioDispatcher){
+            authenticationService.sendPasswordResetEmail(email)
         }
     }
 }

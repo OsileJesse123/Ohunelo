@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.FragmentResetPasswordBinding
+import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.ResetPasswordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,6 +30,8 @@ class ResetPasswordFragment : Fragment() {
     private val binding: FragmentResetPasswordBinding get() = _binding!!
 
     private val viewModel by viewModels<ResetPasswordViewModel>()
+
+    private var loader: LoaderDialogFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,15 +53,27 @@ class ResetPasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loader = LoaderDialogFragment()
+
         setOnClickListeners()
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.resetPasswordUiStateFlow.collect{
                         resetPasswordUiState ->
-                    if (resetPasswordUiState.showConfirmationMessage){
-                        // This will be changed when proper implementation has been added
-                        Timber.e("Confirmation Message: Email has been sent")
+                    if (resetPasswordUiState.showConfirmationMessage.first){
+                        showMessage(resetPasswordUiState.showConfirmationMessage.second?.asString(requireContext()))
+                    }
+                    if (resetPasswordUiState.showErrorMessage.first){
+                        showMessage(resetPasswordUiState.showErrorMessage.second?.asString(requireContext()))
+                    }
+                    // If all other views are not enabled, then the loader should be shown
+                    if (!resetPasswordUiState.isEnabled){
+                        showLoader()
+                    }
+                    // If all other views are enabled, then the loader should be hidden
+                    else{
+                        hideLoader()
                     }
                 }
             }
@@ -74,6 +90,24 @@ class ResetPasswordFragment : Fragment() {
         }
     }
 
+    private fun showMessage(message: String?){
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        viewModel.onMessageShown()
+    }
+
+    private fun showLoader(){
+        loader?.show(childFragmentManager, LoaderDialogFragment.TAG)
+    }
+
+    private fun hideLoader(){
+        loader?.let {
+                loader ->
+            if(loader.isAdded){
+                loader.dismiss()
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         binding.enterEmailAddressEditText.addTextChangedListener {
@@ -85,6 +119,7 @@ class ResetPasswordFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        loader = null
         _binding = null
     }
 

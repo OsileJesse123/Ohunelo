@@ -2,6 +2,7 @@ package com.jesse.ohunelo.data.repository
 
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.util.UiText
 
 interface AuthenticationRepository {
 
@@ -16,4 +17,6 @@ interface AuthenticationRepository {
     suspend fun verifyUserEmail(): OhuneloResult<Boolean>
 
     suspend fun hasTheUserBeenVerified(): Boolean
+
+    suspend fun sendPasswordResetEmail(email: String): OhuneloResult<UiText>
 }

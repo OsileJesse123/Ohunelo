@@ -131,6 +131,9 @@
     <string name="confirm">Confirm</string>
     <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
     <string name="back">Back</string>
+    <string name="reset_password_email">Reset password email sent successfully</string>
+    <string name="reset_password_email_failed">Reset password email not sent</string>
+    <string name="no_user_record_corresponding">There is no user record corresponding to this identifier</string>
 
     <plurals name="number_of_items_available">
         <item quantity="one">%d item</item>
