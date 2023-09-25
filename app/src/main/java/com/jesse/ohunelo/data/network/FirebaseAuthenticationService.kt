@@ -1,6 +1,5 @@
 package com.jesse.ohunelo.data.network
 
-import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
@@ -8,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.AuthUser
@@ -17,7 +17,8 @@ import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
 
-class FirebaseAuthenticationService @Inject constructor(): AuthenticationService {
+class FirebaseAuthenticationService @Inject constructor(
+): AuthenticationService {
 
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     override suspend fun getUser(): AuthUser? {
@@ -161,6 +162,33 @@ class FirebaseAuthenticationService @Inject constructor(): AuthenticationService
             OhuneloResult.Error(UiText.StringResource(R.string.reset_password_email_failed))
         }
     }
+
+    override suspend fun signInWithGoogle(idToken: String): OhuneloResult<AuthUser> {
+        return try {
+            val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+            val result = firebaseAuth.signInWithCredential(firebaseCredential).await()
+            val user = result.user
+
+            if (user != null){
+                // If sign in task is successful and user is not null
+                OhuneloResult.Success(AuthUser(
+                    id = user.uid,
+                    isEmailVerified =  user.isEmailVerified,
+                    email = user.email,
+                    userName = user.displayName
+                ))
+            } else {
+                // If login task is successful and user is null
+                OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
+            }
+        } catch (e: Exception){
+            Timber.e("Sign in with google failed, Exception: $e")
+            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.sign_in_with_google_failed))
+        }
+    }
+
+
+
 
     private suspend fun updateUserName(user: FirebaseUser, userName: String){
         val profileUpdates = UserProfileChangeRequest.Builder()

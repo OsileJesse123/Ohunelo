@@ -13,4 +13,5 @@ interface AuthenticationService {
     suspend fun verifyUserEmail(): OhuneloResult<Boolean>
     suspend fun hasTheUserBeenVerified(): Boolean
     suspend fun sendPasswordResetEmail(email: String): OhuneloResult<UiText>
+    suspend fun signInWithGoogle(idToken: String): OhuneloResult<AuthUser>
 }

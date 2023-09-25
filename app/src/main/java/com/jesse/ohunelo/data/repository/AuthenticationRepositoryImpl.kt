@@ -64,4 +64,10 @@ class AuthenticationRepositoryImpl @Inject constructor(
             authenticationService.sendPasswordResetEmail(email)
         }
     }
+
+    override suspend fun signInWithGoogle(idToken: String): OhuneloResult<AuthUser> {
+        return withContext(ioDispatcher){
+            authenticationService.signInWithGoogle(idToken)
+        }
+    }
 }
