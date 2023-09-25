@@ -173,135 +173,51 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/login_with_google_card_view"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/continue_with_google_button"
                     android:layout_width="@dimen/_0dp"
                     android:layout_height="@dimen/grid_8"
+                    android:text="@string/continue_with_google"
+                    android:textColor="?attr/colorSecondary"
+                    android:backgroundTint="@color/white"
+                    app:cornerRadius="@dimen/_15dp"
+                    android:drawableLeft="@drawable/google_icon"
+                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
                     android:layout_marginTop="@dimen/grid_4"
-                    app:cardCornerRadius="@dimen/_15dp"
-                    app:cardElevation="@dimen/_10dp"
-                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/or_text">
+                    app:layout_constraintTop_toBottomOf="@+id/or_text"/>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/google_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/google_icon"
-                            android:src="@drawable/google_icon"
-                            android:layout_marginEnd="@dimen/grid_2"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/login_with_google_text"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/login_with_google_text"
-                            style="?attr/textAppearanceButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/login_with_google"
-                            android:textColor="?attr/colorSecondary"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/login_with_facebook_card_view"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/continue_with_facebook_button"
                     android:layout_width="@dimen/_0dp"
                     android:layout_height="@dimen/grid_8"
-                    android:layout_marginTop="@dimen/grid_2"
-                    app:cardCornerRadius="@dimen/_15dp"
-                    app:cardElevation="@dimen/_10dp"
+                    android:text="@string/continue_with_facebook"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/facebook_blue"
+                    app:cornerRadius="@dimen/_15dp"
+                    android:drawableLeft="@drawable/facebook_icon"
                     android:enabled="@{viewModel.loginUiStateFlow.enabled}"
-                    app:cardBackgroundColor="@color/facebook_blue"
+                    android:layout_marginTop="@dimen/grid_2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/login_with_google_card_view">
+                    app:layout_constraintTop_toBottomOf="@+id/continue_with_google_button"/>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/facebook_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/facebook_icon"
-                            android:src="@drawable/facebook_icon"
-                            android:layout_marginEnd="@dimen/grid_2"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/login_with_facebook_text"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/login_with_facebook_text"
-                            style="?attr/textAppearanceButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/login_with_facebook"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/login_with_twitter_card_view"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/continue_with_twitter_button"
                     android:layout_width="@dimen/_0dp"
                     android:layout_height="@dimen/grid_8"
-                    android:layout_marginTop="@dimen/grid_2"
-                    app:cardCornerRadius="@dimen/_15dp"
-                    app:cardElevation="@dimen/_10dp"
-                    app:cardBackgroundColor="@color/twitter_blue"
+                    android:text="@string/continue_with_twitter"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/twitter_blue"
+                    app:cornerRadius="@dimen/_15dp"
+                    android:drawableLeft="@drawable/twitter_icon"
                     android:enabled="@{viewModel.loginUiStateFlow.enabled}"
-                    app:layout_constraintVertical_bias="0"
+                    android:layout_marginTop="@dimen/grid_2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/login_with_facebook_card_view">
+                    app:layout_constraintTop_toBottomOf="@+id/continue_with_facebook_button"/>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/twitter_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/twitter_icon"
-                            android:src="@drawable/twitter_icon"
-                            android:layout_marginEnd="@dimen/grid_2"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/login_with_twitter_text"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/login_with_twitter_text"
-                            style="?attr/textAppearanceButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/login_with_twitter"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
                     android:id="@+id/linear_layout"
@@ -311,7 +227,7 @@
                     android:layout_marginTop="@dimen/grid_7"
                     android:gravity="center"
                     android:layout_marginBottom="@dimen/grid_3"
-                    app:layout_constraintTop_toBottomOf="@id/login_with_twitter_card_view"
+                    app:layout_constraintTop_toBottomOf="@id/continue_with_twitter_button"
                     app:layout_constraintBottom_toBottomOf="parent"
                     >
 
@@ -338,5 +254,6 @@
         </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </layout>

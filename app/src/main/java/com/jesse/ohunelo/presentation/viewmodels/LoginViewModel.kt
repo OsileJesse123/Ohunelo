@@ -7,6 +7,7 @@ import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.LoginUiState
+import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -35,12 +36,6 @@ class LoginViewModel @Inject constructor(
     private var validationJob: Job? = null
 
     private val delayTime = 500L
-
-    /*init {
-        viewModelScope.launch {
-            Timber.e("The user: ${authenticationRepository.getUser()}")
-        }
-    }*/
 
     fun onEmailTextChanged(emailText: String){
         validationJob?.cancel()
@@ -108,6 +103,52 @@ class LoginViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun startSignInWithGoogle(){
+        _loginUiStateFlow.update {
+            loginUiState ->
+            loginUiState.copy(
+                isEnabled = false
+            )
+        }
+    }
+
+    fun finishSignInWithGoogle(idToken: String){
+        viewModelScope.launch {
+            val signInResult = authenticationRepository.signInWithGoogle(idToken)
+            when (signInResult){
+                is OhuneloResult.Success ->{
+                    Timber.e("ViewModel SignIn with google Successful, user: ${signInResult.data}")
+                    _loginUiStateFlow.update {
+                            loginUiState ->
+                        loginUiState.copy(
+                            navigateToNextScreen = true,
+                            isEnabled = true
+                        )
+                    }
+                }
+                is OhuneloResult.Error -> {
+                    _loginUiStateFlow.update {
+                            loginUiState ->
+                        loginUiState.copy(
+                            showErrorMessage = Pair(true, signInResult.errorMessage),
+                            isEnabled = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun onSignInWithGoogleFailed(errorMessage: UiText){
+        _loginUiStateFlow.update {
+                loginUiState ->
+            loginUiState.copy(
+                isEnabled = true,
+                showErrorMessage = Pair(true, errorMessage)
+            )
         }
     }
 
