@@ -70,4 +70,10 @@ class AuthenticationRepositoryImpl @Inject constructor(
             authenticationService.signInWithGoogle(idToken)
         }
     }
+
+    override suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser> {
+        return withContext(ioDispatcher){
+            authenticationService.signInWithFacebook(idToken)
+        }
+    }
 }

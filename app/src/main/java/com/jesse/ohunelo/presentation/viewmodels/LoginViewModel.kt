@@ -37,6 +37,11 @@ class LoginViewModel @Inject constructor(
 
     private val delayTime = 500L
 
+    init {
+        viewModelScope.launch {
+            Timber.e("User: ${authenticationRepository.getUser()}")
+        }
+    }
     fun onEmailTextChanged(emailText: String){
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
@@ -106,19 +111,9 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun startSignInWithGoogle(){
-        _loginUiStateFlow.update {
-            loginUiState ->
-            loginUiState.copy(
-                isEnabled = false
-            )
-        }
-    }
-
     fun finishSignInWithGoogle(idToken: String){
         viewModelScope.launch {
-            val signInResult = authenticationRepository.signInWithGoogle(idToken)
-            when (signInResult){
+            when (val signInResult = authenticationRepository.signInWithGoogle(idToken)){
                 is OhuneloResult.Success ->{
                     Timber.e("ViewModel SignIn with google Successful, user: ${signInResult.data}")
                     _loginUiStateFlow.update {
@@ -142,7 +137,42 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun onSignInWithGoogleFailed(errorMessage: UiText){
+    fun finishSignInWithFacebook(idToken: String){
+        viewModelScope.launch {
+            when (val signInResult = authenticationRepository.signInWithFacebook(idToken)){
+                is OhuneloResult.Success ->{
+                    Timber.e("ViewModel SignIn with facebook Successful, user: ${signInResult.data}")
+                    _loginUiStateFlow.update {
+                            loginUiState ->
+                        loginUiState.copy(
+                            navigateToNextScreen = true,
+                            isEnabled = true
+                        )
+                    }
+                }
+                is OhuneloResult.Error -> {
+                    _loginUiStateFlow.update {
+                            loginUiState ->
+                        loginUiState.copy(
+                            showErrorMessage = Pair(true, signInResult.errorMessage),
+                            isEnabled = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun startSignIn(){
+        _loginUiStateFlow.update {
+                loginUiState ->
+            loginUiState.copy(
+                isEnabled = false
+            )
+        }
+    }
+
+    fun onSignInFailed(errorMessage: UiText){
         _loginUiStateFlow.update {
                 loginUiState ->
             loginUiState.copy(

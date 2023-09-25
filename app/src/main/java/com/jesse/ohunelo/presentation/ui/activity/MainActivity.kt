@@ -9,6 +9,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.facebook.FacebookSdk
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +45,8 @@ class MainActivity : AppCompatActivity() {
             addOnDestinationChangedListener(navController)
         }
 
+        // Initialize Facebook SDK
+        FacebookSdk.sdkInitialize(applicationContext);
     }
 
     private fun addOnDestinationChangedListener(navController: NavController) {

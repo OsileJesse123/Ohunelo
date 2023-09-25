@@ -131,9 +131,11 @@
     <string name="reset_password_email">Reset password email sent successfully</string>
     <string name="reset_password_email_failed">Reset password email not sent</string>
     <string name="no_user_record_corresponding">There is no user record corresponding to this identifier</string>
-    <string name="sign_in_with_google_failed">Sign in with google failed</string>
-    <string name="sign_in_with_google_cancelled">Sign in with google cancelled</string>
+    <string name="sign_in_failed">Sign in with %s failed</string>
+    <string name="sign_in_cancelled">Sign in with %s cancelled</string>
     <string name="caller_temporarily_blocked">Caller has been temporarily blocked</string>
+    <string name="facebook_app_id">270692319216293</string>
+    <string name="facebook_client_token">93899d5d6e771ca909e5ecdc5fcabb1f</string>
 
     <plurals name="number_of_items_available">
         <item quantity="one">%d item</item>
