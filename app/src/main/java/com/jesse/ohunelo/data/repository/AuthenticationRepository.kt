@@ -21,4 +21,6 @@ interface AuthenticationRepository {
     suspend fun sendPasswordResetEmail(email: String): OhuneloResult<UiText>
 
     suspend fun signInWithGoogle(idToken: String): OhuneloResult<AuthUser>
+
+    suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser>
 }

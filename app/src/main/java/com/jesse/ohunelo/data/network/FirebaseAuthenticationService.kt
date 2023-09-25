@@ -2,6 +2,7 @@ package com.jesse.ohunelo.data.network
 
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -22,7 +23,6 @@ class FirebaseAuthenticationService @Inject constructor(
 
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     override suspend fun getUser(): AuthUser? {
-        firebaseAuth.sendPasswordResetEmail("")
         return firebaseAuth.currentUser?.let {
             firebaseUser ->
             AuthUser(
@@ -165,8 +165,8 @@ class FirebaseAuthenticationService @Inject constructor(
 
     override suspend fun signInWithGoogle(idToken: String): OhuneloResult<AuthUser> {
         return try {
-            val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-            val result = firebaseAuth.signInWithCredential(firebaseCredential).await()
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            val result = firebaseAuth.signInWithCredential(credential).await()
             val user = result.user
 
             if (user != null){
@@ -183,12 +183,33 @@ class FirebaseAuthenticationService @Inject constructor(
             }
         } catch (e: Exception){
             Timber.e("Sign in with google failed, Exception: $e")
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.sign_in_with_google_failed))
+            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.sign_in_failed, "Google"))
         }
     }
 
+    override suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser> {
+        return try {
+            val credential = FacebookAuthProvider.getCredential(idToken)
+            val result = firebaseAuth.signInWithCredential(credential).await()
+            val user = result.user
 
-
+            if (user != null){
+                // If sign in task is successful and user is not null
+                OhuneloResult.Success(AuthUser(
+                    id = user.uid,
+                    isEmailVerified =  user.isEmailVerified,
+                    email = user.email,
+                    userName = user.displayName
+                ))
+            } else {
+                // If login task is successful and user is null
+                OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
+            }
+        } catch (e: Exception){
+            Timber.e("Sign in with facebook failed, Exception: $e")
+            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.sign_in_failed, "Facebook"))
+        }
+    }
 
     private suspend fun updateUserName(user: FirebaseUser, userName: String){
         val profileUpdates = UserProfileChangeRequest.Builder()

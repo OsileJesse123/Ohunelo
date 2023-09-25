@@ -17,6 +17,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -48,6 +53,9 @@ class LoginFragment : Fragment() {
     private var _signInRequest: BeginSignInRequest? = null
     private val signInRequest: BeginSignInRequest get() = _signInRequest!!
 
+    private var _callbackManager: CallbackManager? = null
+    private val callbackManager: CallbackManager get() = _callbackManager!!
+
     private var startActivityForResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()){
             result ->
@@ -63,17 +71,17 @@ class LoginFragment : Fragment() {
                 when (e.statusCode) {
                     CommonStatusCodes.CANCELED -> {
                         Timber.e("One-tap dialog was closed.")
-                        viewModel.onSignInWithGoogleFailed(UiText.StringResource(R.string.sign_in_with_google_cancelled))
+                        viewModel.onSignInFailed(UiText.StringResource(R.string.sign_in_cancelled, "Google"))
                     }
                     CommonStatusCodes.NETWORK_ERROR -> {
                         Timber.e("One-tap encountered a network error.")
                         // Try again or just ignore.
-                        viewModel.onSignInWithGoogleFailed(UiText.StringResource(R.string.network_error_occured))
+                        viewModel.onSignInFailed(UiText.StringResource(R.string.network_error_occured))
                     }
                     else -> {
                         Timber.e("Couldn't get credential from result." +
                                 " (${e.localizedMessage})")
-                        viewModel.onSignInWithGoogleFailed(UiText.StringResource(R.string.sign_in_with_google_failed))
+                        viewModel.onSignInFailed(UiText.StringResource(R.string.sign_in_failed, "Google"))
                     }
                 }
             }
@@ -114,6 +122,9 @@ class LoginFragment : Fragment() {
 
         // Initialize oneTapClient
         _oneTapClient = Identity.getSignInClient(requireContext())
+
+        // Initialize callbackManager
+        _callbackManager = CallbackManager.Factory.create()
 
         setOnClickListeners()
 
@@ -195,7 +206,7 @@ class LoginFragment : Fragment() {
                     startActivityForResultLauncher.launch(IntentSenderRequest.Builder(result.pendingIntent.intentSender).build())
                 } catch (e: IntentSender.SendIntentException){
                     Timber.e("Couldn't start one tap ui: ${e.localizedMessage}")
-                    viewModel.onSignInWithGoogleFailed(UiText.StringResource(R.string.sign_in_with_google_failed))
+                    viewModel.onSignInFailed(UiText.StringResource(R.string.sign_in_failed, "Google"))
                 }
             }
             .addOnFailureListener {
@@ -204,19 +215,42 @@ class LoginFragment : Fragment() {
                     is ApiException -> {
                         if (e.statusCode == 16){
                             Timber.e("Sign in with google failed,Exception: $e, Error Message: ${e.localizedMessage}")
-                            viewModel.onSignInWithGoogleFailed(UiText.StringResource(R.string.caller_temporarily_blocked))
+                            viewModel.onSignInFailed(UiText.StringResource(R.string.caller_temporarily_blocked))
                         } else{
                             Timber.e("Sign in with google failed,Exception: $e, Error Message: ${e.localizedMessage}")
-                            viewModel.onSignInWithGoogleFailed(UiText.StringResource(R.string.sign_in_with_google_failed))
+                            viewModel.onSignInFailed(UiText.StringResource(R.string.sign_in_failed, "Google"))
                         }
                     }
                     else -> {
                         Timber.e("Sign in with google failed,Exception: $e, Error Message: ${e.localizedMessage}")
-                        viewModel.onSignInWithGoogleFailed(UiText.StringResource(R.string.sign_in_with_google_failed))
+                        viewModel.onSignInFailed(UiText.StringResource(R.string.sign_in_failed, "Google"))
                     }
                 }
 
             }
+    }
+
+    private fun startSignInWithFacebook(){
+        LoginManager.getInstance().logInWithReadPermissions(
+            this,
+            callbackManager,
+            listOf( "email", "public_profile")
+        )
+        LoginManager.getInstance().registerCallback(callbackManager, object :
+            FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult) {
+                viewModel.finishSignInWithFacebook(result.accessToken.token)
+            }
+
+            override fun onCancel() {
+                viewModel.onSignInFailed(UiText.StringResource(R.string.sign_in_cancelled, "Facebook"))
+            }
+
+            override fun onError(error: FacebookException) {
+                Timber.e("Login with facebook failed, Error: ${error.message}")
+                viewModel.onSignInFailed(UiText.StringResource(R.string.sign_in_failed, "Google"))
+            }
+        })
     }
 
     private fun setOnClickListeners() {
@@ -225,8 +259,13 @@ class LoginFragment : Fragment() {
         }
 
         binding.continueWithGoogleButton.setOnClickListener {
-            viewModel.startSignInWithGoogle()
+            viewModel.startSignIn()
             startSignInWithGoogle()
+        }
+
+        binding.continueWithFacebookButton.setOnClickListener {
+            viewModel.startSignIn()
+            startSignInWithFacebook()
         }
 
         binding.forgotPasswordText.setOnClickListener {
@@ -242,6 +281,7 @@ class LoginFragment : Fragment() {
         super.onDestroyView()
         _signInRequest = null
         _oneTapClient = null
+        _callbackManager = null
         _binding = null
     }
 }
