@@ -1,5 +1,6 @@
 package com.jesse.ohunelo.data.network
 
+import android.app.Activity
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FacebookAuthProvider
@@ -9,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.AuthUser
@@ -205,9 +207,60 @@ class FirebaseAuthenticationService @Inject constructor(
                 // If login task is successful and user is null
                 OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
             }
+        } catch (e: FirebaseAuthUserCollisionException){
+            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.email_already_in_use))
         } catch (e: Exception){
             Timber.e("Sign in with facebook failed, Exception: $e")
             OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.sign_in_failed, "Facebook"))
+        }
+    }
+
+    override suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser> {
+        val provider = OAuthProvider.newBuilder("twitter.com")
+
+        return try {
+            val pendingResultTask = firebaseAuth.pendingAuthResult
+
+            if(pendingResultTask != null){
+                // There's something already here! Finish the sign-in for your user.
+                val user = pendingResultTask.await().user
+
+                if (user != null){
+                    // If sign in task is successful and user is not null
+                    OhuneloResult.Success(AuthUser(
+                        id = user.uid,
+                        isEmailVerified =  user.isEmailVerified,
+                        email = user.email,
+                        userName = user.displayName
+                    ))
+                } else {
+                    // If login task is successful and user is null
+                    OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
+                }
+            } else {
+                // There's no pending result so you need to start the sign-in flow.
+                val result = firebaseAuth
+                    .startActivityForSignInWithProvider(activity, provider.build()).await()
+                val user = result.user
+
+                if (user != null){
+                    // If sign in task is successful and user is not null
+                    OhuneloResult.Success(AuthUser(
+                        id = user.uid,
+                        isEmailVerified =  user.isEmailVerified,
+                        email = user.email,
+                        userName = user.displayName
+                    ))
+                } else {
+                    // If login task is successful and user is null
+                    OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
+                }
+            }
+        } catch (e: FirebaseAuthUserCollisionException){
+            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.email_already_in_use))
+        } catch (e: Exception){
+            Timber.e("Sign in with twitter failed, Exception: $e")
+            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.sign_in_failed, "Twitter"))
         }
     }
 

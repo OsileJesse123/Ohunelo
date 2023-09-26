@@ -1,5 +1,6 @@
 package com.jesse.ohunelo.presentation.viewmodels
 
+import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jesse.ohunelo.data.network.models.OhuneloResult
@@ -76,6 +77,7 @@ class LoginViewModel @Inject constructor(
     fun login(){
         viewModelScope.launch {
             if(_loginUiStateFlow.value.isFormValid()){
+                // Disable buttons and show loader in UI
                 _loginUiStateFlow.update {
                         loginUiState ->
                     loginUiState.copy(
@@ -105,6 +107,40 @@ class LoginViewModel @Inject constructor(
                                 isEnabled = true
                             )
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    fun signInWithTwitter(activity: Activity){
+        viewModelScope.launch {
+            // Disable buttons and show loader in UI
+            _loginUiStateFlow.update {
+                    loginUiState ->
+                loginUiState.copy(
+                    isEnabled = false
+                )
+            }
+
+            when(val signInResult = authenticationRepository.signInWithTwitter(activity)){
+                is OhuneloResult.Success -> {
+                    Timber.e("ViewModel Sign in with Twitter Successful, user: ${signInResult.data}")
+                    _loginUiStateFlow.update {
+                            loginUiState ->
+                        loginUiState.copy(
+                            navigateToNextScreen = true,
+                            isEnabled = true
+                        )
+                    }
+                }
+                is OhuneloResult.Error -> {
+                    _loginUiStateFlow.update {
+                            loginUiState ->
+                        loginUiState.copy(
+                            showErrorMessage = Pair(true, signInResult.errorMessage),
+                            isEnabled = true
+                        )
                     }
                 }
             }
@@ -164,6 +200,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun startSignIn(){
+        // Disable buttons and show loader in UI
         _loginUiStateFlow.update {
                 loginUiState ->
             loginUiState.copy(
