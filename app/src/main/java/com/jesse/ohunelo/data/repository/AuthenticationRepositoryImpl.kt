@@ -1,5 +1,6 @@
 package com.jesse.ohunelo.data.repository
 
+import android.app.Activity
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.AuthenticationService
 import com.jesse.ohunelo.data.network.models.OhuneloResult
@@ -74,6 +75,12 @@ class AuthenticationRepositoryImpl @Inject constructor(
     override suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser> {
         return withContext(ioDispatcher){
             authenticationService.signInWithFacebook(idToken)
+        }
+    }
+
+    override suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser> {
+        return withContext(ioDispatcher){
+            authenticationService.signInWithTwitter(activity)
         }
     }
 }

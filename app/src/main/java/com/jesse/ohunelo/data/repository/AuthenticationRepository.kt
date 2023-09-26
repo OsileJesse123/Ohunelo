@@ -1,5 +1,6 @@
 package com.jesse.ohunelo.data.repository
 
+import android.app.Activity
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.util.UiText
@@ -23,4 +24,6 @@ interface AuthenticationRepository {
     suspend fun signInWithGoogle(idToken: String): OhuneloResult<AuthUser>
 
     suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser>
+
+    suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser>
 }

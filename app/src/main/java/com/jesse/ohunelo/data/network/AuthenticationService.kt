@@ -1,5 +1,6 @@
 package com.jesse.ohunelo.data.network
 
+import android.app.Activity
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.util.UiText
@@ -15,4 +16,5 @@ interface AuthenticationService {
     suspend fun sendPasswordResetEmail(email: String): OhuneloResult<UiText>
     suspend fun signInWithGoogle(idToken: String): OhuneloResult<AuthUser>
     suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser>
+    suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser>
 }

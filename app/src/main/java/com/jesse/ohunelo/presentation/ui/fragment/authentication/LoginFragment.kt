@@ -268,6 +268,10 @@ class LoginFragment : Fragment() {
             startSignInWithFacebook()
         }
 
+        binding.continueWithTwitterButton.setOnClickListener {
+            viewModel.signInWithTwitter(requireActivity())
+        }
+
         binding.forgotPasswordText.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToResetPasswordFragment())
         }
