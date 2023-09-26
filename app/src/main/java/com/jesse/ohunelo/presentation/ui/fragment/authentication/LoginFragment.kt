@@ -27,12 +27,13 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
-import com.google.firebase.auth.GoogleAuthProvider
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.FragmentLoginBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.LoginViewModel
+import com.jesse.ohunelo.util.HOME_FRAGMENT
 import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.VERIFY_EMAIL_FRAGMENT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -132,10 +133,9 @@ class LoginFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loginUiStateFlow.collect{
                     loginUiState ->
-                    if (loginUiState.navigateToNextScreen){
-                        findNavController()
-                            .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
-                        viewModel.onNavigationToNextScreen()
+                    if (loginUiState.navigateToNextScreen.first){
+                        // If user should be taken to the next screen
+                        determineNavigationDestination(loginUiState.navigateToNextScreen.second)
                     }
                     if (loginUiState.showErrorMessage.first){
                         showErrorMessage(loginUiState.showErrorMessage.second)
@@ -151,6 +151,21 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun determineNavigationDestination(destination: String) {
+        when(destination){
+            HOME_FRAGMENT -> {
+                findNavController()
+                    .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+
+            }
+            VERIFY_EMAIL_FRAGMENT -> {
+                findNavController()
+                    .navigate(LoginFragmentDirections.actionLoginFragmentToVerifyEmailFragment())
+            }
+        }
+        viewModel.onNavigationToNextScreen()
     }
 
     private fun showErrorMessage(errorMessage: UiText?) {

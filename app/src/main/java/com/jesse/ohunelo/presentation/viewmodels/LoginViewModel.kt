@@ -3,12 +3,15 @@ package com.jesse.ohunelo.presentation.viewmodels
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.LoginUiState
+import com.jesse.ohunelo.util.HOME_FRAGMENT
 import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.VERIFY_EMAIL_FRAGMENT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -17,6 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -38,11 +42,7 @@ class LoginViewModel @Inject constructor(
 
     private val delayTime = 500L
 
-    init {
-        viewModelScope.launch {
-            Timber.e("User: ${authenticationRepository.getUser()}")
-        }
-    }
+
     fun onEmailTextChanged(emailText: String){
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
@@ -94,7 +94,7 @@ class LoginViewModel @Inject constructor(
                         _loginUiStateFlow.update {
                                 loginUiState ->
                             loginUiState.copy(
-                                navigateToNextScreen = true,
+                                navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
                                 isEnabled = true
                             )
                         }
@@ -129,7 +129,7 @@ class LoginViewModel @Inject constructor(
                     _loginUiStateFlow.update {
                             loginUiState ->
                         loginUiState.copy(
-                            navigateToNextScreen = true,
+                            navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
                             isEnabled = true
                         )
                     }
@@ -155,7 +155,7 @@ class LoginViewModel @Inject constructor(
                     _loginUiStateFlow.update {
                             loginUiState ->
                         loginUiState.copy(
-                            navigateToNextScreen = true,
+                            navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
                             isEnabled = true
                         )
                     }
@@ -181,7 +181,7 @@ class LoginViewModel @Inject constructor(
                     _loginUiStateFlow.update {
                             loginUiState ->
                         loginUiState.copy(
-                            navigateToNextScreen = true,
+                            navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
                             isEnabled = true
                         )
                     }
@@ -232,8 +232,24 @@ class LoginViewModel @Inject constructor(
         _loginUiStateFlow.update {
                 loginUiStateFlow ->
             loginUiStateFlow.copy(
-                navigateToNextScreen = false,
+                navigateToNextScreen = Pair(false, ""),
             )
+        }
+    }
+
+    private fun determineNavigationDestination(user: AuthUser?): Pair<Boolean, String>{
+        return if(user != null){
+           // If the user is not null determine where to navigate to
+           if(user.isEmailVerified){
+               // If the user's email is verified then navigate to the home screen
+               Pair(true, HOME_FRAGMENT)
+           } else{
+               // else navigate to the verify email screen
+               Pair(true, VERIFY_EMAIL_FRAGMENT)
+           }
+        } else{
+            // else don't bother navigating at all
+            Pair(false, "")
         }
     }
 }
