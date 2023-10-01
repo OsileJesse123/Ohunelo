@@ -26,4 +26,14 @@ interface AuthenticationRepository {
     suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser>
 
     suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser>
+
+    suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Boolean>
+
+    suspend fun isAFirstTimeUser(): Boolean
+
+    suspend fun isUserLoggedIn(): Boolean
+
+    suspend fun updateIsAFirstTimeUser()
+
+    suspend fun updateIsUserLoggedIn(isUserLoggedIn: Boolean)
 }

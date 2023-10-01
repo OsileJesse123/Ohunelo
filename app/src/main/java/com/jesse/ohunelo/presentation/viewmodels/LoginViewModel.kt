@@ -10,6 +10,7 @@ import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.LoginUiState
 import com.jesse.ohunelo.util.HOME_FRAGMENT
+import com.jesse.ohunelo.util.UPDATE_USERNAME_FRAGMENT
 import com.jesse.ohunelo.util.UiText
 import com.jesse.ohunelo.util.VERIFY_EMAIL_FRAGMENT
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -237,11 +237,28 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    private fun updateIsUserLoggedIn(){
+        viewModelScope.launch {
+            authenticationRepository.updateIsUserLoggedIn(true)
+        }
+    }
+
     private fun determineNavigationDestination(user: AuthUser?): Pair<Boolean, String>{
         return if(user != null){
            // If the user is not null determine where to navigate to
            if(user.isEmailVerified){
+               // If the user's name is not null then navigate to the home screen
+               if(user.userName != null){
+                   // User logged in successfully so update status
+                   updateIsUserLoggedIn()
+                   Pair(true, HOME_FRAGMENT)
+               } else {
+                   // If the user's name is null then navigate to the update user name screen
+                   Pair(true, UPDATE_USERNAME_FRAGMENT)
+               }
                // If the user's email is verified then navigate to the home screen
+               // User logged in successfully so update status
+               updateIsUserLoggedIn()
                Pair(true, HOME_FRAGMENT)
            } else{
                // else navigate to the verify email screen

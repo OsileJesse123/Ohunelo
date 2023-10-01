@@ -1,6 +1,7 @@
 package com.jesse.ohunelo.data.repository
 
 import android.app.Activity
+import com.jesse.ohunelo.data.local.PrefStore
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.AuthenticationService
 import com.jesse.ohunelo.data.network.models.OhuneloResult
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 class AuthenticationRepositoryImpl @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
-    private val authenticationService: AuthenticationService
+    private val authenticationService: AuthenticationService,
+    private val prefStore: PrefStore
 ): AuthenticationRepository {
     override suspend fun getUser(): AuthUser? {
         return withContext(ioDispatcher){
@@ -45,6 +47,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
     override suspend fun logout() {
         withContext(ioDispatcher){
             authenticationService.logout()
+            prefStore.isLoggedIn = false
         }
     }
 
@@ -81,6 +84,36 @@ class AuthenticationRepositoryImpl @Inject constructor(
     override suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser> {
         return withContext(ioDispatcher){
             authenticationService.signInWithTwitter(activity)
+        }
+    }
+
+    override suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Boolean> {
+        return withContext(ioDispatcher){
+            authenticationService.updateTheUserName(firstName, lastName)
+        }
+    }
+
+    override suspend fun isAFirstTimeUser(): Boolean {
+        return withContext(ioDispatcher){
+            prefStore.isFirstTimeUser
+        }
+    }
+
+    override suspend fun isUserLoggedIn(): Boolean {
+        return withContext(ioDispatcher){
+            prefStore.isLoggedIn
+        }
+    }
+
+    override suspend fun updateIsAFirstTimeUser() {
+        withContext(ioDispatcher){
+            prefStore.isFirstTimeUser = false
+        }
+    }
+
+    override suspend fun updateIsUserLoggedIn(isUserLoggedIn: Boolean) {
+        withContext(ioDispatcher){
+            prefStore.isLoggedIn = isUserLoggedIn
         }
     }
 }

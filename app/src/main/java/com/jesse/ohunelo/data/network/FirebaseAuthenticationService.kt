@@ -264,10 +264,27 @@ class FirebaseAuthenticationService @Inject constructor(
         }
     }
 
+    override suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Boolean> {
+        return try {
+            val user = firebaseAuth.currentUser
+            if(user != null){
+                // If user is not null, update the user name
+                updateUserName(user, "$firstName $lastName")
+                OhuneloResult.Success(true)
+            } else{
+                // If user is null, no user was found so no update
+                OhuneloResult.Error(UiText.StringResource(R.string.no_user_found))
+            }
+        } catch (e: Exception){
+            Timber.e("Username update failed, Exception: $e")
+            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_name_update_failed))
+        }
+    }
+
     private suspend fun updateUserName(user: FirebaseUser, userName: String){
         val profileUpdates = UserProfileChangeRequest.Builder()
             .setDisplayName(userName)
             .build()
-        user.updateProfile(profileUpdates).await()
+         user.updateProfile(profileUpdates).await()
     }
 }
