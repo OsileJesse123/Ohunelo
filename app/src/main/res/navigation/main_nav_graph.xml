@@ -186,6 +186,14 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out"
             />
+        <action
+            android:id="@+id/action_loginFragment_to_updateUsernameFragment"
+            app:destination="@id/updateUsernameFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
 
     </fragment>
 
@@ -250,6 +258,17 @@
             app:popUpTo="@id/onboardingFragment"
             />
 
+        <action
+            android:id="@+id/action_onboardingFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/onboardingFragment"
+            />
+
     </fragment>
 
     <fragment
@@ -268,6 +287,24 @@
             app:popExitAnim="@anim/fade_out"
             app:popUpToInclusive="true"
             app:popUpTo="@id/main_nav_graph"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/updateUsernameFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.authentication.UpdateUsernameFragment"
+        android:label="UpdateUsernameFragment"
+        tools:layout="@layout/fragment_update_username"
+        >
+
+        <action
+            android:id="@+id/action_updateUsernameFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
             />
 
     </fragment>

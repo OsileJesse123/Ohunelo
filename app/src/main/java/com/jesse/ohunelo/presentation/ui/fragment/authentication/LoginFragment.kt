@@ -32,6 +32,7 @@ import com.jesse.ohunelo.databinding.FragmentLoginBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.LoginViewModel
 import com.jesse.ohunelo.util.HOME_FRAGMENT
+import com.jesse.ohunelo.util.UPDATE_USERNAME_FRAGMENT
 import com.jesse.ohunelo.util.UiText
 import com.jesse.ohunelo.util.VERIFY_EMAIL_FRAGMENT
 import dagger.hilt.android.AndroidEntryPoint
@@ -158,11 +159,14 @@ class LoginFragment : Fragment() {
             HOME_FRAGMENT -> {
                 findNavController()
                     .navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
-
             }
             VERIFY_EMAIL_FRAGMENT -> {
                 findNavController()
                     .navigate(LoginFragmentDirections.actionLoginFragmentToVerifyEmailFragment())
+            }
+            UPDATE_USERNAME_FRAGMENT -> {
+                findNavController()
+                    .navigate(LoginFragmentDirections.actionLoginFragmentToUpdateUsernameFragment())
             }
         }
         viewModel.onNavigationToNextScreen()

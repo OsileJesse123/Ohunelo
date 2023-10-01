@@ -17,4 +17,5 @@ interface AuthenticationService {
     suspend fun signInWithGoogle(idToken: String): OhuneloResult<AuthUser>
     suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser>
     suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser>
+    suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Boolean>
 }

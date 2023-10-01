@@ -1,6 +1,5 @@
 package com.jesse.ohunelo.domain.usecase
 
-import android.util.Patterns
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.util.EmailMatcher
 import com.jesse.ohunelo.util.UiText

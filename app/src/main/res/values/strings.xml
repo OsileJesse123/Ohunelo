@@ -136,6 +136,10 @@
     <string name="caller_temporarily_blocked">Caller has been temporarily blocked</string>
     <string name="facebook_app_id">270692319216293</string>
     <string name="facebook_client_token">93899d5d6e771ca909e5ecdc5fcabb1f</string>
+    <string name="user_name_update_failed">Username update failed</string>
+    <string name="no_user_found">No user found</string>
+    <string name="update_user_name">Update User Name</string>
+    <string name="update_user_name_instruction">It seems your User Name was not properly registered, please update it using the form below.</string>
 
     <plurals name="number_of_items_available">
         <item quantity="one">%d item</item>
