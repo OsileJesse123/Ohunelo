@@ -31,6 +31,7 @@
                 android:src="@drawable/pasta_image"
                 android:scaleType="centerCrop"
                 android:theme="@style/cubicImage"
+                app:imageSrcUrl="@{recipe.image}"
                 app:layout_constraintDimensionRatio="7:5"
                 app:layout_constraintHeight_percent=".63"
                 app:layout_constraintVertical_bias="0"
@@ -47,40 +48,19 @@
                 android:layout_marginTop="@dimen/grid_1"
                 android:lineSpacingExtra="1dp"
                 android:text="@{recipe.title}"
+                android:maxLines="2"
+                android:ellipsize="end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recipe_image_view"
                 tools:text="Asian Chickpea Lettuce Wraps" />
 
-            <TextView
-                android:id="@+id/calories_text_view"
-                style="?attr/textAppearanceBody2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="1dp"
-                app:uiText="@{recipe.nutrition.formatCalories()}"
-                app:drawableStartCompat="@drawable/calories_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="20 Kcal"
-                app:drawableTint="@color/secondary_70" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="@dimen/_5dp"
-                android:layout_height="@dimen/_5dp"
-                android:background="@color/secondary_70"
-                android:theme="@style/ShapeAppearanceOverlay.Ohunelo.ImageView.Circular"
-                app:layout_constraintBottom_toBottomOf="@+id/calories_text_view"
-                app:layout_constraintEnd_toStartOf="@+id/clock_image_view"
-                app:layout_constraintStart_toEndOf="@+id/calories_text_view"
-                app:layout_constraintTop_toTopOf="@+id/calories_text_view" />
-
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/clock_image_view"
                 android:layout_width="13dp"
                 android:layout_height="13dp"
-                android:layout_marginEnd="1dp"
                 android:src="@drawable/clock_icon"
+                android:layout_marginEnd="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/ready_in_minutes_text_view"
                 app:layout_constraintTop_toTopOf="@+id/ready_in_minutes_text_view"
@@ -91,10 +71,12 @@
                 style="?attr/textAppearanceBody2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="20 Min"
-                app:uiText="@{recipe.formatReadyInMinutes()}"
+                android:layout_marginStart="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:uiText="@{recipe.formatReadyInMinutes()}"
+                tools:text="20 Min" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

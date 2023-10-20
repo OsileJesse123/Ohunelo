@@ -5,7 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.Nutrition
 import com.jesse.ohunelo.data.model.Recipe
+import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.models.*
+import com.jesse.ohunelo.data.repository.AuthenticationRepository
+import com.jesse.ohunelo.data.repository.RecipeRepository
 import com.jesse.ohunelo.presentation.uistates.HomeUiState
 import com.jesse.ohunelo.util.UiDrawable
 import com.jesse.ohunelo.util.UiText
@@ -21,7 +24,10 @@ import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(): ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val recipeRepository: RecipeRepository,
+    private val authenticationRepository: AuthenticationRepository
+): ViewModel() {
 
     private val _homeUiStateFlow: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val homeUiStateFlow: StateFlow<HomeUiState> get() = _homeUiStateFlow.asStateFlow()
@@ -34,7 +40,11 @@ class HomeViewModel @Inject constructor(): ViewModel() {
     // todo: when data layer is properly setup changes will be made here
     init {
         updateGreeting()
-        recipes =  listOf(
+        selectedRecipeCategory = "Main Course"
+        getUserName()
+        getRandomRecipes()
+        getRecipesByMealType()
+        /*recipes =  listOf(
             Recipe(
                 id = 1,
                 analyzedInstructions = listOf(
@@ -269,11 +279,77 @@ class HomeViewModel @Inject constructor(): ViewModel() {
                 nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
                     expires = 1L)
             ),
-        )
-        selectedRecipeCategory = "Main Course"
-        _homeUiStateFlow.update {
+        )*/
+        /*_homeUiStateFlow.update {
             state ->
             state.copy(randomRecipes = recipes, recipesByCategory = recipes)
+        }*/
+    }
+
+    private fun getUserName(){
+        viewModelScope.launch {
+            val result = authenticationRepository.getUser()
+            Timber.e("User: $result, UserName: ${result?.userName}")
+            result?.let {
+                user ->
+                _homeUiStateFlow.update {
+                    homeUiState ->
+
+                    homeUiState.copy(userName = user.userName ?: "")
+                }
+                Timber.e("Update Ui: ${_homeUiStateFlow.value.userName}")
+            }
+        }
+    }
+
+    private fun getRecipesByMealType(){
+        viewModelScope.launch {
+            when(val result = recipeRepository.getRecipesByMealType(mealType = selectedRecipeCategory.lowercase())){
+                is OhuneloResult.Success -> {
+                    _homeUiStateFlow.update {
+                        homeUiState ->
+                        homeUiState.copy(
+                            recipesByCategory = result.data
+                        )
+                    }
+                }
+
+                is OhuneloResult.Error -> {
+                    _homeUiStateFlow.update {
+                            homeUiState ->
+                        homeUiState.copy(
+                            recipesByCategory = listOf(),
+                            showErrorMessage = Pair(true, result.errorMessage)
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getRandomRecipes(){
+        viewModelScope.launch {
+            val result = recipeRepository.getRandomRecipes()
+            when(result){
+                is OhuneloResult.Success -> {
+                    _homeUiStateFlow.update {
+                        homeUiState ->
+                        homeUiState.copy(
+                            randomRecipes = result.data
+                        )
+                    }
+                }
+
+                is OhuneloResult.Error -> {
+                    _homeUiStateFlow.update {
+                            homeUiState ->
+                        homeUiState.copy(
+                            randomRecipes = recipes,
+                            showErrorMessage = Pair(true, result.errorMessage)
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -303,6 +379,15 @@ class HomeViewModel @Inject constructor(): ViewModel() {
         viewModelScope.launch {
             this@HomeViewModel.selectedRecipeCategory = selectedRecipeCategory
             Timber.e("Selected Recipe: ${selectedRecipeCategory.lowercase(Locale.getDefault())}")
+        }
+    }
+
+    fun onErrorMessageShown() {
+        _homeUiStateFlow.update {
+            homeUiState ->
+            homeUiState.copy(
+                showErrorMessage = Pair(false, null)
+            )
         }
     }
 }

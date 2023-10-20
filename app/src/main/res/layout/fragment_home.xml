@@ -5,10 +5,6 @@
 
     <data>
         <variable
-            name="userName"
-            type="String" />
-
-        <variable
             name="viewModel"
             type="com.jesse.ohunelo.presentation.viewmodels.HomeViewModel" />
     </data>
@@ -68,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     style="?attr/textAppearanceHeadline2"
-                    android:text="@{userName}"
+                    android:text="@{viewModel.homeUiStateFlow.userName}"
                     android:layout_marginTop="@dimen/grid_0_25"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/time_of_day_text_view"

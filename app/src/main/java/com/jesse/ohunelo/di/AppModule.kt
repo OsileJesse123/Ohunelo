@@ -2,6 +2,8 @@ package com.jesse.ohunelo.di
 
 import com.jesse.ohunelo.data.network.AuthenticationService
 import com.jesse.ohunelo.data.network.FirebaseAuthenticationService
+import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
+import com.jesse.ohunelo.data.network.RecipeNetworkDataSourceImpl
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.data.repository.AuthenticationRepositoryImpl
 import com.jesse.ohunelo.data.repository.RecipeRepository
@@ -55,6 +57,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAuthenticationService(authenticationService: FirebaseAuthenticationService): AuthenticationService = authenticationService
+
+    @Provides
+    fun provideRecipeNetworkDataSource(recipeNetworkDataSourceImpl: RecipeNetworkDataSourceImpl): RecipeNetworkDataSource = recipeNetworkDataSourceImpl
 }
 
 

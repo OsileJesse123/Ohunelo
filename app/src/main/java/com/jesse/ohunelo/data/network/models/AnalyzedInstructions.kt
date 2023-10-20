@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.jesse.ohunelo.R
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
-import java.util.*
+import java.util.UUID
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -13,7 +13,7 @@ data class AnalyzedInstructions(
     val id: String = UUID.randomUUID().toString(),
     val name: String,
     val steps: List<Step>
-): Parcelable{
+): Parcelable {
     fun formatStepsSize(context: Context): String{
         return context.resources.getQuantityString(R.plurals.number_of_steps_available, steps.size, steps.size)
     }
