@@ -9,12 +9,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.jesse.ohunelo"
-        minSdk 24
-        targetSdk 32
+        minSdk 26
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -140,4 +140,18 @@ dependencies {
     // Glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+    // Room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    // Security
+    implementation "androidx.security:security-crypto:$security_crypto_version"
+
+    // Sqlcipher
+    implementation "net.zetetic:android-database-sqlcipher:$sql_cipher_version"
+
+    // Shimmer effect
+    implementation "com.facebook.shimmer:shimmer:$shimmer_version"
 }

@@ -12,9 +12,11 @@ import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.paging.LoadState
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
+import com.jesse.ohunelo.R
 import com.jesse.ohunelo.presentation.ui.fragment.OnRecipeCategorySelectedListener
 
 @BindingAdapter("app:uiText")
@@ -131,6 +133,11 @@ fun setImage(imageView: ImageView, imageUrl: String?){
             val imageUri = imageUrl.toUri().buildUpon().scheme("https").build()
             Glide.with(imageView.context)
                 .load(imageUri)
+                .apply(
+                    RequestOptions()
+                        .placeholder(R.drawable.loading_animation)
+                        .error(R.drawable.broken_image)
+                )
                 .into(imageView)
         }
     }

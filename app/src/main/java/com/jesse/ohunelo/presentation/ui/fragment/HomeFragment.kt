@@ -9,8 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
@@ -24,6 +26,7 @@ import com.jesse.ohunelo.adapters.RecipeAdapter
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.databinding.FragmentHomeBinding
 import com.jesse.ohunelo.presentation.viewmodels.HomeViewModel
+import com.jesse.ohunelo.presentation.viewmodels.SharedViewModel
 import com.jesse.ohunelo.util.RecipeViewHolderType
 import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +44,8 @@ class HomeFragment : Fragment() {
     private var recipeByCategoryAdapter: RecipeAdapter? = null
 
     private val viewModel by hiltNavGraphViewModels<HomeViewModel>(R.id.main_nav_graph)
+
+    private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     private val timeReceiver = object: BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -87,6 +92,7 @@ class HomeFragment : Fragment() {
 
         setupSwipeToRefreshLayout()
 
+
         // Set See All TextView onClickListener
         binding.seeAllTextView.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToSeeAllRecipesFragment(viewModel.selectedRecipeCategory)
@@ -102,6 +108,21 @@ class HomeFragment : Fragment() {
                     if(homeUiState.showErrorMessage.first){
                         showErrorMessage(homeUiState.showErrorMessage.second)
                     }
+                    if(!homeUiState.shouldKeepSplashScreenOn){
+                        sharedViewModel.stopShowingSplashScreen()
+                    }
+                    // If random recipes and recipes by category are not empty, it means there is data to be displayed so display it
+                    binding.homeScreenLayout.isVisible = (homeUiState.randomRecipes.isNotEmpty() && homeUiState.recipesByCategory.isNotEmpty())
+
+                    // If random recipes and recipes by category are empty and screen is no longer loading show the error view
+                    binding.foodErrorLayout.isVisible = (homeUiState.randomRecipes.isEmpty() && homeUiState.recipesByCategory.isEmpty() && !homeUiState.loading)
+
+                    // If random recipes is not empty but recipes by category is empty, then show the recipes by category error
+                    binding.recipesByCategoryError.isVisible = (homeUiState.randomRecipes.isNotEmpty() && homeUiState.recipesByCategory.isEmpty())
+
+                    binding.swipeToRefreshLayout.isRefreshing = homeUiState.loading
+                    binding.recipesByCategoryRecycler.isVisible = !homeUiState.startShimmer
+                    binding.recipesByCategoryShimmer.isVisible = homeUiState.startShimmer
                 }
             }
         }
@@ -134,9 +155,7 @@ class HomeFragment : Fragment() {
     private fun setupSwipeToRefreshLayout(){
         binding.swipeToRefreshLayout.apply {
             setOnRefreshListener {
-                Timber.e("Layout refreshed")
-                // todo: Proper implementation for isRefreshing will be added
-                isRefreshing = false
+                viewModel.getRecipesForHomeScreen()
             }
             setColorSchemeResources(R.color.orange_500)
         }

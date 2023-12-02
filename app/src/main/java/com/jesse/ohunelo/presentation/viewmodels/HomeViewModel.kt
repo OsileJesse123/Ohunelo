@@ -9,10 +9,13 @@ import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.models.*
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.data.repository.RecipeRepository
+import com.jesse.ohunelo.domain.usecase.FormatHomeScreenDataUseCase
 import com.jesse.ohunelo.presentation.uistates.HomeUiState
 import com.jesse.ohunelo.util.UiDrawable
 import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,270 +29,27 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository,
-    private val authenticationRepository: AuthenticationRepository
+    private val authenticationRepository: AuthenticationRepository,
+    private val formatHomeScreenDataUseCase: FormatHomeScreenDataUseCase
 ): ViewModel() {
 
     private val _homeUiStateFlow: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val homeUiStateFlow: StateFlow<HomeUiState> get() = _homeUiStateFlow.asStateFlow()
 
-    // todo: this acts a source of recipe data for now and would be removed soon
-   private var recipes = listOf<Recipe>()
+    private var getRecipesByMealTypeJob: Job? = null
 
-   var selectedRecipeCategory = ""
-       private set
-    // todo: when data layer is properly setup changes will be made here
+    var selectedRecipeCategory = "Main Course"
+        private set
+
     init {
         updateGreeting()
-        selectedRecipeCategory = "Main Course"
         getUserName()
-        getRandomRecipes()
-        getRecipesByMealType()
-        /*recipes =  listOf(
-            Recipe(
-                id = 1,
-                analyzedInstructions = listOf(
-                    AnalyzedInstructions(name = "Tortilla Chip", steps = listOf(Step(number = 1, step = "Preheat oven to 350", ingredients = listOf(), equipment = listOf()), Step(number = 2, step = "In a large bowl beat the butter with an electric mixer on medium speed for 30 seconds.", ingredients = listOf(), equipment = listOf()), Step(number = 3, step = "Add brown sugar, maple syrup, baking soda, cinnamon, ginger and salt. Beat until combined.", ingredients = listOf(), equipment = listOf()), Step(number = 4, step = "Beat in egg, applesauce and vanilla. Beat in as much flour as you can with mixer. Stir in remaining flour, carrots, raisins, walnuts just until combined.", ingredients = listOf(), equipment = listOf()))),
-                    AnalyzedInstructions(name = "", steps = listOf(Step(number = 1, step = "Preheat oven to 350", ingredients = listOf(), equipment = listOf()))),
-                ),
-                cookingMinutes = 20,
-                creditsText = "creditsText",
-                extendedIngredients = listOf(ExtendedIngredient(id = 1034053,
-                    aisle = "Oil, Vinegar, Salad Dressing", consistency = "LIQUID",
-                    name = "extra virgin olive oil", nameClean = "extra virgin olive oil",
-                    original = "1-2 tbsp extra virgin olive oil", originalName = "extra virgin olive oil",
-                    amount = 1.0, unit = "tbsp", meta = listOf(),
-                    measures = Measures(us = Us(amount = 1.0, unitLong = "Tbsp", unitShort = "Tbsp"),
-                        metric = Metric(amount = 1.0, unitShort = "Tbsp", unitLong = "Tbsp")), image = "olive-oil.jpg"
-                ), ExtendedIngredient(id = 1034053,
-                    aisle = "Oil, Vinegar, Salad Dressing", consistency = "LIQUID",
-                    name = "extra virgin olive oil", nameClean = "extra virgin olive oil",
-                    original = "1-2 tbsp extra virgin olive oil", originalName = "extra virgin olive oil",
-                    amount = 1.0, unit = "tbsp", meta = listOf(),
-                    measures = Measures(us = Us(amount = 1.0, unitLong = "Tbsp", unitShort = "Tbsp"),
-                        metric = Metric(amount = 1.0, unitShort = "Tbsp", unitLong = "Tbsp")), image = "olive-oil.jpg"
-                ), ExtendedIngredient(id = 1034053,
-                    aisle = "Oil, Vinegar, Salad Dressing", consistency = "LIQUID",
-                    name = "extra virgin olive oil", nameClean = "extra virgin olive oil",
-                    original = "1-2 tbsp extra virgin olive oil", originalName = "extra virgin olive oil",
-                    amount = 1.0, unit = "tbsp", meta = listOf(),
-                    measures = Measures(us = Us(amount = 1.0, unitLong = "Tbsp", unitShort = "Tbsp"),
-                        metric = Metric(amount = 1.0, unitShort = "Tbsp", unitLong = "Tbsp")), image = "olive-oil.jpg"
-                )),
-                healthScore = 5,
-                image = "image",
-                imageType = "imageType",
-                instructions = "instructions",
-                preparationMinutes = 20,
-                pricePerServing = 100.00,
-                readyInMinutes = 20,
-                servings = 2,
-                sourceName = "Anthony Joshua",
-                title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33,
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
-                    expires = 1L)
-            ),
-            Recipe(
-                id = 1,
-                analyzedInstructions = listOf(),
-                cookingMinutes = 20,
-                creditsText = "creditsText",
-                extendedIngredients = listOf(),
-                healthScore = 5,
-                image = "image",
-                imageType = "imageType",
-                instructions = "instructions",
-                preparationMinutes = 20,
-                pricePerServing = 100.00,
-                readyInMinutes = 20,
-                servings = 2,
-                sourceName = "Anthony Joshua",
-                title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33,
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
-                    expires = 1L)
-            ),
-            Recipe(
-                id = 1,
-                analyzedInstructions = listOf(),
-                cookingMinutes = 20,
-                creditsText = "creditsText",
-                extendedIngredients = listOf(),
-                healthScore = 5,
-                image = "image",
-                imageType = "imageType",
-                instructions = "instructions",
-                preparationMinutes = 20,
-                pricePerServing = 100.00,
-                readyInMinutes = 20,
-                servings = 2,
-                sourceName = "Anthony Joshua",
-                title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33,
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
-                    expires = 1L)
-            ),
-            Recipe(
-                id = 1,
-                analyzedInstructions = listOf(),
-                cookingMinutes = 20,
-                creditsText = "creditsText",
-                extendedIngredients = listOf(),
-                healthScore = 5,
-                image = "image",
-                imageType = "imageType",
-                instructions = "instructions",
-                preparationMinutes = 20,
-                pricePerServing = 100.00,
-                readyInMinutes = 20,
-                servings = 2,
-                sourceName = "Anthony Joshua",
-                title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33,
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
-                    expires = 1L)
-            ),
-            Recipe(
-                id = 1,
-                analyzedInstructions = listOf(),
-                cookingMinutes = 20,
-                creditsText = "creditsText",
-                extendedIngredients = listOf(),
-                healthScore = 5,
-                image = "image",
-                imageType = "imageType",
-                instructions = "instructions",
-                preparationMinutes = 20,
-                pricePerServing = 100.00,
-                readyInMinutes = 20,
-                servings = 2,
-                sourceName = "Anthony Joshua",
-                title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33,
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
-                    expires = 1L)
-            ),
-            Recipe(
-                id = 1,
-                analyzedInstructions = listOf(),
-                cookingMinutes = 20,
-                creditsText = "creditsText",
-                extendedIngredients = listOf(),
-                healthScore = 5,
-                image = "image",
-                imageType = "imageType",
-                instructions = "instructions",
-                preparationMinutes = 20,
-                pricePerServing = 100.00,
-                readyInMinutes = 20,
-                servings = 2,
-                sourceName = "Anthony Joshua",
-                title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33,
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
-                    expires = 1L)
-            ),
-            Recipe(
-                id = 1,
-                analyzedInstructions = listOf(),
-                cookingMinutes = 20,
-                creditsText = "creditsText",
-                extendedIngredients = listOf(),
-                healthScore = 5,
-                image = "image",
-                imageType = "imageType",
-                instructions = "instructions",
-                preparationMinutes = 20,
-                pricePerServing = 100.00,
-                readyInMinutes = 20,
-                servings = 2,
-                sourceName = "Anthony Joshua",
-                title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33,
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
-                    expires = 1L)
-            ),
-            Recipe(
-                id = 1,
-                analyzedInstructions = listOf(),
-                cookingMinutes = 20,
-                creditsText = "creditsText",
-                extendedIngredients = listOf(),
-                healthScore = 5,
-                image = "image",
-                imageType = "imageType",
-                instructions = "instructions",
-                preparationMinutes = 20,
-                pricePerServing = 100.00,
-                readyInMinutes = 20,
-                servings = 2,
-                sourceName = "Anthony Joshua",
-                title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33,
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
-                    expires = 1L)
-            ),
-            Recipe(
-                id = 1,
-                analyzedInstructions = listOf(),
-                cookingMinutes = 20,
-                creditsText = "creditsText",
-                extendedIngredients = listOf(),
-                healthScore = 5,
-                image = "image",
-                imageType = "imageType",
-                instructions = "instructions",
-                preparationMinutes = 20,
-                pricePerServing = 100.00,
-                readyInMinutes = 20,
-                servings = 2,
-                sourceName = "Anthony Joshua",
-                title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33,
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
-                    expires = 1L)
-            ),
-            Recipe(
-                id = 1,
-                analyzedInstructions = listOf(),
-                cookingMinutes = 20,
-                creditsText = "creditsText",
-                extendedIngredients = listOf(),
-                healthScore = 5,
-                image = "image",
-                imageType = "imageType",
-                instructions = "instructions",
-                preparationMinutes = 20,
-                pricePerServing = 100.00,
-                readyInMinutes = 20,
-                servings = 2,
-                sourceName = "Anthony Joshua",
-                title = "Asian Chickpea Lettuce Wraps",
-                weightWatcherSmartPoints = 33,
-                summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
-                    expires = 1L)
-            ),
-        )*/
-        /*_homeUiStateFlow.update {
-            state ->
-            state.copy(randomRecipes = recipes, recipesByCategory = recipes)
-        }*/
+        getRecipesForHomeScreen()
     }
 
     private fun getUserName(){
         viewModelScope.launch {
             val result = authenticationRepository.getUser()
-            Timber.e("User: $result, UserName: ${result?.userName}")
             result?.let {
                 user ->
                 _homeUiStateFlow.update {
@@ -297,19 +57,80 @@ class HomeViewModel @Inject constructor(
 
                     homeUiState.copy(userName = user.userName ?: "")
                 }
-                Timber.e("Update Ui: ${_homeUiStateFlow.value.userName}")
             }
         }
     }
 
-    private fun getRecipesByMealType(){
+    fun getRecipesForHomeScreen(){
         viewModelScope.launch {
+            _homeUiStateFlow.update {
+                homeUiState ->
+                homeUiState.copy(loading = true)
+            }
+            val homeScreenData = formatHomeScreenDataUseCase(selectedRecipeCategory)
+
+            // If both the random recipes and recipes by category are not empty
+            if (homeScreenData.randomRecipes != null && homeScreenData.recipesByCategory != null){
+                // If an error message is also available, display the stale data and show the error message
+                if(homeScreenData.errorMessage != null){
+                    _homeUiStateFlow.update {
+                            homeUiState ->
+                        homeUiState.copy(
+                            randomRecipes = homeScreenData.randomRecipes,
+                            recipesByCategory = homeScreenData.recipesByCategory,
+                            showErrorMessage = Pair(true, homeScreenData.errorMessage),
+                            shouldKeepSplashScreenOn = false,
+                            loading = false
+                        )
+                    }
+                } else{
+                    // Else, just display the random recipes and recipes by category to the user
+                    _homeUiStateFlow.update {
+                            homeUiState ->
+                        homeUiState.copy(
+                            randomRecipes = homeScreenData.randomRecipes,
+                            recipesByCategory = homeScreenData.recipesByCategory,
+                            shouldKeepSplashScreenOn = false,
+                            loading = false
+                        )
+                    }
+                }
+            }
+
+            // If either on of the recipes is null(empty), No recipe data should be displayed and the error message should be shown
+            if (homeScreenData.randomRecipes == null || homeScreenData.recipesByCategory == null){
+                _homeUiStateFlow.update {
+                        homeUiState ->
+                    homeUiState.copy(
+                        randomRecipes = listOf(),
+                        recipesByCategory = listOf(),
+                        showErrorMessage = Pair(true, homeScreenData.errorMessage),
+                        shouldKeepSplashScreenOn = false,
+                        loading = false
+                    )
+                }
+            }
+
+        }
+    }
+
+    fun getRecipesByMealType(selectedRecipeCategory: String = "Main Course"){
+        getRecipesByMealTypeJob?.cancel()
+        _homeUiStateFlow.update {
+            homeUiState ->
+            homeUiState.copy(startShimmer = true)
+        }
+        getRecipesByMealTypeJob = viewModelScope.launch {
+            delay(500L)
+            this@HomeViewModel.selectedRecipeCategory = selectedRecipeCategory
             when(val result = recipeRepository.getRecipesByMealType(mealType = selectedRecipeCategory.lowercase())){
                 is OhuneloResult.Success -> {
                     _homeUiStateFlow.update {
                         homeUiState ->
                         homeUiState.copy(
-                            recipesByCategory = result.data
+                            recipesByCategory = result.data!!,
+                            shouldKeepSplashScreenOn = false,
+                            startShimmer = false,
                         )
                     }
                 }
@@ -318,34 +139,10 @@ class HomeViewModel @Inject constructor(
                     _homeUiStateFlow.update {
                             homeUiState ->
                         homeUiState.copy(
-                            recipesByCategory = listOf(),
-                            showErrorMessage = Pair(true, result.errorMessage)
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    private fun getRandomRecipes(){
-        viewModelScope.launch {
-            val result = recipeRepository.getRandomRecipes()
-            when(result){
-                is OhuneloResult.Success -> {
-                    _homeUiStateFlow.update {
-                        homeUiState ->
-                        homeUiState.copy(
-                            randomRecipes = result.data
-                        )
-                    }
-                }
-
-                is OhuneloResult.Error -> {
-                    _homeUiStateFlow.update {
-                            homeUiState ->
-                        homeUiState.copy(
-                            randomRecipes = recipes,
-                            showErrorMessage = Pair(true, result.errorMessage)
+                            recipesByCategory = result.data ?: listOf(),
+                            showErrorMessage = Pair(true, result.errorMessage),
+                            shouldKeepSplashScreenOn = false,
+                            startShimmer = false
                         )
                     }
                 }
@@ -373,13 +170,6 @@ class HomeViewModel @Inject constructor(
                 userGreetingIcon = UiDrawable(R.drawable.moon_icon)) }}
         }
 
-    }
-
-    fun onRecipeCategorySelected(selectedRecipeCategory: String){
-        viewModelScope.launch {
-            this@HomeViewModel.selectedRecipeCategory = selectedRecipeCategory
-            Timber.e("Selected Recipe: ${selectedRecipeCategory.lowercase(Locale.getDefault())}")
-        }
     }
 
     fun onErrorMessageShown() {

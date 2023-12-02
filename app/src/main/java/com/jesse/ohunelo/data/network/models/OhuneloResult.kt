@@ -3,8 +3,11 @@ package com.jesse.ohunelo.data.network.models
 import com.jesse.ohunelo.util.UiText
 
 
-sealed class OhuneloResult<out T: Any>{
+sealed class OhuneloResult<T>(
+    val data: T? = null,
+    val errorMessage: UiText? = null
+){
 
-    data class Success<out T: Any>(val data: T): OhuneloResult<T>()
-    data class Error(val errorMessage: UiText): OhuneloResult<Nothing>()
+    class Success<T>(data: T): OhuneloResult<T>(data = data)
+    class Error<T>(errorMessage: UiText, data: T? = null): OhuneloResult<T>(data, errorMessage)
 }
