@@ -7,9 +7,11 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.paging.LoadState
+import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
@@ -119,6 +121,19 @@ fun setIndicatorVisibility(view: ImageView, notificationHasBeenRead: Boolean?){
 @BindingAdapter("app:errorMessageText")
 fun setErrorMessageText(view: TextInputLayout, errorMessage: UiText?){
     view.error = errorMessage?.asString(view.context)
+}
+
+@BindingAdapter("app:imageSrcUrl")
+fun setImage(imageView: ImageView, imageUrl: String?){
+    imageUrl?.let {
+        imageUrl ->
+        if(imageUrl.isNotEmpty()){
+            val imageUri = imageUrl.toUri().buildUpon().scheme("https").build()
+            Glide.with(imageView.context)
+                .load(imageUri)
+                .into(imageView)
+        }
+    }
 }
 
 

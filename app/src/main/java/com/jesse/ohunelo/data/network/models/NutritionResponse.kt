@@ -1,7 +1,9 @@
 package com.jesse.ohunelo.data.network.models
 
 import com.jesse.ohunelo.data.local.models.NutritionEntity
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class NutritionResponse(
     val bad: List<Bad>,
     val caloricBreakdown: CaloricBreakdown,

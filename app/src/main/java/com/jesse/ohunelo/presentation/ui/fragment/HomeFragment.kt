@@ -8,13 +8,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.RecipeAdapter
@@ -22,6 +25,7 @@ import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.databinding.FragmentHomeBinding
 import com.jesse.ohunelo.presentation.viewmodels.HomeViewModel
 import com.jesse.ohunelo.util.RecipeViewHolderType
+import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -36,7 +40,7 @@ class HomeFragment : Fragment() {
     private var randomRecipeAdapter: RecipeAdapter? = null
     private var recipeByCategoryAdapter: RecipeAdapter? = null
 
-    private val homeViewModel by viewModels<HomeViewModel>()
+    private val viewModel by hiltNavGraphViewModels<HomeViewModel>(R.id.main_nav_graph)
 
     private val timeReceiver = object: BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -45,7 +49,7 @@ class HomeFragment : Fragment() {
                 intent ->
                 if(intent.action == Intent.ACTION_TIME_TICK){
                     Timber.tag("UserGreeting").e("Greeting has been updated")
-                    homeViewModel.updateGreeting()
+                    viewModel.updateGreeting()
                 }
             }
         }
@@ -58,6 +62,12 @@ class HomeFragment : Fragment() {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container,
             false)
 
+        binding.apply {
+            viewModel = this@HomeFragment.viewModel
+            lifecycleOwner = viewLifecycleOwner
+            executePendingBindings()
+        }
+
         // Initialize adapters
         randomRecipeAdapter = RecipeAdapter(RecipeViewHolderType.RANDOM_RECIPE){
             navigateToRecipeDetail(it)
@@ -65,8 +75,6 @@ class HomeFragment : Fragment() {
         recipeByCategoryAdapter = RecipeAdapter(RecipeViewHolderType.RECIPE_BY_CATEGORY){
             navigateToRecipeDetail(it)
         }
-
-        setupBinding()
 
         // Inflate the layout for this fragment
         return binding.root
@@ -81,16 +89,19 @@ class HomeFragment : Fragment() {
 
         // Set See All TextView onClickListener
         binding.seeAllTextView.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToSeeAllRecipesFragment(homeViewModel.selectedRecipeCategory)
+            val action = HomeFragmentDirections.actionHomeFragmentToSeeAllRecipesFragment(viewModel.selectedRecipeCategory)
             findNavController().navigate(action)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                homeViewModel.homeUiStateFlow.collect{
+                viewModel.homeUiStateFlow.collect{
                     homeUiState ->
                     randomRecipeAdapter?.submitList(homeUiState.randomRecipes)
                     recipeByCategoryAdapter?.submitList(homeUiState.recipesByCategory)
+                    if(homeUiState.showErrorMessage.first){
+                        showErrorMessage(homeUiState.showErrorMessage.second)
+                    }
                 }
             }
         }
@@ -109,6 +120,15 @@ class HomeFragment : Fragment() {
         // timeReceiver is unregistered here to ensure that the broadcast receiver is
         // unregistered before fragment is stopped
         context?.unregisterReceiver(timeReceiver)
+    }
+
+    private fun showErrorMessage(errorMessage: UiText?) {
+        Toast.makeText(
+            requireContext(),
+            errorMessage?.asString(requireContext()),
+            Toast.LENGTH_LONG
+        ).show()
+        viewModel.onErrorMessageShown()
     }
 
     private fun setupSwipeToRefreshLayout(){
@@ -132,15 +152,6 @@ class HomeFragment : Fragment() {
             adapter = recipeByCategoryAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,
                 false)
-        }
-    }
-
-    private fun setupBinding(){
-        // Set User name and ViewModel
-        binding.apply {
-            userName = "Osile Jacksonn"
-            viewModel = homeViewModel
-            executePendingBindings()
         }
     }
 

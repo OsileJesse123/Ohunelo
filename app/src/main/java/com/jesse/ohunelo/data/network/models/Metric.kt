@@ -6,8 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class
-Metric(
+data class Metric(
     val amount: Double,
     val unitLong: String,
     val unitShort: String

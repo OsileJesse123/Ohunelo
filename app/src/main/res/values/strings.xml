@@ -140,6 +140,7 @@
     <string name="no_user_found">No user found</string>
     <string name="update_user_name">Update User Name</string>
     <string name="update_user_name_instruction">It seems your User Name was not properly registered, please update it using the form below.</string>
+    <string name="failed_to_get_recipes">Failed to get recipes</string>
 
     <plurals name="number_of_items_available">
         <item quantity="one">%d item</item>
