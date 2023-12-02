@@ -21,7 +21,7 @@ data class RecipeResponse(
     val healthScore: Int = 0,
     val id: Int,
     val image: String = "",
-    val imageType: String,
+    val imageType: String = "",
     val instructions: String = "",
     val license: String = "",
     val lowFodmap: Boolean = false,
@@ -61,6 +61,7 @@ data class RecipeResponse(
         title = title,
         weightWatcherSmartPoints = weightWatcherSmartPoints,
         summary = summary,
-        nutritionEntity = nutritionEntity
+        nutritionEntity = nutritionEntity,
+        dishTypes = dishTypes
     )
 }

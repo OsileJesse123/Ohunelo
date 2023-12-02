@@ -21,7 +21,6 @@ import com.jesse.ohunelo.databinding.ActivityMainBinding
 import com.jesse.ohunelo.presentation.viewmodels.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -113,9 +112,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun hideBottomNavigationView(){
         val translationY = binding.ohuneloBottomNav.translationY
-        Timber.e("Hide Bottom")
         if(translationY == 0f){
-            Timber.e("Hide Bottom, i hid it")
             animateBottomNavigationView(
                 0f,
                 binding.ohuneloBottomNav.height.toFloat(),
@@ -125,31 +122,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun animateBottomNavigationView(from: Float, to: Float, hideBottomNavView: Boolean) {
-        Timber.e("Hide Bottom, Bottom Height $to")
         if (previousTranslationY != to) {
             animator.cancel()
             animator.setFloatValues(from, to)
             animator.addListener(object : Animator.AnimatorListener {
 
-                override fun onAnimationStart(animation: Animator?) {
+                override fun onAnimationStart(p0: Animator) {
                     // No implementation needed
                 }
 
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(p0: Animator) {
                     if (hideBottomNavView){
                         binding.ohuneloBottomNav.visibility = View.GONE
-                        Timber.e("Hide Bottom, is gone")
                     } else {
                         binding.ohuneloBottomNav.visibility = View.VISIBLE
-                        Timber.e("Hide Bottom, did not hide")
                     }
                 }
 
-                override fun onAnimationCancel(animation: Animator?) {
+                override fun onAnimationCancel(p0: Animator) {
                     // No implementation needed
                 }
 
-                override fun onAnimationRepeat(animation: Animator?) {
+                override fun onAnimationRepeat(p0: Animator) {
                     // No implementation needed
                 }
 

@@ -38,16 +38,16 @@ class OnboardingViewModel @Inject constructor(
             } else{
                 // If the user is not a first time user
                 if (authenticationRepository.isUserLoggedIn()){
-                    // If the user is logged in
+                    // If the user is logged in, navigate to the home screen
                     _onboardingUiStateFlow.update {
                             onboardingUiState ->
                         onboardingUiState.copy(
                             navigateToNextScreen = Pair(true, HOME_FRAGMENT),
-                            shouldKeepSplashScreenOn = false
+                            shouldKeepSplashScreenOn = true
                         )
                     }
                 } else {
-                    // If the user is not logged in
+                    // If the user is not logged in, navigate to the login screen
                     _onboardingUiStateFlow.update {
                             onboardingUiState ->
                         onboardingUiState.copy(

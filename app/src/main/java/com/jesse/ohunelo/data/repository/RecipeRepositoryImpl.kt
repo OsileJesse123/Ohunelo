@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.RecipePagingSource
+import com.jesse.ohunelo.data.local.RecipeLocalDataSource
 import com.jesse.ohunelo.data.local.models.NutritionEntity
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
@@ -14,19 +15,22 @@ import com.jesse.ohunelo.util.UiText
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import retrofit2.HttpException
 import javax.inject.Inject
 
 private const val RECIPES_PER_PAGE = 20
 class RecipeRepositoryImpl @Inject constructor(
+    private val recipeLocalDataSource: RecipeLocalDataSource,
     private val recipeNetworkDataSource: RecipeNetworkDataSource,
     @DefaultDispatcher
     private val defaultDispatcher: CoroutineDispatcher
 ): RecipeRepository {
     override suspend fun getRandomRecipes(): OhuneloResult<List<Recipe>> {
          return try {
+             // Get the recipes from api
             val result = recipeNetworkDataSource.getRandomRecipes()
-            val recipes = withContext(defaultDispatcher){
+             // Convert recipes response to recipe entities
+            val recipeEntities = withContext(defaultDispatcher){
                 result.recipes.map {
                     recipeResponse ->
                     recipeResponse.toRecipeEntity(
@@ -38,15 +42,31 @@ class RecipeRepositoryImpl @Inject constructor(
                             fat = "0",
                             protein = "0"
                         )
-                    ).toRecipe()
+                    )
                 }
             }
-            Timber.e("Random recipes: $recipes")
+             // Insert recipe entities into database
+            recipeLocalDataSource.insertRecipes(recipeEntities)
+             // Get the recipe entities from the database and convert to recipes
+            val recipes = withContext(defaultDispatcher){recipeLocalDataSource.getRandomRecipes().map {
+                    recipeEntity ->  recipeEntity.toRecipe()
+                }
+            }
             OhuneloResult.Success(recipes)
         }
+         catch (e: HttpException){
+             val recipes = withContext(defaultDispatcher){recipeLocalDataSource.getRandomRecipes().map {
+                     recipeEntity ->  recipeEntity.toRecipe()
+                }
+             }
+             OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
+         }
         catch (e: Exception){
-            Timber.e("Random recipes fetch failed, error: $e, error message: ${e.localizedMessage}")
-            OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes))
+            val recipes = withContext(defaultDispatcher){recipeLocalDataSource.getRandomRecipes().map {
+                    recipeEntity ->  recipeEntity.toRecipe()
+                }
+            }
+            OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
         }
     }
 
@@ -54,8 +74,10 @@ class RecipeRepositoryImpl @Inject constructor(
         mealType: String
     ): OhuneloResult<List<Recipe>> {
         return try {
+            // Get the recipes from api
             val result = recipeNetworkDataSource.getRecipesByMealType(mealType)
-            val recipes = withContext(defaultDispatcher){
+            // Convert recipes response to recipe entities
+            val recipeEntities = withContext(defaultDispatcher){
                 result.results.map {
                         recipeResponse ->
                     recipeResponse.toRecipeEntity(
@@ -67,15 +89,32 @@ class RecipeRepositoryImpl @Inject constructor(
                             fat = "0",
                             protein = "0"
                         )
-                    ).toRecipe()
+                    )
                 }
             }
-            Timber.e("Recipes by meal type: $recipes")
+            // Insert recipe entities into database
+            recipeLocalDataSource.insertRecipes(recipeEntities)
+            // Get the recipe entities from the database and convert to recipes
+            val recipes = withContext(defaultDispatcher){recipeLocalDataSource.getRecipesByMealType(mealType).map {
+                    recipeEntity ->  recipeEntity.toRecipe()
+                }
+            }
             OhuneloResult.Success(recipes)
         }
+        catch (e: HttpException){
+            val recipes = withContext(defaultDispatcher){recipeLocalDataSource.getRecipesByMealType(mealType).map {
+                    recipeEntity ->  recipeEntity.toRecipe()
+                }
+            }
+            OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
+        }
+
         catch (e: Exception){
-            Timber.e("Recipes by meal type fetch failed, error: $e, error message: ${e.localizedMessage}")
-            OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes))
+            val recipes = withContext(defaultDispatcher){recipeLocalDataSource.getRecipesByMealType(mealType).map {
+                    recipeEntity ->  recipeEntity.toRecipe()
+                }
+            }
+            OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
         }
     }
 
