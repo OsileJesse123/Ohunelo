@@ -7,7 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.fragment.recipe_details.IngredientsFragment"
-        android:paddingHorizontal="@dimen/grid_2"
         >
 
 
@@ -17,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ingredients"
+            android:layout_marginHorizontal="@dimen/grid_2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -26,17 +26,31 @@
             android:layout_height="wrap_content"
             style="?attr/textAppearanceSubtitle1"
             tools:text="6 Items"
+            android:layout_marginHorizontal="@dimen/grid_2"
             app:layout_constraintTop_toBottomOf="@+id/ingredients_text"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/grid_0_5"
             />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorPrimaryLightVariant"
+            app:layout_constraintBottom_toTopOf="@+id/ingredients_recycler"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ingredients_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_0dp"
             tools:listitem="@layout/ingredients_item"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/grid_0_5"
             app:layout_constraintTop_toBottomOf="@id/item_count"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/grid_1"
+            android:layout_marginHorizontal="@dimen/grid_2"
             />
 
         <TextView
@@ -46,6 +60,7 @@
             android:layout_height="wrap_content"
             android:text="@string/no_ingredients"
             android:visibility="gone"
+            android:layout_marginHorizontal="@dimen/grid_2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

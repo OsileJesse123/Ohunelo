@@ -4,18 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.DimenRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.window.layout.WindowMetricsCalculator
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.ViewPagerAdapter
 import com.jesse.ohunelo.databinding.FragmentRecipeDetailsBinding
+import com.jesse.ohunelo.presentation.ui.fragment.dialogs.DisplayImageDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.RecipeDetailsViewModel
 import com.jesse.ohunelo.util.BottomSheetBehaviorStateWrapper
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,8 +44,8 @@ class RecipeDetailsFragment : Fragment() {
             false)
 
         binding.apply {
+            fragmentViewMargin = getDimensionPixelSize(R.dimen.grid_2)
             recipe = args.recipe
-            fragmentViewMargin = getDimensionPixelSize()
             lifecycleOwner = viewLifecycleOwner
             executePendingBindings()
         }
@@ -60,8 +63,24 @@ class RecipeDetailsFragment : Fragment() {
 
         setupOnClickListeners()
 
+        setupLayoutDimension()
+
         setupViewPager()
 
+    }
+
+    private fun setupLayoutDimension(){
+        val screenHeight = getScreenHeight()
+        val screenHeightOffset = getDimensionPixelSize(R.dimen.screen_height_medium_offset)
+        // If screen height <= 700dp then set bottom sheet peek height to 350dp else set it to 400dp
+        bottomSheetBehavior?.peekHeight = if(screenHeight <= screenHeightOffset){
+             getDimensionPixelSize(R.dimen.bottom_sheet_peek_height_compact)
+        } else{
+            getDimensionPixelSize(R.dimen.bottom_sheet_peek_height_medium)
+        }
+        val bottomSheetPeekHeight = bottomSheetBehavior?.peekHeight ?: 0
+        val imageViewNewHeight = screenHeight - bottomSheetPeekHeight
+        binding.recipeImageConstraint.layoutParams.height = imageViewNewHeight
     }
 
 
@@ -91,6 +110,10 @@ class RecipeDetailsFragment : Fragment() {
 
             backButton.setOnClickListener {
                 findNavController().navigateUp()
+            }
+
+            binding.recipeImage.setOnClickListener {
+                DisplayImageDialogFragment(args.recipe.image).show(childFragmentManager, DisplayImageDialogFragment.TAG)
             }
         }
     }
@@ -125,7 +148,6 @@ class RecipeDetailsFragment : Fragment() {
     }
 
     private fun setupViewPager(){
-        // todo: ensure to add other fragments when they are added
         val viewPagerAdapter = ViewPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle,
             listOf(
                 IngredientsFragment(args.recipe.extendedIngredients),
@@ -148,8 +170,13 @@ class RecipeDetailsFragment : Fragment() {
         }.attach()
     }
 
-    private fun getDimensionPixelSize():Int{
-        return resources.getDimensionPixelSize(R.dimen.grid_2)
+    private fun getDimensionPixelSize(@DimenRes dimension: Int):Int{
+        return resources.getDimensionPixelSize(dimension)
+    }
+
+    private fun getScreenHeight(): Int{
+        val metrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(requireActivity())
+        return metrics.bounds.height()
     }
 
     override fun onDestroyView() {

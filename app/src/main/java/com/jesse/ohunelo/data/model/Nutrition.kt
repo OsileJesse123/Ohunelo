@@ -11,7 +11,6 @@ data class Nutrition(
     val id: Int,
     val calories: String,
     val carbs: String,
-    val expires: Long,
     val fat: String,
     val protein: String
 ): Parcelable{

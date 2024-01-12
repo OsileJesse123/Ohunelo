@@ -9,5 +9,6 @@ data class VerifyEmailUiState(
      *
      *  second is a nullable UiText, this is the error message to be displayed.
      * **/
-    val showErrorMessage: Pair<Boolean, UiText?> = Pair(false, null)
+    val showErrorMessage: Pair<Boolean, UiText?> = Pair(false, null),
+    val userEmail: String = ""
 )

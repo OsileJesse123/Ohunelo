@@ -55,9 +55,9 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.2'
@@ -137,9 +137,8 @@ dependencies {
     // Hilt + Navigation
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
 
-    // Glide
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    // Coil
+    implementation "io.coil-kt:coil:$coil_version"
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"
@@ -154,4 +153,7 @@ dependencies {
 
     // Shimmer effect
     implementation "com.facebook.shimmer:shimmer:$shimmer_version"
+
+    // Window
+    implementation "androidx.window:window:$window_version"
 }

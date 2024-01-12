@@ -180,6 +180,7 @@ class LoginViewModel @Inject constructor(
                     Timber.e("ViewModel SignIn with facebook Successful, user: ${signInResult.data}")
                     _loginUiStateFlow.update {
                             loginUiState ->
+
                         loginUiState.copy(
                             navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
                             isEnabled = true

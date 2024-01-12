@@ -20,7 +20,7 @@ class IngredientAdapter: ListAdapter<ExtendedIngredient,
         holder.bind(getItem(position))
     }
 
-    class IngredientViewHolder(private val binding: com.jesse.ohunelo.databinding.IngredientsItemBinding):
+    class IngredientViewHolder(private val binding: IngredientsItemBinding):
         RecyclerView.ViewHolder(binding.root){
 
         companion object{

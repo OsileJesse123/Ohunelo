@@ -6,18 +6,25 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.jesse.ohunelo.databinding.DisplayImageDialogFragmentBinding
 import com.jesse.ohunelo.databinding.LoaderDialogFragmentBinding
 
-class LoaderDialogFragment: DialogFragment() {
+class DisplayImageDialogFragment(
+    private val imageUrl: String
+): DialogFragment() {
 
-    companion object {
-        const val TAG = "LoaderDialogFragment"
+    companion object{
+        const val TAG = "DisplayImageDialogFragment"
     }
-
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val binding = LoaderDialogFragmentBinding.inflate(layoutInflater)
+            val binding = DisplayImageDialogFragmentBinding.inflate(layoutInflater)
+
+            binding.apply {
+                imageUrl = this@DisplayImageDialogFragment.imageUrl
+                executePendingBindings()
+            }
 
             val loaderDialog = MaterialAlertDialogBuilder(it)
                 .setView(binding.root)
@@ -25,7 +32,6 @@ class LoaderDialogFragment: DialogFragment() {
 
             loaderDialog.apply {
                 window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                setCanceledOnTouchOutside(false)
 
             }
         } ?: throw IllegalStateException("Activity can't be null")

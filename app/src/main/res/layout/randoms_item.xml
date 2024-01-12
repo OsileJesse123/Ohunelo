@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:imageSrcUrl="@{recipe.image}"
+                app:loadImage="@{recipe.image}"
                 android:contentDescription="@string/recipe_image"
                 />
 

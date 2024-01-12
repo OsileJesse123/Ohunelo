@@ -10,11 +10,10 @@ data class NutritionEntity(
     val id: Int,
     val calories: String,
     val carbs: String,
-    val expires: Long,
     val fat: String,
     val protein: String
 ){
     fun toNutrition(): Nutrition = Nutrition(
-        id, calories, carbs, expires, fat, protein
+        id, calories, carbs, fat, protein
     )
 }

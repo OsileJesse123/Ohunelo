@@ -5,21 +5,18 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class NutritionResponse(
-    val bad: List<Bad>,
-    val caloricBreakdown: CaloricBreakdown,
-    val calories: String,
-    val carbs: String,
-    val expires: Long,
-    val fat: String,
-    val flavonoids: List<Flavonoids>,
-    val good: List<Good>,
-    val ingredients: List<Ingredients>,
-    val isStale: Boolean,
-    val nutrients: List<Nutrients>,
-    val properties: List<Property>,
-    val protein: String,
-    val weightPerServing: WeightPerServing
+    val caloricBreakdown: CaloricBreakdown? = null,
+    val flavonoids: List<Flavonoids> = listOf(),
+    val ingredients: List<Ingredients> = listOf(),
+    val nutrients: List<Nutrients> = listOf(),
+    val properties: List<Property> = listOf(),
+    val weightPerServing: WeightPerServing? = null
 ){
     fun toNutritionEntity(id: Int): NutritionEntity = NutritionEntity(
-        id, calories, carbs, expires, fat, protein)
+        id, getNutrientAmount("Calories"), getNutrientAmount("Carbohydrates"), getNutrientAmount("Fat"), getNutrientAmount("Protein"))
+
+    private fun getNutrientAmount(nutrientName: String): String{
+        val amount = nutrients.find { nutrients -> nutrients.name == nutrientName }?.amount
+        return amount?.toString() ?: "0"
+    }
 }

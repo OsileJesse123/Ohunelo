@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 private const val RECIPES_PER_PAGE = 20
@@ -31,18 +32,9 @@ class RecipeRepositoryImpl @Inject constructor(
             val result = recipeNetworkDataSource.getRandomRecipes()
              // Convert recipes response to recipe entities
             val recipeEntities = withContext(defaultDispatcher){
-                result.recipes.map {
+                result.results.map {
                     recipeResponse ->
-                    recipeResponse.toRecipeEntity(
-                        NutritionEntity(
-                            id = recipeResponse.id,
-                            calories = "0",
-                            carbs = "0",
-                            expires = 0,
-                            fat = "0",
-                            protein = "0"
-                        )
-                    )
+                    recipeResponse.toRecipeEntity()
                 }
             }
              // Insert recipe entities into database
@@ -59,6 +51,7 @@ class RecipeRepositoryImpl @Inject constructor(
                      recipeEntity ->  recipeEntity.toRecipe()
                 }
              }
+             Timber.e("HTTPError: $e, ErrorMessage: ${e.message()}")
              OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
          }
         catch (e: Exception){
@@ -66,6 +59,7 @@ class RecipeRepositoryImpl @Inject constructor(
                     recipeEntity ->  recipeEntity.toRecipe()
                 }
             }
+            Timber.e("GeneralError: $e, ErrorMessage: ${e.message}")
             OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
         }
     }
@@ -80,16 +74,7 @@ class RecipeRepositoryImpl @Inject constructor(
             val recipeEntities = withContext(defaultDispatcher){
                 result.results.map {
                         recipeResponse ->
-                    recipeResponse.toRecipeEntity(
-                        NutritionEntity(
-                            id = recipeResponse.id,
-                            calories = "0",
-                            carbs = "0",
-                            expires = 0,
-                            fat = "0",
-                            protein = "0"
-                        )
-                    )
+                    recipeResponse.toRecipeEntity()
                 }
             }
             // Insert recipe entities into database
@@ -106,6 +91,7 @@ class RecipeRepositoryImpl @Inject constructor(
                     recipeEntity ->  recipeEntity.toRecipe()
                 }
             }
+            Timber.e("HTTPError: $e, ErrorMessage: ${e.message()}")
             OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
         }
 
@@ -114,10 +100,10 @@ class RecipeRepositoryImpl @Inject constructor(
                     recipeEntity ->  recipeEntity.toRecipe()
                 }
             }
+            Timber.e("GeneralError: $e, ErrorMessage: ${e.message}")
             OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
         }
     }
-
 
     override fun getPagedRecipes(): Flow<PagingData<Recipe>> {
         return Pager(

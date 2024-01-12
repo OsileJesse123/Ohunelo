@@ -1,6 +1,7 @@
 package com.jesse.ohunelo.data.network
 
 import com.jesse.ohunelo.BuildConfig
+import com.jesse.ohunelo.data.network.models.RecipeResponse
 import com.jesse.ohunelo.data.network.models.RecipesByMealTypeResponse
 import com.jesse.ohunelo.data.network.models.RecipesResponse
 import com.jesse.ohunelo.di.IODispatcher
@@ -15,12 +16,12 @@ class RecipeNetworkDataSourceImpl @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : RecipeNetworkDataSource {
 
-    override suspend fun getRandomRecipes(): RecipesResponse = withContext(ioDispatcher){
-        spoonacularService.getRandomRecipes(apiKey = BuildConfig.API_KEY)
+    override suspend fun getRandomRecipes(): RecipesByMealTypeResponse = withContext(ioDispatcher){
+        spoonacularService.getRecipes(sort = "random")
     }
 
     override suspend fun getRecipesByMealType(mealType: String): RecipesByMealTypeResponse = withContext(ioDispatcher){
-        spoonacularService.getRecipesByMealType(mealType = mealType)
+        spoonacularService.getRecipes(mealType = mealType)
     }
 
 }

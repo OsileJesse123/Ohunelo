@@ -69,8 +69,10 @@ class HomeViewModel @Inject constructor(
             }
             val homeScreenData = formatHomeScreenDataUseCase(selectedRecipeCategory)
 
+            Timber.e("Home screen data: ${homeScreenData.errorMessage}")
+
             // If both the random recipes and recipes by category are not empty
-            if (homeScreenData.randomRecipes != null && homeScreenData.recipesByCategory != null){
+            if (!homeScreenData.randomRecipes.isNullOrEmpty() && !homeScreenData.recipesByCategory.isNullOrEmpty()){
                 // If an error message is also available, display the stale data and show the error message
                 if(homeScreenData.errorMessage != null){
                     _homeUiStateFlow.update {
@@ -83,6 +85,7 @@ class HomeViewModel @Inject constructor(
                             loading = false
                         )
                     }
+                    Timber.e("Home screen data first: ${homeScreenData.errorMessage}")
                 } else{
                     // Else, just display the random recipes and recipes by category to the user
                     _homeUiStateFlow.update {
@@ -97,8 +100,8 @@ class HomeViewModel @Inject constructor(
                 }
             }
 
-            // If either on of the recipes is null(empty), No recipe data should be displayed and the error message should be shown
-            if (homeScreenData.randomRecipes == null || homeScreenData.recipesByCategory == null){
+            // If either one of the recipes is null(empty), No recipe data should be displayed and the error message should be shown
+            if (homeScreenData.randomRecipes.isNullOrEmpty() || homeScreenData.recipesByCategory.isNullOrEmpty()){
                 _homeUiStateFlow.update {
                         homeUiState ->
                     homeUiState.copy(
@@ -109,6 +112,7 @@ class HomeViewModel @Inject constructor(
                         loading = false
                     )
                 }
+                Timber.e("Home screen data second: ${homeScreenData.errorMessage}")
             }
 
         }

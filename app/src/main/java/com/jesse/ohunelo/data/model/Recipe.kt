@@ -9,24 +9,24 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Recipe(
-    val id: Int,
-    val analyzedInstructions: List<AnalyzedInstructions>,
-    val cookingMinutes: Int,
-    val creditsText: String,
-    val extendedIngredients: List<ExtendedIngredient>,
-    val healthScore: Int,
-    val image: String,
-    val imageType: String,
-    val instructions: String,
-    val preparationMinutes: Int,
-    val pricePerServing: Double,
-    val readyInMinutes: Int,
-    val servings: Int,
-    val sourceName: String,
-    val title: String,
-    val weightWatcherSmartPoints: Int,
-    val summary: String,
-    val nutrition: Nutrition
+    val id: Int = 0,
+    val analyzedInstructions: List<AnalyzedInstructions> = listOf(),
+    val cookingMinutes: Int = 0,
+    val creditsText: String = "",
+    val extendedIngredients: List<ExtendedIngredient> = listOf(),
+    val healthScore: Int = 0,
+    val image: String = "",
+    val imageType: String = "",
+    val instructions: String = "",
+    val preparationMinutes: Int = 0,
+    val pricePerServing: Double = 0.0,
+    val readyInMinutes: Int = 0,
+    val servings: Int = 0,
+    val sourceName: String = "",
+    val title: String = "",
+    val weightWatcherSmartPoints: Int = 0,
+    val summary: String = "",
+    val nutrition: Nutrition? = null
 ): Parcelable{
     fun formatReadyInMinutes() = UiText.StringResource(R.string.minutes_short, readyInMinutes)
 

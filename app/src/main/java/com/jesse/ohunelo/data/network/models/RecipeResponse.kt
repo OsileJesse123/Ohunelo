@@ -2,6 +2,7 @@ package com.jesse.ohunelo.data.network.models
 
 import com.jesse.ohunelo.data.local.models.NutritionEntity
 import com.jesse.ohunelo.data.local.models.RecipeEntity
+import com.jesse.ohunelo.util.RecipeImageSize
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -41,16 +42,17 @@ data class RecipeResponse(
     val vegetarian: Boolean = false,
     val veryHealthy: Boolean = false,
     val veryPopular: Boolean = false,
-    val weightWatcherSmartPoints: Int
+    val weightWatcherSmartPoints: Int,
+    val nutrition: NutritionResponse? = null
 ){
-    fun toRecipeEntity(nutritionEntity: NutritionEntity) = RecipeEntity(
+    fun toRecipeEntity() = RecipeEntity(
         id = id,
         analyzedInstructions = analyzedInstructions,
         cookingMinutes = cookingMinutes,
         creditsText = creditsText,
         extendedIngredients = extendedIngredients,
         healthScore = healthScore,
-        image = image,
+        image = "https://spoonacular.com/recipeImages/$id-${RecipeImageSize.SIZE7.size}.$imageType",
         imageType = imageType,
         instructions = instructions,
         preparationMinutes = preparationMinutes,
@@ -61,7 +63,7 @@ data class RecipeResponse(
         title = title,
         weightWatcherSmartPoints = weightWatcherSmartPoints,
         summary = summary,
-        nutritionEntity = nutritionEntity,
+        nutritionEntity = nutrition?.toNutritionEntity(id),
         dishTypes = dishTypes
     )
 }

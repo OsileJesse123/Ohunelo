@@ -37,4 +37,8 @@
     <dimen name="recipe_summary_line_spacing_extra_dialog_box">6dp</dimen>
     <dimen name="_15dp">15dp</dimen>
 
+    <dimen name="bottom_sheet_peek_height_compact">350dp</dimen>
+    <dimen name="bottom_sheet_peek_height_medium">550dp</dimen>
+    <dimen name="screen_height_medium_offset">700dp</dimen>
+
 </resources>

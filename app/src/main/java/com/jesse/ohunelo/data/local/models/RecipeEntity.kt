@@ -41,7 +41,7 @@ data class RecipeEntity(
     val weightWatcherSmartPoints: Int,
     val summary: String,
     @ColumnInfo(name = "nutrition_entity")
-    val nutritionEntity: NutritionEntity,
+    val nutritionEntity: NutritionEntity?,
     @ColumnInfo(name = "dish_types")
     val dishTypes: List<String>
 ){
@@ -63,6 +63,6 @@ data class RecipeEntity(
         title = title,
         weightWatcherSmartPoints = weightWatcherSmartPoints,
         summary = summary,
-        nutrition = nutritionEntity.toNutrition()
+        nutrition = nutritionEntity?.toNutrition()
     )
 }
