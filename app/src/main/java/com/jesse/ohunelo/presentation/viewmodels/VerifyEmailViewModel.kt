@@ -25,6 +25,7 @@ class VerifyEmailViewModel @Inject constructor(
     val verifyEmailUiState get() = _verifyEmailUiState.asStateFlow()
 
     init {
+        updateUserEmail()
         verifyUserEmail()
         hasTheUserBeenVerified()
     }
@@ -32,6 +33,15 @@ class VerifyEmailViewModel @Inject constructor(
     private fun verifyUserEmail(){
         viewModelScope.launch {
             authenticationRepository.verifyUserEmail()
+        }
+    }
+
+    private fun updateUserEmail(){
+        viewModelScope.launch {
+            _verifyEmailUiState.update {
+                    verifyEmailUiState ->
+                verifyEmailUiState.copy(userEmail = authenticationRepository.getUser()?.email ?: "No Email")
+            }
         }
     }
 

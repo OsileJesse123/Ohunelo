@@ -30,7 +30,7 @@
                 android:contentDescription="@string/recipe_image"
                 android:scaleType="centerCrop"
                 android:theme="@style/cubicImage"
-                app:imageSrcUrl="@{recipe.image}"
+                app:loadImage="@{recipe.image}"
                 app:layout_constraintDimensionRatio="7:4.8"
                 app:layout_constraintHeight_percent=".63"
                 app:layout_constraintVertical_bias="0"
@@ -64,7 +64,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/ready_in_minutes_text_view"
                 app:layout_constraintTop_toTopOf="@+id/ready_in_minutes_text_view"
-                app:tint="@color/secondary_70" />
+                app:tint="?attr/colorSecondary" />
 
             <TextView
                 android:id="@+id/ready_in_minutes_text_view"

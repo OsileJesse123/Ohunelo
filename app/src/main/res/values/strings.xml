@@ -20,7 +20,7 @@
     <string name="beverage">Beverage</string>
     <string name="sauce">Sauce</string>
     <string name="marinade">Marinade</string>
-    <string name="fingerfood">Fingerfood</string>
+    <string name="finger_food">Fingerfood</string>
     <string name="snack">Snack</string>
     <string name="search">Search</string>
     <string name="home">Home</string>
@@ -95,7 +95,7 @@
     <string name="verify_email">Verify Email</string>
     <string name="open_email_icon">Open Email Icon</string>
     <string name="verify_your_email_address">Verify your email address</string>
-    <string name="verify_your_email_instruction_1">We have just sent an email verification link to your email. Please check your email and click on the link to verify your email address.</string>
+    <string name="verify_your_email_instruction_1">We have just sent an email verification link to %s. Please check your email and click on the link to verify your email address.</string>
     <string name="verify_your_email_instruction_2">If not auto redirected after verification, click on the continue button below.</string>
     <string name="resend_e_mail_link">Resend E-mail link</string>
     <string name="start_cooking">Start Cooking</string>

@@ -1,6 +1,7 @@
 package com.jesse.ohunelo.data.network.models
 
 import android.os.Parcelable
+import com.jesse.ohunelo.util.IngredientImageSize
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
@@ -21,4 +22,6 @@ data class ExtendedIngredient(
     val unit: String
 ): Parcelable{
     fun formatIngredientQuantity(): String = "${measures.us.amount.toInt()} $unit"
+    fun formatImageUrl(): String = "https://spoonacular.com/cdn/ingredients_${IngredientImageSize.SIZE1.size}/$image"
+    //fun imageUrl(): String = "https://spoonacular.com/cdn/ingredients_100x100/butter-sliced.jpg"
 }

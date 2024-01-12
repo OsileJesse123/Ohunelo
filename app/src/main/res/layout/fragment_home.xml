@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 >
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/food_error_layout"
                     android:layout_width="@dimen/_0dp"
                     android:layout_height="@dimen/_0dp"
@@ -42,22 +42,32 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
+                        android:id="@+id/food_error_image"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:layout_gravity="center"
+                        android:contentDescription="@string/food_error_image"
                         android:src="@drawable/food_error"
-                        android:contentDescription="@string/food_error_image"/>
+                        app:layout_constraintHeight_percent=".6"
+                        app:layout_constraintVertical_bias=".1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        style="?attr/textAppearanceHeadline4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="?attr/textAppearanceHeadline4"
                         android:text="@string/oops_something_went_wrong"
                         android:textAlignment="center"
-                        />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/food_error_image" />
 
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/home_screen_layout"
@@ -241,7 +251,7 @@
                                 android:id="@+id/fingerfood_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/fingerfood"
+                                android:text="@string/finger_food"
                                 app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
 
                             <com.google.android.material.chip.Chip

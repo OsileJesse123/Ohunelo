@@ -77,8 +77,7 @@ class SearchRecipeDisplayViewModel @Inject constructor(
                     title = "Asian Chickpea Lettuce Wraps",
                     weightWatcherSmartPoints = 33,
                     summary = "This is a very long text that needs to be truncated. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g",
-                        expires = 1L)
+                    nutrition = Nutrition(1, calories = "316", carbs = "49g", fat = "12g", protein = "3g")
                 )
             }
         }

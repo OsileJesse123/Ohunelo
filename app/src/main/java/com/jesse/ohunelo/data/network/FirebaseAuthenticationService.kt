@@ -25,6 +25,7 @@ class FirebaseAuthenticationService @Inject constructor(
 
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     override suspend fun getUser(): AuthUser? {
+        Timber.e("Firebase User: ${firebaseAuth.currentUser?.isEmailVerified}")
         return firebaseAuth.currentUser?.let {
             firebaseUser ->
             AuthUser(

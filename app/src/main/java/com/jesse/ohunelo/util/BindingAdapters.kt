@@ -7,12 +7,10 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.paging.LoadState
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import coil.load
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
@@ -125,7 +123,7 @@ fun setErrorMessageText(view: TextInputLayout, errorMessage: UiText?){
     view.error = errorMessage?.asString(view.context)
 }
 
-@BindingAdapter("app:imageSrcUrl")
+/*@BindingAdapter("app:imageSrcUrl")
 fun setImage(imageView: ImageView, imageUrl: String?){
     imageUrl?.let {
         imageUrl ->
@@ -139,6 +137,20 @@ fun setImage(imageView: ImageView, imageUrl: String?){
                         .error(R.drawable.broken_image)
                 )
                 .into(imageView)
+        }
+    }
+}*/
+
+@BindingAdapter("app:loadImage")
+fun loadImage(imageView: ImageView, imageUrl: String?){
+    imageUrl?.let {
+            imageUrl ->
+        if(imageUrl.isNotEmpty()){
+            imageView.load(imageUrl){
+                placeholder(R.drawable.loading_animation)
+                    .error(R.drawable.broken_image)
+            }
+
         }
     }
 }

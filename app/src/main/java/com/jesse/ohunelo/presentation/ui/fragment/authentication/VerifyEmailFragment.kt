@@ -71,6 +71,9 @@ class VerifyEmailFragment : Fragment() {
                     if(verifyEmailUiState.showErrorMessage.first){
                         showErrorMessage(verifyEmailUiState.showErrorMessage.second)
                     }
+                    if(verifyEmailUiState.userEmail.isNotEmpty()){
+                        binding.verifyEmailInstruction1.text = getString(R.string.verify_your_email_instruction_1, verifyEmailUiState.userEmail)
+                    }
                 }
             }
         }

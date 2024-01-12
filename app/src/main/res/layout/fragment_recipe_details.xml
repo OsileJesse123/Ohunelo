@@ -5,6 +5,7 @@
     >
 
     <data>
+
         <variable
             name="recipe"
             type="com.jesse.ohunelo.data.model.Recipe" />
@@ -27,21 +28,21 @@
         >
 
 
-
         <!-- This layout contains the back button and image being displayed-->
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/recipe_image_constraint"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="400dp"
             >
 
             <ImageView
                 android:id="@+id/recipe_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/pasta_image"
+                tools:src="@drawable/pasta_image"
                 android:scaleType="centerCrop"
+                app:loadImage="@{recipe.image}"
                 android:contentDescription="@string/recipe_image"
-                app:layout_constraintTop_toTopOf="parent"
                 />
 
             <LinearLayout
@@ -123,7 +124,7 @@
                         android:layout_marginTop="@dimen/grid_0_5"
                         android:drawablePadding="@dimen/grid_0_5"
                         app:drawableStartCompat="@drawable/clock_icon"
-                        app:drawableTint="@color/secondary_70"
+                        app:drawableTint="?attr/colorSecondary"
                         app:marginEndInt="@{fragmentViewMargin}"
                         app:layout_constraintBaseline_toBaselineOf="@+id/recipe_name"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -326,7 +327,6 @@
             app:navigationIcon="@drawable/close_icon"
             app:navigationIconTint="?attr/colorSecondaryVariant"
             />
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
