@@ -36,7 +36,7 @@ class StepsAdapter: ListAdapter<Step, StepsAdapter.StepsViewHolder> (StepsDiffUt
 
             // Calculate the darker shade of the background color based on the position
             val backgroundColor = darkenColor(attr.colorPrimary,
-                position * 0.1f, binding.root)
+                position * 0.04f, binding.root)
 
             binding.color = backgroundColor
 
