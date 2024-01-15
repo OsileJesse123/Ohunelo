@@ -1,6 +1,7 @@
 package com.jesse.ohunelo.presentation.ui.fragment.dialogs
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,7 +11,8 @@ import com.jesse.ohunelo.databinding.DisplayImageDialogFragmentBinding
 import com.jesse.ohunelo.databinding.LoaderDialogFragmentBinding
 
 class DisplayImageDialogFragment(
-    private val imageUrl: String
+    private val imageUrl: String,
+    private val reEnableImageListener: (() -> Unit)? = null
 ): DialogFragment() {
 
     companion object{
@@ -35,5 +37,13 @@ class DisplayImageDialogFragment(
 
             }
         } ?: throw IllegalStateException("Activity can't be null")
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        reEnableImageListener?.let {
+            reEnableImageListener ->
+            reEnableImageListener()
+        }
     }
 }
