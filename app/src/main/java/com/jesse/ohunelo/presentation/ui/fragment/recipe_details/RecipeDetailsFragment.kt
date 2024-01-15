@@ -113,7 +113,10 @@ class RecipeDetailsFragment : Fragment() {
             }
 
             binding.recipeImage.setOnClickListener {
-                DisplayImageDialogFragment(args.recipe.image).show(childFragmentManager, DisplayImageDialogFragment.TAG)
+                it.isEnabled = false
+                DisplayImageDialogFragment(args.recipe.image) {
+                    it.isEnabled = true
+                }.show(childFragmentManager, DisplayImageDialogFragment.TAG)
             }
         }
     }
