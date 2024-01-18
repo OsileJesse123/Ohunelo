@@ -22,17 +22,15 @@
             android:padding="@dimen/grid_2"
             >
 
-
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ingredient_image"
-                android:layout_width="@dimen/_0dp"
-                android:layout_height="@dimen/_0dp"
+                android:layout_width="@dimen/grid_8"
+                android:layout_height="@dimen/grid_8"
                 android:contentDescription="@string/ingredient_image"
                 android:scaleType="fitXY"
+                tools:src="@drawable/pasta_image"
                 android:theme="@style/ShapeAppearanceOverlay.Ohunelo.ImageView.Cubic"
-                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintWidth_percent=".16"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
