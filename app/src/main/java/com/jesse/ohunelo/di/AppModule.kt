@@ -4,10 +4,12 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.room.Room
+import com.jesse.ohunelo.BuildConfig
 import com.jesse.ohunelo.data.local.RecipeLocalDataSource
 import com.jesse.ohunelo.data.local.RecipeLocalDataSourceImpl
 import com.jesse.ohunelo.data.local.database.RecipeDatabase
 import com.jesse.ohunelo.data.local.database.RecipeDatabasePassphrase
+import com.jesse.ohunelo.data.network.ApiKeyInterceptor
 import com.jesse.ohunelo.data.network.AuthenticationService
 import com.jesse.ohunelo.data.network.FirebaseAuthenticationService
 import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
@@ -64,6 +66,7 @@ object AppModule {
             .writeTimeout(1, TimeUnit.MINUTES)
             .connectTimeout(1, TimeUnit.MINUTES)
             .addInterceptor(okHttpLoggingInterceptor)
+            .addInterceptor(ApiKeyInterceptor(BuildConfig.API_KEY))
             .build()
 
     @Singleton
