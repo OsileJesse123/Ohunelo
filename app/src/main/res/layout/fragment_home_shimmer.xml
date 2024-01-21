@@ -3,19 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.jesse.ohunelo.presentation.viewmodels.HomeViewModel" />
-    </data>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_to_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-        <androidx.core.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
             android:id="@+id/home_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,49 +16,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
-                <!-- error view -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/food_error_layout"
-                    android:layout_width="@dimen/_0dp"
-                    android:layout_height="@dimen/_0dp"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    app:layout_constraintWidth_percent=".6"
-                    app:layout_constraintHeight_percent=".5"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/food_error_image"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/food_error_image"
-                        android:src="@drawable/food_error"
-                        app:layout_constraintHeight_percent=".6"
-                        app:layout_constraintVertical_bias=".1"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        style="?attr/textAppearanceHeadline4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/oops_something_went_wrong"
-                        android:textAlignment="center"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/food_error_image" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!-- home view -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/home_screen_layout"
                     android:layout_width="match_parent"
@@ -87,72 +34,66 @@
                     <ImageView
                         android:id="@+id/time_of_day_image_view"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_10dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tint="?attr/colorPrimary"
-                        app:uiDrawable="@{viewModel.homeUiStateFlow.userGreetingIcon}"
-                        tools:src="@drawable/moon_icon" />
+                        android:background="@drawable/shimmer_view_bg"
+                        android:src="@drawable/moon_icon" />
 
                     <TextView
                         android:id="@+id/time_of_day_text_view"
-                        style="?attr/textAppearanceOverline"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_15dp"
                         android:layout_marginStart="@dimen/grid_0_25"
                         android:layout_marginBottom="@dimen/grid_0_25"
-                        android:drawablePadding="@dimen/grid_0_25"
-                        android:paddingBottom="@dimen/grid_0_25"
+                        android:background="@drawable/shimmer_view_bg"
                         app:layout_constraintBottom_toBottomOf="@+id/time_of_day_image_view"
                         app:layout_constraintStart_toEndOf="@+id/time_of_day_image_view"
                         app:layout_constraintTop_toTopOf="@+id/time_of_day_image_view"
-                        app:uiText="@{viewModel.homeUiStateFlow.userGreetingText}"
-                        tools:text="@string/good_morning" />
+                        android:text="@string/good_morning" />
 
                     <TextView
                         android:id="@+id/user_name_text_view"
-                        style="?attr/textAppearanceHeadline2"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/grid_0_25"
-                        android:text="@{viewModel.homeUiStateFlow.userName}"
-                        android:textStyle="bold"
+                        android:layout_height="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/grid_0_5"
+                        android:background="@drawable/shimmer_view_bg"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/time_of_day_text_view"
-                        tools:text="Oscar Iyareeeeee" />
+                        android:text="Oscar Iyareeeeee" />
 
                     <TextView
                         android:id="@+id/random_text_view"
-                        style="?attr/textAppearanceHeadline4"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_15dp"
                         android:layout_marginTop="@dimen/grid_2"
                         android:text="@string/random"
-                        android:textColor="?attr/colorSecondaryVariant"
-                        android:textStyle="bold"
+                        android:background="@drawable/shimmer_view_bg"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/user_name_text_view" />
 
-                    <androidx.recyclerview.widget.RecyclerView
+                    <LinearLayout
                         android:id="@+id/random_recipes_recycler"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_0dp"
-                        android:layout_marginTop="@dimen/grid_1"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:layout_marginTop="@dimen/grid_1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/random_text_view"
-                        tools:listitem="@layout/randoms_item" />
+                        app:layout_constraintTop_toBottomOf="@+id/random_text_view">
+                        <include
+                            layout="@layout/randoms_item" />
+                        <include
+                            layout="@layout/randoms_item" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/category_text_view"
-                        style="?attr/textAppearanceHeadline4"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_15dp"
                         android:layout_marginTop="@dimen/grid_2"
                         android:text="@string/category"
-                        android:textColor="?attr/colorSecondaryVariant"
+                        android:background="@drawable/shimmer_view_bg"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/random_recipes_recycler" />
 
@@ -176,91 +117,91 @@
                                 android:layout_height="wrap_content"
                                 android:checked="true"
                                 android:text="@string/main_course"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/side_dish_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/side_dish"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/dessert_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/dessert"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/appetizer_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/appetizer"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/salad_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/salad"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/bread_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/bread"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/breakfast_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/breakfast"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/soup_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/soup"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/beverage_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/beverage"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/sauce_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/sauce"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/marinade_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/marinade"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/fingerfood_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/finger_food"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/snack_chip"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/snack"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/drink_chip"
@@ -268,7 +209,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/grid_2"
                                 android:text="@string/drink"
-                                app:onRecipeCategorySelected="@{viewModel::getRecipesByMealType}" />
+                                 />
 
 
                         </com.google.android.material.chip.ChipGroup>
@@ -284,23 +225,20 @@
 
                         <TextView
                             android:id="@+id/title_text_view"
-                            style="?attr/textAppearanceHeadline4"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_15dp"
                             android:text="@string/recipes"
-                            android:textColor="?attr/colorSecondaryVariant"
-                            android:textStyle="bold"
+                            android:background="@drawable/shimmer_view_bg"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/see_all_text_view"
-                            style="?attr/textAppearanceSubtitle1"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_15dp"
                             android:text="@string/see_all"
-                            android:textColor="?attr/colorPrimary"
+                            android:background="@drawable/shimmer_view_bg"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -308,79 +246,27 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-                    <androidx.recyclerview.widget.RecyclerView
+                    <LinearLayout
                         android:id="@+id/recipes_by_category_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_0dp"
-                        android:layout_marginEnd="@dimen/grid_1"
-                        android:clipToPadding="false"
                         android:orientation="horizontal"
-                        android:paddingEnd="@dimen/grid_0_25"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/recipes_by_category_recycler_header"
-                        tools:listitem="@layout/recipes_by_category_item" />
-
-                    <com.facebook.shimmer.ShimmerFrameLayout
-                        android:id="@+id/recipes_by_category_shimmer"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_0dp"
-                        app:shimmer_base_alpha=".7"
-                        app:shimmer_colored="true"
-                        app:shimmer_base_color="@color/gray_400"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recipes_by_category_recycler_header">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
-                            <include layout="@layout/recipes_by_category_item"/>
-                            <include layout="@layout/recipes_by_category_item"/>
-                            <include layout="@layout/recipes_by_category_item"/>
-                        </LinearLayout>
-                    </com.facebook.shimmer.ShimmerFrameLayout>
-
-                    <TextView
-                        android:id="@+id/recipes_by_category_error"
-                        style="?attr/textAppearanceHeadline4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/opps_no_recipes_found"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/recipes_by_category_recycler_header" />
+                        <include
+                            layout="@layout/recipes_by_category_item"/>
+                        <include
+                            layout="@layout/recipes_by_category_item"/>
+                        <include
+                            layout="@layout/recipes_by_category_item"/>
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!-- shimmer view -->
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/home_shimmer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingTop="@dimen/grid_1"
-                    android:visibility="gone"
-                    app:shimmer_base_alpha=".7"
-                    app:shimmer_colored="true"
-                    app:shimmer_base_color="@color/gray_400"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    >
-                    <include
-                        layout="@layout/fragment_home_shimmer"/>
-                </com.facebook.shimmer.ShimmerFrameLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </layout>
