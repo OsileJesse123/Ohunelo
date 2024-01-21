@@ -22,5 +22,5 @@ data class ExtendedIngredient(
     val unit: String
 ): Parcelable{
     fun formatIngredientQuantity(): String = "${measures.us.amount.toInt()} $unit"
-    fun formatImageUrl(): String = "https://spoonacular.com/cdn/ingredients_${IngredientImageSize.SIZE1.size}/$image"
+    fun formatImageUrl(): String = "https://spoonacular.com/cdn/ingredients_${IngredientImageSize.SIZE3.size}/$image"
 }
