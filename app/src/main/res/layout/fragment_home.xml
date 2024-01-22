@@ -366,7 +366,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingTop="@dimen/grid_1"
-                    android:visibility="gone"
                     app:shimmer_base_alpha=".7"
                     app:shimmer_colored="true"
                     app:shimmer_base_color="@color/gray_400"

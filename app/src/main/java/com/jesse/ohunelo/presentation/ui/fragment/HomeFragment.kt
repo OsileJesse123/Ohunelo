@@ -123,7 +123,7 @@ class HomeFragment : Fragment() {
                     // If random recipes, recipes by category is empty and state is loading then show shimmer view.
                     binding.homeShimmer.isVisible = (homeUiState.randomRecipes.isEmpty() && homeUiState.recipesByCategory.isEmpty() && homeUiState.loading)
 
-                    binding.swipeToRefreshLayout.isRefreshing = (homeUiState.randomRecipes.isNotEmpty() && homeUiState.loading)
+                    binding.swipeToRefreshLayout.isRefreshing =  (homeUiState.randomRecipes.isNotEmpty() && homeUiState.loading)
                     binding.recipesByCategoryRecycler.isVisible = !homeUiState.startShimmer
                     binding.recipesByCategoryShimmer.isVisible = homeUiState.startShimmer
                 }
