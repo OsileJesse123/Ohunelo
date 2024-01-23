@@ -8,4 +8,6 @@ interface RecipeNetworkDataSource {
 
     suspend fun getRandomRecipes(): RecipesByMealTypeResponse
     suspend fun getRecipesByMealType(mealType: String): RecipesByMealTypeResponse
+
+    suspend fun getRecipes(sort: String, mealType: String): RecipesByMealTypeResponse
 }

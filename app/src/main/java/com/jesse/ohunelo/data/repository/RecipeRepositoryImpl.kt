@@ -11,6 +11,7 @@ import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.DefaultDispatcher
+import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.UiText
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +25,9 @@ class RecipeRepositoryImpl @Inject constructor(
     private val recipeLocalDataSource: RecipeLocalDataSource,
     private val recipeNetworkDataSource: RecipeNetworkDataSource,
     @DefaultDispatcher
-    private val defaultDispatcher: CoroutineDispatcher
+    private val defaultDispatcher: CoroutineDispatcher,
+    @IODispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ): RecipeRepository {
     override suspend fun getRandomRecipes(): OhuneloResult<List<Recipe>> {
          return try {
@@ -108,7 +111,7 @@ class RecipeRepositoryImpl @Inject constructor(
     override fun getPagedRecipes(): Flow<PagingData<Recipe>> {
         return Pager(
             config = PagingConfig(pageSize = RECIPES_PER_PAGE, enablePlaceholders = false),
-            pagingSourceFactory = { RecipePagingSource() }
+            pagingSourceFactory = { RecipePagingSource( ioDispatcher, defaultDispatcher, recipeNetworkDataSource) }
         ).flow
     }
 }

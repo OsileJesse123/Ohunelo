@@ -105,17 +105,23 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <ProgressBar
-            android:id="@+id/loading_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/see_all_recipes_shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            app:shimmer_base_alpha=".7"
+            app:shimmer_colored="true"
+            app:shimmer_base_color="@color/gray_400"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            >
+
+            <include
+                layout="@layout/fragment_see_all_recipes_shimmer"/>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

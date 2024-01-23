@@ -83,7 +83,7 @@ class SeeAllRecipesFragment : Fragment() {
                         binding.errorMessageText.text = loadStateRefresh.error.localizedMessage
                     }
 
-                    binding.loadingProgressBar.isVisible = loadStateRefresh is LoadState.Loading
+                    binding.seeAllRecipesShimmer.isVisible = loadStateRefresh is LoadState.Loading
                 }
             }
         }
