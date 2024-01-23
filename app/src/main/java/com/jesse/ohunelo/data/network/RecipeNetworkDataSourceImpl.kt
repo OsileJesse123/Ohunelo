@@ -24,4 +24,9 @@ class RecipeNetworkDataSourceImpl @Inject constructor(
         spoonacularService.getRecipes(mealType = mealType)
     }
 
+    override suspend fun getRecipes(sort: String, mealType: String): RecipesByMealTypeResponse = withContext(ioDispatcher){
+        spoonacularService.getRecipes(sort = sort, mealType = mealType)
+    }
+
+
 }

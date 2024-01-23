@@ -4,12 +4,14 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.jesse.ohunelo.data.model.Nutrition
 import com.jesse.ohunelo.data.model.Recipe
+import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.models.AnalyzedInstructions
 import com.jesse.ohunelo.data.network.models.ExtendedIngredient
 import com.jesse.ohunelo.data.network.models.Measures
 import com.jesse.ohunelo.data.network.models.Metric
 import com.jesse.ohunelo.data.network.models.Step
 import com.jesse.ohunelo.data.network.models.Us
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -20,13 +22,23 @@ private const val LOAD_DELAY_MILLIS = 1_000L
 
 // This is an implementation for UI development, this will change as soon as back end
 // is plugged in
-class RecipePagingSource: PagingSource<Int, Recipe>() {
+class RecipePagingSource(
+    private val ioDispatcher: CoroutineDispatcher,
+    private val defaultDispatcher: CoroutineDispatcher,
+    private val recipeNetworkDataSource: RecipeNetworkDataSource,
+): PagingSource<Int, Recipe>() {
     override fun getRefreshKey(state: PagingState<Int, Recipe>): Int? {
         TODO("Not yet implemented")
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Recipe> {
 
+        try {
+            val startKey = params.key ?: STARTING_KEY
+            val recipes = recipeNetworkDataSource.getRandomRecipes()
+        } catch (e: Exception){
+
+        }
         // Start paging with STARTING_KEY if this is the first load
         val start = params.key ?: STARTING_KEY
 
