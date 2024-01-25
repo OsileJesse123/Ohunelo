@@ -26,12 +26,11 @@ class RecipeDatabasePassphrase(
      *  strength of the generated passphrase.
      * **/
     fun getPassphrase(): ByteArray{
-        /*
-         * An EncryptedFile instance is created using the AndroidX Security library.
-         * It uses the AES256_GCM_SPEC to create or retrieve a master key for encryption.
-         * The encryption scheme is set to AES256_GCM_HKDF_4KB.
-         * The file is specified as ohunelo_passphrase.bin.
-         */
+
+         // An EncryptedFile instance is created using the AndroidX Security library.
+         // It uses the AES256_GCM_SPEC to create or retrieve a master key for encryption.
+         // The encryption scheme is set to AES256_GCM_HKDF_4KB.
+         // The file is specified as ohunelo_passphrase.bin.
         val file = File(context.filesDir, "ohunelo_passphrase.bin")
         val encryptedFile = EncryptedFile.Builder(
             file,
