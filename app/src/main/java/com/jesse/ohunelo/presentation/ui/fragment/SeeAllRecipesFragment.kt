@@ -23,6 +23,9 @@ import com.jesse.ohunelo.databinding.FragmentSeeAllRecipesBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.RecipeExpandedItemDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.SeeAllRecipesViewModel
 import com.jesse.ohunelo.util.GridSpacingItemDecoration
+import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpaceItemDecorator
+import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpanSize
+import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpannedGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -52,6 +55,8 @@ class SeeAllRecipesFragment : Fragment() {
             showRecipeDetailsInDialog(recipe)
         }
 
+        viewModel.updateRecipes(mealType = args.recipeCategory)
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -65,7 +70,7 @@ class SeeAllRecipesFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.recipes.collectLatest {
+                viewModel.recipes?.collectLatest {
                     seeAllRecipesAdapter.submitData(it)
                 }
             }
@@ -96,7 +101,24 @@ class SeeAllRecipesFragment : Fragment() {
             adapter = seeAllRecipesAdapter.withLoadStateFooter(SeeAllRecipesLoadStateAdapter{
                 seeAllRecipesAdapter.retry()
             })
-            layoutManager = GridLayoutManager(requireContext(), spanCount).apply {
+            layoutManager = SpannedGridLayoutManager(
+                SpannedGridLayoutManager.Orientation.VERTICAL,
+                3).apply {
+                spanSizeLookup = SpannedGridLayoutManager.SpanSizeLookup { position ->
+                    if (position % 6 == 0 || position % 6 == 4) {
+                        SpanSize(2, 2)
+                    }else if (seeAllRecipesAdapter.getItemViewType(position) == R.layout.see_all_recipes_load_state_footer_item){
+                        SpanSize(3, 1)
+                    }
+                    else {
+                        SpanSize(1, 1)
+                    }
+
+                }
+            }
+            addItemDecoration(SpaceItemDecorator(spacing))
+            /*layoutManager = GridLayoutManager(requireContext(), spanCount).apply {
+
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
                     override fun getSpanSize(position: Int): Int {
                         return when(seeAllRecipesAdapter.getItemViewType(position)){
@@ -108,7 +130,7 @@ class SeeAllRecipesFragment : Fragment() {
                     }
                 }
             }
-            addItemDecoration(GridSpacingItemDecoration(spanCount = 3, spacing, includeEdge = true))
+            addItemDecoration(GridSpacingItemDecoration(spanCount = 3, spacing, includeEdge = true))*/
         }
     }
 

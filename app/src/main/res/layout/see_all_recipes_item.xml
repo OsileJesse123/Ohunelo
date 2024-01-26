@@ -24,6 +24,7 @@
             android:src="@drawable/pasta_image"
             android:scaleType="centerCrop"
             android:contentDescription="@string/recipe_image"
+            app:loadImage="@{recipe.image}"
             />
 
         <RelativeLayout

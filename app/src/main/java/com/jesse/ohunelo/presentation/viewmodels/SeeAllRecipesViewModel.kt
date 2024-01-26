@@ -8,13 +8,18 @@ import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class SeeAllRecipesViewModel @Inject constructor(
-    recipeRepository: RecipeRepository
+    private val recipeRepository: RecipeRepository
 ): ViewModel() {
 
-    var recipes: Flow<PagingData<Recipe>> = recipeRepository.getPagedRecipes().cachedIn(viewModelScope)
+    var recipes: Flow<PagingData<Recipe>>? = null
+        private set
 
+    fun updateRecipes(mealType: String){
+        recipes = recipeRepository.getPagedRecipes(mealType.lowercase(Locale.ROOT)).cachedIn(viewModelScope)
+    }
 }

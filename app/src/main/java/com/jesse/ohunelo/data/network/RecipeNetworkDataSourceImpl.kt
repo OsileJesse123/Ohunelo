@@ -7,6 +7,7 @@ import com.jesse.ohunelo.data.network.models.RecipesResponse
 import com.jesse.ohunelo.di.IODispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -24,8 +25,8 @@ class RecipeNetworkDataSourceImpl @Inject constructor(
         spoonacularService.getRecipes(mealType = mealType)
     }
 
-    override suspend fun getRecipes(sort: String, mealType: String, offset: Int): RecipesByMealTypeResponse = withContext(ioDispatcher){
-        spoonacularService.getRecipes(sort = sort, mealType = mealType)
+    override suspend fun getRecipes(sort: String, mealType: String, offset: Int, number: Int): RecipesByMealTypeResponse = withContext(ioDispatcher){
+        spoonacularService.getRecipes(mealType = mealType, number = number, offset = offset)
     }
 
 

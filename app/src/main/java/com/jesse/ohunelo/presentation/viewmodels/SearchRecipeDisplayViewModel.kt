@@ -22,7 +22,7 @@ class SearchRecipeDisplayViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository
 ): ViewModel() {
 
-    val recipes = recipeRepository.getPagedRecipes().cachedIn(viewModelScope)
+    val recipes = recipeRepository.getPagedRecipes("").cachedIn(viewModelScope)
 
     val recis: MutableStateFlow<List<Recipe>> = MutableStateFlow(listOf());
 
