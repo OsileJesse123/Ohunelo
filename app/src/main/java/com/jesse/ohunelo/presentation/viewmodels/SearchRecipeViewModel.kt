@@ -15,5 +15,5 @@ class SearchRecipeViewModel @Inject constructor(
     recipeRepository: RecipeRepository
 ): ViewModel() {
 
-    val recipes: Flow<PagingData<Recipe>> = recipeRepository.getPagedRecipes().cachedIn(viewModelScope)
+    val recipes: Flow<PagingData<Recipe>> = recipeRepository.getPagedRecipes("main course").cachedIn(viewModelScope)
 }
