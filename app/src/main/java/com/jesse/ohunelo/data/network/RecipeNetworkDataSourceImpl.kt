@@ -1,13 +1,9 @@
 package com.jesse.ohunelo.data.network
 
-import com.jesse.ohunelo.BuildConfig
-import com.jesse.ohunelo.data.network.models.RecipeResponse
 import com.jesse.ohunelo.data.network.models.RecipesByMealTypeResponse
-import com.jesse.ohunelo.data.network.models.RecipesResponse
 import com.jesse.ohunelo.di.IODispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import javax.inject.Inject
 
 

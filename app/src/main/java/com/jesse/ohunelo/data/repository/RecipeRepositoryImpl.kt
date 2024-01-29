@@ -6,13 +6,11 @@ import androidx.paging.PagingData
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.RecipePagingSource
 import com.jesse.ohunelo.data.local.RecipeLocalDataSource
-import com.jesse.ohunelo.data.local.models.NutritionEntity
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.di.IODispatcher
-import com.jesse.ohunelo.util.RECIPE_PAGE_SIZE
 import com.jesse.ohunelo.util.UiText
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -21,7 +19,6 @@ import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
-private const val RECIPES_PER_PAGE = 20
 class RecipeRepositoryImpl @Inject constructor(
     private val recipeLocalDataSource: RecipeLocalDataSource,
     private val recipeNetworkDataSource: RecipeNetworkDataSource,
@@ -111,7 +108,7 @@ class RecipeRepositoryImpl @Inject constructor(
 
     override fun getPagedRecipes(mealType: String): Flow<PagingData<Recipe>> {
         return Pager(
-            config = PagingConfig(pageSize = RECIPE_PAGE_SIZE, enablePlaceholders = false),
+            config = PagingConfig(pageSize = 70, enablePlaceholders = false),
             pagingSourceFactory = { RecipePagingSource( ioDispatcher, defaultDispatcher, recipeNetworkDataSource, mealType) }
         ).flow
     }
