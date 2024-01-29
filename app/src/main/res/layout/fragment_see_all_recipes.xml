@@ -30,7 +30,69 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/see_all_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/see_all_recipes_item"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/error_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                >
+
+                <ImageView
+                    android:id="@+id/error_image"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="@dimen/_0dp"
+                    android:src="@drawable/error_icon"
+                    android:contentDescription="@string/error_image"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintWidth_percent=".5"
+                    app:layout_constraintHeight_percent=".2"
+                    app:layout_constraintVertical_bias=".15"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/error_message_text"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="@+id/error_image"
+                    app:layout_constraintStart_toStartOf="@+id/error_image"
+                    app:layout_constraintTop_toBottomOf="@+id/error_image"
+                    tools:text="Network Error"
+                    android:layout_marginTop="@dimen/grid_1"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/try_again_button"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/try_again"
+                    app:layout_constraintWidth_percent=".7"
+                    app:cornerRadius="@dimen/_20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/error_message_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--<androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
@@ -48,8 +110,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/see_all_recipes_item"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
                     />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,7 +163,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>-->
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/see_all_recipes_shimmer"

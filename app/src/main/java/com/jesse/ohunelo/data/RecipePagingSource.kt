@@ -11,14 +11,13 @@ import com.jesse.ohunelo.data.network.models.Measures
 import com.jesse.ohunelo.data.network.models.Metric
 import com.jesse.ohunelo.data.network.models.Step
 import com.jesse.ohunelo.data.network.models.Us
-import com.jesse.ohunelo.util.RECIPE_PAGE_SIZE
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 private const val STARTING_KEY = 0
+private const val RECIPE_PAGE_SIZE = 40
 // LOAD_DELAY_MILLIS will be removed as soon as backend is ready
 private const val LOAD_DELAY_MILLIS = 3_000L
 
@@ -36,7 +35,7 @@ class RecipePagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Recipe> {
 
-        return try {
+        /*return try {
             val startKey = params.key ?: STARTING_KEY
             val offset = startKey * RECIPE_PAGE_SIZE
             val recipes = withContext(ioDispatcher){recipeNetworkDataSource.getRecipes(mealType = mealType, offset = offset, number = 5)}
@@ -55,8 +54,8 @@ class RecipePagingSource(
             )
         } catch (e: Exception){
             LoadResult.Error(e)
-        }
-        /*// Start paging with STARTING_KEY if this is the first load
+        }*/
+        // Start paging with STARTING_KEY if this is the first load
         val start = params.key ?: STARTING_KEY
 
         // Load as many items as hinted by params.loadSize
@@ -140,7 +139,7 @@ class RecipePagingSource(
             )
         } catch (exc: Exception){
             LoadResult.Error(exc)
-        }*/
+        }
     }
 
 

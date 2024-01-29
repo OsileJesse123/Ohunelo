@@ -5,4 +5,3 @@ const val HOME_FRAGMENT = "HomeFragment"
 const val UPDATE_USERNAME_FRAGMENT = "UpdateUsernameFragment"
 const val LOGIN_FRAGMENT= "LoginFragment"
 const val HOME_SCREEN_RECIPES_AMOUNT = 20
-const val RECIPE_PAGE_SIZE = 40

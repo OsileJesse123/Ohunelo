@@ -101,7 +101,7 @@ class SeeAllRecipesFragment : Fragment() {
             adapter = seeAllRecipesAdapter.withLoadStateFooter(SeeAllRecipesLoadStateAdapter{
                 seeAllRecipesAdapter.retry()
             })
-            layoutManager = SpannedGridLayoutManager(
+            /*layoutManager = SpannedGridLayoutManager(
                 SpannedGridLayoutManager.Orientation.VERTICAL,
                 3).apply {
                 spanSizeLookup = SpannedGridLayoutManager.SpanSizeLookup { position ->
@@ -116,10 +116,10 @@ class SeeAllRecipesFragment : Fragment() {
 
                 }
             }
-            addItemDecoration(SpaceItemDecorator(spacing))
-            /*layoutManager = GridLayoutManager(requireContext(), spanCount).apply {
+            addItemDecoration(SpaceItemDecorator(spacing))*/
+            layoutManager = GridLayoutManager(requireContext(), spanCount).apply {
 
-                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+                /*spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
                     override fun getSpanSize(position: Int): Int {
                         return when(seeAllRecipesAdapter.getItemViewType(position)){
                             R.layout.see_all_recipes_load_state_footer_item ->{
@@ -128,9 +128,9 @@ class SeeAllRecipesFragment : Fragment() {
                             else -> 1
                         }
                     }
-                }
+                }*/
             }
-            addItemDecoration(GridSpacingItemDecoration(spanCount = 3, spacing, includeEdge = true))*/
+            //addItemDecoration(GridSpacingItemDecoration(spanCount = 3, spacing, includeEdge = true))
         }
     }
 
