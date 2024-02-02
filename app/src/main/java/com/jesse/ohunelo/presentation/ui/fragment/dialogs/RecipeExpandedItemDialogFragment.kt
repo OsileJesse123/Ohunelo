@@ -40,7 +40,7 @@ class RecipeExpandedItemDialogFragment(
                 // Set dialog size according to screen size
                 val mDisplayWidth = resources.displayMetrics.widthPixels
                 val mDisplayHeight = resources.displayMetrics.heightPixels
-                window?.setLayout((mDisplayWidth * 0.75f).toInt(), (mDisplayHeight * 0.65f).toInt())
+                window?.setLayout((mDisplayWidth * 0.85f).toInt(), (mDisplayHeight * 0.65f).toInt())
             }
         } ?: throw IllegalStateException("Activity can't be null")
     }
