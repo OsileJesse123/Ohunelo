@@ -43,6 +43,11 @@ class SeeAllRecipesFragment : Fragment() {
 
     private val args by navArgs<SeeAllRecipesFragmentArgs>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.updateRecipes(mealType = args.recipeCategory)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,8 +59,6 @@ class SeeAllRecipesFragment : Fragment() {
             recipe ->
             showRecipeDetailsInDialog(recipe)
         }
-
-        viewModel.updateRecipes(mealType = args.recipeCategory)
 
         // Inflate the layout for this fragment
         return binding.root
@@ -84,13 +87,17 @@ class SeeAllRecipesFragment : Fragment() {
                     val loadStateRefresh = combinedLoadStates.refresh
 
                     if (loadStateRefresh is LoadState.Error){
-                        binding.errorLayout.isVisible = true
                         binding.errorMessageText.text = loadStateRefresh.error.localizedMessage
                     }
+                    binding.errorLayout.isVisible = loadStateRefresh is LoadState.Error
 
                     binding.seeAllRecipesShimmer.isVisible = loadStateRefresh is LoadState.Loading
                 }
             }
+        }
+
+        binding.tryAgainButton.setOnClickListener {
+            seeAllRecipesAdapter.retry()
         }
     }
 

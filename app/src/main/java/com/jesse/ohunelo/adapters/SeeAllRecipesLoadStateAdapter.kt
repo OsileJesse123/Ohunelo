@@ -2,10 +2,12 @@ package com.jesse.ohunelo.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jesse.ohunelo.databinding.SeeAllRecipesLoadStateFooterItemBinding
+import timber.log.Timber
 
 class SeeAllRecipesLoadStateAdapter(private val retry: () -> Unit):  LoadStateAdapter<SeeAllRecipesLoadStateAdapter
 .SeeAllRecipesLoadStateViewHolder>(){
@@ -27,7 +29,12 @@ class SeeAllRecipesLoadStateAdapter(private val retry: () -> Unit):  LoadStateAd
 
             fun bind(loadState: LoadState, retry: () -> Unit){
                 binding.apply {
-                    setLoadState(loadState)
+                    if (loadState is LoadState.Error) {
+                        binding.errorMsg.text = loadState.error.localizedMessage
+                    }
+                    loadingProgressBar.isVisible = loadState is LoadState.Loading
+                    errorMsg.isVisible = loadState is LoadState.Error
+                    retryButton.isVisible = loadState !is LoadState.Loading
                     retryButton.setOnClickListener {
                         retry()
                     }

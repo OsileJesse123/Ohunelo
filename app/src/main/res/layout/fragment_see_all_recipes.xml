@@ -48,7 +48,6 @@
                 android:id="@+id/error_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
                 >
 
                 <ImageView
@@ -61,18 +60,21 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintWidth_percent=".5"
                     app:layout_constraintHeight_percent=".2"
                     app:layout_constraintVertical_bias=".15"
                     app:tint="?attr/colorPrimary" />
 
                 <TextView
                     android:id="@+id/error_message_text"
-                    style="@style/TextAppearance.MaterialComponents.Caption"
-                    android:layout_width="wrap_content"
+                    style="?attr/textAppearanceCaption"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="@+id/error_image"
-                    app:layout_constraintStart_toStartOf="@+id/error_image"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textAlignment="center"
+                    android:lineSpacingExtra="2dp"
+                    android:layout_marginHorizontal="@dimen/grid_2"
+                    android:textSize="@dimen/_14sp"
                     app:layout_constraintTop_toBottomOf="@+id/error_image"
                     tools:text="Network Error"
                     android:layout_marginTop="@dimen/grid_1"
@@ -101,6 +103,7 @@
             android:layout_height="match_parent"
             android:paddingTop="?attr/actionBarSize"
             android:layout_gravity="bottom"
+            android:visibility="gone"
             app:shimmer_base_alpha=".7"
             app:shimmer_colored="true"
             app:shimmer_base_color="@color/gray_400"
