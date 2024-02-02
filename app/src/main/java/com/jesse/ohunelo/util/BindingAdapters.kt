@@ -93,7 +93,7 @@ fun onRecipeCategorySelected(view: Chip, onRecipeCategorySelectedListener: OnRec
     }
 }
 
-@BindingAdapter("app:viewVisibility")
+/*@BindingAdapter("app:viewVisibility")
 fun setViewVisibility(view: View, loadState: LoadState?){
     loadState?.let {
         loadState ->
@@ -103,7 +103,7 @@ fun setViewVisibility(view: View, loadState: LoadState?){
             view.isVisible = loadState is LoadState.Error
         }
     }
-}
+}*/
 
 @BindingAdapter("app:indicatorVisibility")
 fun setIndicatorVisibility(view: ImageView, notificationHasBeenRead: Boolean?){
@@ -123,34 +123,16 @@ fun setErrorMessageText(view: TextInputLayout, errorMessage: UiText?){
     view.error = errorMessage?.asString(view.context)
 }
 
-/*@BindingAdapter("app:imageSrcUrl")
-fun setImage(imageView: ImageView, imageUrl: String?){
-    imageUrl?.let {
-        imageUrl ->
-        if(imageUrl.isNotEmpty()){
-            val imageUri = imageUrl.toUri().buildUpon().scheme("https").build()
-            Glide.with(imageView.context)
-                .load(imageUri)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.loading_animation)
-                        .error(R.drawable.broken_image)
-                )
-                .into(imageView)
-        }
-    }
-}*/
-
 @BindingAdapter("app:loadImage")
 fun loadImage(imageView: ImageView, imageUrl: String?){
     imageUrl?.let {
             imageUrl ->
         if(imageUrl.isNotEmpty()){
             imageView.load(imageUrl){
+                crossfade(true)
                 placeholder(R.drawable.loading_animation)
                     .error(R.drawable.broken_image)
             }
-
         }
     }
 }

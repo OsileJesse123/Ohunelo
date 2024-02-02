@@ -14,10 +14,11 @@ import com.jesse.ohunelo.data.network.models.Us
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import timber.log.Timber
 
 private const val STARTING_KEY = 0
-private const val RECIPE_PAGE_SIZE = 40
+private const val RECIPE_PAGE_SIZE = 39
 // LOAD_DELAY_MILLIS will be removed as soon as backend is ready
 private const val LOAD_DELAY_MILLIS = 3_000L
 
@@ -30,7 +31,10 @@ class RecipePagingSource(
     private val mealType: String
 ): PagingSource<Int, Recipe>() {
     override fun getRefreshKey(state: PagingState<Int, Recipe>): Int? {
-        TODO("Not yet implemented")
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Recipe> {
@@ -52,8 +56,19 @@ class RecipePagingSource(
                 prevKey = prevKey,
                 nextKey = nextKey
             )
+        } catch (e: HttpException){
+            Timber.e("Error: $e")
+            when(e.code()){
+                402 -> {
+                    LoadResult.Error(Throwable("rate limit has been reached"))
+                }
+                else -> {
+                    LoadResult.Error(Throwable("Unknown error"))
+                }
+            }
         } catch (e: Exception){
-            LoadResult.Error(e)
+            Timber.e("Error: $e")
+            LoadResult.Error(Throwable("Unknown error"))
         }
         /*// Start paging with STARTING_KEY if this is the first load
         val start = params.key ?: STARTING_KEY
