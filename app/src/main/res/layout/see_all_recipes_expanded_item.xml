@@ -13,7 +13,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,10 +23,11 @@
             <ImageView
                 android:id="@+id/recipe_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/pasta_image"
+                android:layout_height="500dp"
+                tools:src="@drawable/pasta_image"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/recipe_image"
+                app:loadImage="@{recipe.image}"
                 />
 
             <ImageView

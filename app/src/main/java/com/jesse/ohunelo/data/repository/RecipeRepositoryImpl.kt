@@ -30,7 +30,7 @@ class RecipeRepositoryImpl @Inject constructor(
     override suspend fun getRandomRecipes(): OhuneloResult<List<Recipe>> {
          return try {
              // Get the recipes from api
-            val result = recipeNetworkDataSource.getRandomRecipes()
+            val result = recipeNetworkDataSource.getRecipes(sort = "random");
              // Convert recipes response to recipe entities
             val recipeEntities = withContext(defaultDispatcher){
                 result.results.map {
@@ -70,7 +70,7 @@ class RecipeRepositoryImpl @Inject constructor(
     ): OhuneloResult<List<Recipe>> {
         return try {
             // Get the recipes from api
-            val result = recipeNetworkDataSource.getRecipesByMealType(mealType)
+            val result = recipeNetworkDataSource.getRecipes(mealType = mealType)
             // Convert recipes response to recipe entities
             val recipeEntities = withContext(defaultDispatcher){
                 result.results.map {
