@@ -23,6 +23,7 @@ import com.jesse.ohunelo.databinding.FragmentSeeAllRecipesBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.RecipeExpandedItemDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.SeeAllRecipesViewModel
 import com.jesse.ohunelo.util.GridSpacingItemDecoration
+import com.jesse.ohunelo.util.UiTextThrowable
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpaceItemDecorator
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpanSize
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpannedGridLayoutManager
@@ -87,7 +88,8 @@ class SeeAllRecipesFragment : Fragment() {
                     val loadStateRefresh = combinedLoadStates.refresh
 
                     if (loadStateRefresh is LoadState.Error){
-                        binding.errorMessageText.text = loadStateRefresh.error.localizedMessage
+                        val errorMessage = if(loadStateRefresh.error is UiTextThrowable) (loadStateRefresh.error as UiTextThrowable).errorMessage.asString(requireContext()) else loadStateRefresh.error.localizedMessage
+                        binding.errorMessageText.text = errorMessage
                     }
                     binding.errorLayout.isVisible = loadStateRefresh is LoadState.Error
 
