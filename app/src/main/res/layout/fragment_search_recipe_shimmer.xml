@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rowCount="9"
+    android:columnCount="3"
+    android:layout_marginHorizontal="@dimen/grid_2"
+    >
+
+    <include
+        layout="@layout/search_recipe_item"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_columnSpan="2"
+        android:layout_rowSpan="2"
+        android:layout_column="0"
+        android:layout_row="0"
+        android:layout_marginEnd="@dimen/grid_1"
+        android:layout_marginBottom="@dimen/grid_1"
+        />
+
+    <include
+        layout="@layout/search_recipe_item"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="@dimen/grid_1"
+        android:layout_marginBottom="@dimen/grid_1"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_column="2"
+        android:layout_row="0"
+        />
+
+    <include
+        layout="@layout/search_recipe_item"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="@dimen/grid_1"
+        android:layout_marginBottom="@dimen/grid_1"
+        android:layout_marginTop="@dimen/grid_1"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_column="2"
+        android:layout_row="1"
+        />
+
+    <include
+        layout="@layout/search_recipe_item"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_row="2"
+        android:layout_column="0"
+        android:layout_marginEnd="@dimen/grid_1"
+        android:layout_marginTop="@dimen/grid_1"
+        android:layout_marginBottom="@dimen/grid_1"
+        />
+
+    <include
+        layout="@layout/search_recipe_item"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_row="3"
+        android:layout_column="0"
+        android:layout_marginEnd="@dimen/grid_1"
+        android:layout_marginTop="@dimen/grid_1"
+        android:layout_marginBottom="@dimen/grid_1"/>
+
+    <include
+        layout="@layout/search_recipe_item"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_columnSpan="2"
+        android:layout_rowSpan="2"
+        android:layout_row="2"
+        android:layout_column="1"
+        android:layout_marginStart="@dimen/grid_1"
+        android:layout_marginBottom="@dimen/grid_1"
+        android:layout_marginTop="@dimen/grid_1"/>
+
+    <include
+        layout="@layout/search_recipe_item"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_columnSpan="2"
+        android:layout_rowSpan="2"
+        android:layout_row="4"
+        android:layout_column="0"
+        android:layout_marginEnd="@dimen/grid_1"
+        android:layout_marginTop="@dimen/grid_1"
+        android:layout_marginBottom="@dimen/grid_1"/>
+
+    <include
+        layout="@layout/search_recipe_item"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_row="4"
+        android:layout_column="2"
+        android:layout_marginStart="@dimen/grid_1"
+        android:layout_marginBottom="@dimen/grid_1"
+        android:layout_marginTop="@dimen/grid_1"/>
+
+    <include
+        layout="@layout/search_recipe_item"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_row="5"
+        android:layout_column="2"
+        android:layout_marginStart="@dimen/grid_1"
+        android:layout_marginBottom="@dimen/grid_1"
+        android:layout_marginTop="@dimen/grid_1"/>
+
+</GridLayout>

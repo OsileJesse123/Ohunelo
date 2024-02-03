@@ -12,8 +12,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchRecipeViewModel @Inject constructor(
-    recipeRepository: RecipeRepository
+    private val recipeRepository: RecipeRepository
 ): ViewModel() {
 
-    val recipes: Flow<PagingData<Recipe>> = recipeRepository.getPagedRecipes("main course").cachedIn(viewModelScope)
+    var recipes: Flow<PagingData<Recipe>>? = null
+        private set
+
+    fun updateRecipes(){
+        recipes = recipeRepository.getPagedRecipes(sort = "random").cachedIn(viewModelScope)
+    }
 }

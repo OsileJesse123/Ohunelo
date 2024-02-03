@@ -31,7 +31,8 @@ class RecipePagingSource(
     private val ioDispatcher: CoroutineDispatcher,
     private val defaultDispatcher: CoroutineDispatcher,
     private val recipeNetworkDataSource: RecipeNetworkDataSource,
-    private val mealType: String
+    private val mealType: String = "",
+    private val sort: String = ""
 ): PagingSource<Int, Recipe>() {
     override fun getRefreshKey(state: PagingState<Int, Recipe>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -45,7 +46,7 @@ class RecipePagingSource(
         return try {
             val startKey = params.key ?: STARTING_KEY
             val offset = startKey * RECIPE_PAGE_SIZE
-            val recipes = withContext(ioDispatcher){recipeNetworkDataSource.getRecipes(mealType = mealType, offset = offset, number = RECIPE_PAGE_SIZE)}
+            val recipes = withContext(ioDispatcher){recipeNetworkDataSource.getRecipes(mealType = mealType, offset = offset, number = RECIPE_PAGE_SIZE, sort = sort)}
             val numberOfPages = if(recipes.totalResults % RECIPE_PAGE_SIZE == 0) recipes.totalResults/RECIPE_PAGE_SIZE else (recipes.totalResults/RECIPE_PAGE_SIZE) + 1
             val nextKey =  if(startKey < numberOfPages) startKey + 1 else null
             val prevKey = if(startKey < 1) null else startKey - 1

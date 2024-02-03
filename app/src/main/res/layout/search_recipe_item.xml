@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -13,17 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/_20dp"
-        android:elevation="@dimen/_0dp"
+        app:cardElevation="@dimen/_0dp"
         >
 
         <ImageView
             android:id="@+id/recipe_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/pasta_image"
+            android:layout_height="match_parent"
+            tools:src="@drawable/pasta_image"
             android:scaleType="centerCrop"
             android:contentDescription="@string/recipe_image"
-
+            app:loadImage="@{recipe.image}"
             />
 
     </com.google.android.material.card.MaterialCardView>

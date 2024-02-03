@@ -106,10 +106,10 @@ class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getPagedRecipes(mealType: String): Flow<PagingData<Recipe>> {
+    override fun getPagedRecipes(mealType: String, sort: String): Flow<PagingData<Recipe>> {
         return Pager(
             config = PagingConfig(pageSize = 70, enablePlaceholders = false),
-            pagingSourceFactory = { RecipePagingSource( ioDispatcher, defaultDispatcher, recipeNetworkDataSource, mealType) }
+            pagingSourceFactory = { RecipePagingSource( ioDispatcher, defaultDispatcher, recipeNetworkDataSource, mealType, sort) }
         ).flow
     }
 }
