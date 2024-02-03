@@ -2,6 +2,7 @@ package com.jesse.ohunelo.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.Nutrition
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
@@ -11,6 +12,8 @@ import com.jesse.ohunelo.data.network.models.Measures
 import com.jesse.ohunelo.data.network.models.Metric
 import com.jesse.ohunelo.data.network.models.Step
 import com.jesse.ohunelo.data.network.models.Us
+import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.UiTextThrowable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -60,15 +63,15 @@ class RecipePagingSource(
             Timber.e("Error: $e")
             when(e.code()){
                 402 -> {
-                    LoadResult.Error(Throwable("rate limit has been reached"))
+                    LoadResult.Error(UiTextThrowable(UiText.StringResource(R.string.rate_limit_exceeded)))
                 }
                 else -> {
-                    LoadResult.Error(Throwable("Unknown error"))
+                    LoadResult.Error(UiTextThrowable(UiText.StringResource(R.string.failed_to_get_recipes)))
                 }
             }
         } catch (e: Exception){
             Timber.e("Error: $e")
-            LoadResult.Error(Throwable("Unknown error"))
+            LoadResult.Error(UiTextThrowable(UiText.StringResource(R.string.failed_to_get_recipes)))
         }
         /*// Start paging with STARTING_KEY if this is the first load
         val start = params.key ?: STARTING_KEY

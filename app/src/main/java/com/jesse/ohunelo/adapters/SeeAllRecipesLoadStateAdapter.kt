@@ -7,6 +7,7 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jesse.ohunelo.databinding.SeeAllRecipesLoadStateFooterItemBinding
+import com.jesse.ohunelo.util.UiTextThrowable
 import timber.log.Timber
 
 class SeeAllRecipesLoadStateAdapter(private val retry: () -> Unit):  LoadStateAdapter<SeeAllRecipesLoadStateAdapter
@@ -30,7 +31,8 @@ class SeeAllRecipesLoadStateAdapter(private val retry: () -> Unit):  LoadStateAd
             fun bind(loadState: LoadState, retry: () -> Unit){
                 binding.apply {
                     if (loadState is LoadState.Error) {
-                        binding.errorMsg.text = loadState.error.localizedMessage
+                        val loadStateError = if(loadState.error is UiTextThrowable) (loadState.error as UiTextThrowable).errorMessage.asString(retryButton.context) else loadState.error.localizedMessage
+                        binding.errorMsg.text = loadStateError
                     }
                     loadingProgressBar.isVisible = loadState is LoadState.Loading
                     errorMsg.isVisible = loadState is LoadState.Error
