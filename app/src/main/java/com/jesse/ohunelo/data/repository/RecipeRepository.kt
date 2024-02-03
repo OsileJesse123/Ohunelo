@@ -11,5 +11,5 @@ interface RecipeRepository {
 
     suspend fun getRecipesByMealType(mealType: String): OhuneloResult<List<Recipe>>
 
-    fun getPagedRecipes(mealType: String): Flow<PagingData<Recipe>>
+    fun getPagedRecipes(mealType: String = "", sort: String = ""): Flow<PagingData<Recipe>>
 }
