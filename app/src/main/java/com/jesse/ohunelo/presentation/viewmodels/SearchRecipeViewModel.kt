@@ -8,6 +8,7 @@ import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +20,7 @@ class SearchRecipeViewModel @Inject constructor(
         private set
 
     fun updateRecipes(){
+        Timber.e("I get called")
         recipes = recipeRepository.getPagedRecipes(sort = "random").cachedIn(viewModelScope)
     }
 }

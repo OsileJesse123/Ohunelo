@@ -109,7 +109,7 @@ open class SpannedGridLayoutManager(
      * configurations of not. Default is false. Only set to true if this condition is met.
      * Otherwise, scroll bugs will happen.
      */
-    var itemOrderIsStable = false
+    var itemOrderIsStable = true
 
     /**
      * Provides SpanSize values for the LayoutManager. Otherwise they will all be (1, 1).
