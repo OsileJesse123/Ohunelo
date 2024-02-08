@@ -14,11 +14,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.GridLayoutManager
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.SearchRecipeAdapter
 import com.jesse.ohunelo.adapters.SeeAllRecipesLoadStateAdapter
 import com.jesse.ohunelo.databinding.FragmentSearchRecipeBinding
 import com.jesse.ohunelo.presentation.viewmodels.SearchRecipeViewModel
+import com.jesse.ohunelo.util.GridSpacingItemDecoration
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpaceItemDecorator
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpanSize
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpannedGridLayoutManager
@@ -118,10 +120,6 @@ class SearchRecipeFragment : Fragment() {
                 }
             }
             addItemDecoration(SpaceItemDecorator(spacing))
-            postponeEnterTransition()
-            doOnPreDraw {
-                startPostponedEnterTransition()
-            }
         }
     }
 
