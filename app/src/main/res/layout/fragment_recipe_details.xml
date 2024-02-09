@@ -43,6 +43,7 @@
                 android:scaleType="centerCrop"
                 app:loadImage="@{recipe.image}"
                 android:contentDescription="@string/recipe_image"
+                android:background="@color/image_bg_color"
                 />
 
             <LinearLayout

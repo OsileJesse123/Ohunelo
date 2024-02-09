@@ -24,6 +24,7 @@
             android:scaleType="centerCrop"
             android:contentDescription="@string/recipe_image"
             app:loadImage="@{recipe.image}"
+            android:background="@color/image_bg_color"
             />
 
     </com.google.android.material.card.MaterialCardView>

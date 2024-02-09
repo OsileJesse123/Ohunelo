@@ -31,6 +31,7 @@
                 android:scaleType="centerCrop"
                 android:theme="@style/cubicImage"
                 app:loadImage="@{recipe.image}"
+                android:background="@color/image_bg_color"
                 app:layout_constraintDimensionRatio="7:4.8"
                 app:layout_constraintHeight_percent=".63"
                 app:layout_constraintVertical_bias="0"

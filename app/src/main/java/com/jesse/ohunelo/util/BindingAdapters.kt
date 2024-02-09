@@ -93,18 +93,6 @@ fun onRecipeCategorySelected(view: Chip, onRecipeCategorySelectedListener: OnRec
     }
 }
 
-/*@BindingAdapter("app:viewVisibility")
-fun setViewVisibility(view: View, loadState: LoadState?){
-    loadState?.let {
-        loadState ->
-        if (view is ProgressBar){
-            view.isVisible = loadState is LoadState.Loading
-        } else {
-            view.isVisible = loadState is LoadState.Error
-        }
-    }
-}*/
-
 @BindingAdapter("app:indicatorVisibility")
 fun setIndicatorVisibility(view: ImageView, notificationHasBeenRead: Boolean?){
     notificationHasBeenRead?.let {
@@ -130,7 +118,6 @@ fun loadImage(imageView: ImageView, imageUrl: String?){
         if(imageUrl.isNotEmpty()){
             imageView.load(imageUrl){
                 crossfade(true)
-                placeholder(R.drawable.loading_animation)
                     .error(R.drawable.broken_image)
             }
         }
