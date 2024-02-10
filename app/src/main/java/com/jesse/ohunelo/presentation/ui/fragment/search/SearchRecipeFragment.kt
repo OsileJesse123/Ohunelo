@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -14,13 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.GridLayoutManager
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.SearchRecipeAdapter
 import com.jesse.ohunelo.adapters.SeeAllRecipesLoadStateAdapter
 import com.jesse.ohunelo.databinding.FragmentSearchRecipeBinding
 import com.jesse.ohunelo.presentation.viewmodels.SearchRecipeViewModel
-import com.jesse.ohunelo.util.GridSpacingItemDecoration
+import com.jesse.ohunelo.util.UiTextThrowable
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpaceItemDecorator
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpanSize
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpannedGridLayoutManager
@@ -83,20 +81,27 @@ class SearchRecipeFragment : Fragment() {
                     val loadStateRefresh = combinedLoadStates.refresh
 
                     if (loadStateRefresh is LoadState.Error){
+                        val errorMessage = if(loadStateRefresh.error is UiTextThrowable) (loadStateRefresh.error as UiTextThrowable).errorMessage.asString(requireContext()) else loadStateRefresh.error.localizedMessage
                         binding.errorLayout.isVisible = true
-                        binding.errorMessageText.text = loadStateRefresh.error.localizedMessage
+                        binding.errorMessageText.text = errorMessage
                     }
+                    binding.errorLayout.isVisible = loadStateRefresh is LoadState.Error
 
                     binding.searchRecipeShimmer.isVisible = loadStateRefresh is LoadState.Loading
                 }
             }
         }
+        setupOnClickListeners()
+    }
 
+    private fun setupOnClickListeners(){
+        binding.tryAgainButton.setOnClickListener {
+            searchRecipeAdapter.retry()
+        }
         binding.searchRecipeToolBar.setOnClickListener {
             findNavController().navigate(SearchRecipeFragmentDirections
                 .actionSearchRecipeFragmentToSearchRecipeDisplayFragment())
         }
-
     }
 
     private fun setupRecycler(){
@@ -108,15 +113,17 @@ class SearchRecipeFragment : Fragment() {
             layoutManager = SpannedGridLayoutManager(SpannedGridLayoutManager.Orientation.VERTICAL,
                 3).apply {
                 spanSizeLookup = SpannedGridLayoutManager.SpanSizeLookup { position ->
-                    if (position % 6 == 0 || position % 6 == 4) {
-                        SpanSize(2, 2)
-                    }else if (searchRecipeAdapter.getItemViewType(position) == R.layout.see_all_recipes_load_state_footer_item){
-                        SpanSize(3, 1)
+                    when{
+                        position % 6 == 0 || position % 6 == 4 -> {
+                            SpanSize(2, 2)
+                        }
+                        position == searchRecipeAdapter.itemCount -> {
+                            SpanSize(3, 1)
+                        }
+                        else -> {
+                            SpanSize(1, 1)
+                        }
                     }
-                    else {
-                        SpanSize(1, 1)
-                    }
-
                 }
             }
             addItemDecoration(SpaceItemDecorator(spacing))

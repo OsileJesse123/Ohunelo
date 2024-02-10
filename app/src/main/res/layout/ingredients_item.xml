@@ -29,7 +29,6 @@
                 android:contentDescription="@string/ingredient_image"
                 android:scaleType="fitXY"
                 tools:src="@drawable/pasta_image"
-                android:background="@color/image_bg_color"
                 android:theme="@style/ShapeAppearanceOverlay.Ohunelo.ImageView.Cubic"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintBottom_toBottomOf="parent"

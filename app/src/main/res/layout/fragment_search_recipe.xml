@@ -71,7 +71,7 @@
                     android:id="@+id/error_image"
                     android:layout_width="@dimen/_0dp"
                     android:layout_height="@dimen/_0dp"
-                    android:src="@drawable/error_icon"
+                    android:src="@drawable/food_error"
                     android:contentDescription="@string/error_image"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -80,17 +80,18 @@
                     app:layout_constraintWidth_percent=".5"
                     app:layout_constraintHeight_percent=".2"
                     app:layout_constraintVertical_bias=".15"
-                    app:tint="?attr/colorPrimary" />
+                    />
 
                 <TextView
                     android:id="@+id/error_message_text"
-                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    style="?attr/textAppearanceCaption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="@+id/error_image"
                     app:layout_constraintStart_toStartOf="@+id/error_image"
                     app:layout_constraintTop_toBottomOf="@+id/error_image"
                     tools:text="Network Error"
+                    android:textSize="@dimen/_14sp"
                     android:layout_marginTop="@dimen/grid_1"
                     />
 
