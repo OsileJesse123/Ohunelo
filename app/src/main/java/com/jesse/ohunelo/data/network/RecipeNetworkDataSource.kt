@@ -6,5 +6,5 @@ import com.jesse.ohunelo.data.network.models.RecipesResponse
 
 interface RecipeNetworkDataSource {
 
-    suspend fun getRecipes(sort: String = "", mealType: String = "", offset: Int = 0, number: Int = 0): RecipesByMealTypeResponse
+    suspend fun getRecipes(sort: String = "", mealType: String = "", offset: Int = 0, number: Int = 0, searchQuery: String = ""): RecipesByMealTypeResponse
 }

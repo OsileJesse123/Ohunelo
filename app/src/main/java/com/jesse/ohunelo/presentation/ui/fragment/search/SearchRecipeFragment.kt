@@ -82,7 +82,6 @@ class SearchRecipeFragment : Fragment() {
 
                     if (loadStateRefresh is LoadState.Error){
                         val errorMessage = if(loadStateRefresh.error is UiTextThrowable) (loadStateRefresh.error as UiTextThrowable).errorMessage.asString(requireContext()) else loadStateRefresh.error.localizedMessage
-                        binding.errorLayout.isVisible = true
                         binding.errorMessageText.text = errorMessage
                     }
                     binding.errorLayout.isVisible = loadStateRefresh is LoadState.Error

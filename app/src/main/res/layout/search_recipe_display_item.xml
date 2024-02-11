@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="@dimen/_0dp"
+        android:layout_marginBottom="@dimen/grid_1"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

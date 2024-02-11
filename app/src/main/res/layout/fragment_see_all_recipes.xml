@@ -51,7 +51,7 @@
                 android:visibility="gone"
                 app:shimmer_base_alpha=".7"
                 app:shimmer_colored="true"
-                app:shimmer_base_color="@color/gray_400"
+                app:shimmer_base_color="@color/image_bg_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 >

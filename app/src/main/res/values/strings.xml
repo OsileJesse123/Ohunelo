@@ -145,6 +145,7 @@
     <string name="oops_something_went_wrong">Oops, something went wrong! Please swipe down to refresh.</string>
     <string name="opps_no_recipes_found">Opps, No Recipes found!</string>
     <string name="rate_limit_exceeded">Rate limit exceeded</string>
+    <string name="no_recipes_here">No Recipes Here!</string>
 
     <plurals name="number_of_items_available">
         <item quantity="one">%d item</item>
