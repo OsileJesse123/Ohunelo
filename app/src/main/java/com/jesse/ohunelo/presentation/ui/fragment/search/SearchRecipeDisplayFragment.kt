@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -19,12 +20,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.SearchRecipeDisplayAdapter
+import com.jesse.ohunelo.adapters.SeeAllRecipesLoadStateAdapter
 import com.jesse.ohunelo.databinding.FragmentSearchRecipeDisplayBinding
 import com.jesse.ohunelo.presentation.viewmodels.SearchRecipeDisplayViewModel
 import com.jesse.ohunelo.util.GridSpacingItemDecoration
+import com.jesse.ohunelo.util.UiTextThrowable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -59,16 +63,12 @@ class SearchRecipeDisplayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        // Request focus for edit text
-        binding.searchDisplayEditText.requestFocus()
+        // This has to be called first so that searchDisplayEditText can request focus
+        setupListeners()
 
         // Show the soft keyboard
         showSoftKeyboard(binding.searchDisplayEditText)
 
-        binding.navigationButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
 
         setupRecycler()
 
@@ -89,12 +89,39 @@ class SearchRecipeDisplayFragment : Fragment() {
                     val loadStateRefresh = combinedLoadStates.refresh
 
                     if (loadStateRefresh is LoadState.Error){
-                        binding.errorLayout.isVisible = true
-                        binding.errorMessageText.text = loadStateRefresh.error.localizedMessage
+                        val errorMessage = if(loadStateRefresh.error is UiTextThrowable) (loadStateRefresh.error as UiTextThrowable).errorMessage.asString(requireContext()) else loadStateRefresh.error.localizedMessage
+                        binding.errorMessageText.text = errorMessage
                     }
+                    binding.errorLayout.isVisible = loadStateRefresh is LoadState.Error
 
-                    binding.loadingProgressBar.isVisible = loadStateRefresh is LoadState.Loading
+                    binding.searchRecipeDisplayShimmer.isVisible = loadStateRefresh is LoadState.Loading
+
+                    binding.emptyListText.isVisible = searchRecipeDisplayAdapter.itemCount == 0 && loadStateRefresh is LoadState.NotLoading
                 }
+            }
+        }
+    }
+
+    private fun setupListeners(){
+        binding.apply {
+
+            searchDisplayEditText.apply {
+                // Request focus for edit text
+                requestFocus()
+                setOnEditorActionListener { _, actionId, _ ->
+                    if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                        viewModel.searchRecipes(this.text.toString())
+                        true
+                    } else{
+                        false
+                    }
+                }
+            }
+            navigationButton.setOnClickListener {
+                findNavController().navigateUp()
+            }
+            tryAgainButton.setOnClickListener {
+                searchRecipeDisplayAdapter.retry()
             }
         }
     }
@@ -102,7 +129,9 @@ class SearchRecipeDisplayFragment : Fragment() {
     private fun setupRecycler(){
         binding.searchDisplayRecycler.apply {
             val spacing = resources.getDimensionPixelSize(R.dimen.grid_1)
-            adapter = searchRecipeDisplayAdapter
+            adapter = searchRecipeDisplayAdapter.withLoadStateFooter(SeeAllRecipesLoadStateAdapter{
+                searchRecipeDisplayAdapter.retry()
+            })
             layoutManager = GridLayoutManager(requireContext(), 1).apply {
                 addItemDecoration(GridSpacingItemDecoration(1,spacing,false))
             }

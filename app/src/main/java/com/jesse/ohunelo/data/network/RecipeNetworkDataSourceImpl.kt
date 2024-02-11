@@ -12,8 +12,8 @@ class RecipeNetworkDataSourceImpl @Inject constructor(
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher
 ) : RecipeNetworkDataSource {
-    override suspend fun getRecipes(sort: String, mealType: String, offset: Int, number: Int): RecipesByMealTypeResponse = withContext(ioDispatcher){
-        spoonacularService.getRecipes(mealType = mealType, number = number, offset = offset, sort = sort)
+    override suspend fun getRecipes(sort: String, mealType: String, offset: Int, number: Int, searchQuery: String): RecipesByMealTypeResponse = withContext(ioDispatcher){
+        spoonacularService.getRecipes(mealType = mealType, number = number, offset = offset, sort = sort, searchQuery = searchQuery)
     }
 
 }

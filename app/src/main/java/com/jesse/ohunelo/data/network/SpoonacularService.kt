@@ -15,6 +15,7 @@ interface SpoonacularService {
         @Query("addRecipeNutrition") addRecipeNutrition: Boolean = true,
         @Query("fillIngredients") fillIngredients: Boolean = true,
         @Query("sort") sort: String = "",
+        @Query("query") searchQuery: String = "",
         @Query("offset") offset: Int = 0
     ): RecipesByMealTypeResponse
 }
