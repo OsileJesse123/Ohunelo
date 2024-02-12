@@ -96,6 +96,8 @@ class SearchRecipeDisplayFragment : Fragment() {
 
                     binding.searchRecipeDisplayShimmer.isVisible = loadStateRefresh is LoadState.Loading
 
+                    binding.searchDisplayRecycler.isVisible = loadStateRefresh is LoadState.NotLoading
+
                     binding.emptyListText.isVisible = searchRecipeDisplayAdapter.itemCount == 0 && loadStateRefresh is LoadState.NotLoading
                 }
             }
@@ -110,6 +112,7 @@ class SearchRecipeDisplayFragment : Fragment() {
                 requestFocus()
                 setOnEditorActionListener { _, actionId, _ ->
                     if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                        hideSoftKeyboard()
                         viewModel.searchRecipes(this.text.toString())
                         true
                     } else{
