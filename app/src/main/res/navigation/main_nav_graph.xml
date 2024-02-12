@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@+id/onboardingFragment">
+    app:startDestination="@+id/onboardingFragment"
+    >
 
     <fragment
         android:id="@+id/homeFragment"
@@ -19,6 +20,7 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out"
+            app:launchSingleTop="true"
             />
 
         <action
@@ -28,6 +30,7 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out"
+            app:launchSingleTop="true"
             />
 
     </fragment>
