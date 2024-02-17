@@ -13,6 +13,9 @@ class ProfileViewModel @Inject constructor(
 ): ViewModel() {
 
 
+    fun updateProfile(){
+
+    }
     fun logout(){
         viewModelScope.launch {
             authenticationRepository.logout()
