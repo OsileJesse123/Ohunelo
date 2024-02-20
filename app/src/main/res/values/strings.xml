@@ -146,6 +146,8 @@
     <string name="opps_no_recipes_found">Opps, No Recipes found!</string>
     <string name="rate_limit_exceeded">Rate limit exceeded</string>
     <string name="no_recipes_here">No Recipes Here!</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="update">Update</string>
 
     <plurals name="number_of_items_available">
         <item quantity="one">%d item</item>

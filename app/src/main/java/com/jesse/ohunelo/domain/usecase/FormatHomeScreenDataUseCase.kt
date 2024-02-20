@@ -17,6 +17,7 @@ class FormatHomeScreenDataUseCase @Inject constructor(
         val randomRecipes = recipeRepository.getRandomRecipes()
         val recipesByCategory = recipeRepository.getRecipesByMealType(selectedRecipeCategory.lowercase())
 
+
         homeScreenData = when(randomRecipes){
             is OhuneloResult.Success ->{
                 homeScreenData.copy(randomRecipes = randomRecipes.data)
