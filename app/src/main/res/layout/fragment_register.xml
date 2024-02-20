@@ -288,20 +288,3 @@
 
 
 </layout>
-
-<!--
-
-<FrameLayout
-                android:id="@+id/overlay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#66000000"
-                app:layoutVisibility="@{viewModel.registerUiStateFlow.enabled}"
-                >
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:indeterminateTint="?attr/colorOnSecondary"/>
-            </FrameLayout>
--->
