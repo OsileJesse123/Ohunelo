@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.FragmentProfileBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LogoutDialogFragment
+import com.jesse.ohunelo.presentation.ui.fragment.dialogs.UpdateProfileDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -41,9 +42,18 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setOnClickListeners(){
-        binding.logOutCard.setOnClickListener {
-            showLogoutDialog()
+        binding.apply {
+            logOutCard.setOnClickListener {
+                showLogoutDialog()
+            }
+            editProfileIcon.setOnClickListener {
+                showUpdateProfileDialog()
+            }
         }
+    }
+
+    private fun showUpdateProfileDialog(){
+        UpdateProfileDialogFragment().show(childFragmentManager, UpdateProfileDialogFragment.TAG)
     }
 
     private fun showLogoutDialog(){
