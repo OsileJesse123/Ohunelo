@@ -124,4 +124,13 @@ fun loadImage(imageView: ImageView, imageUrl: String?){
     }
 }
 
+@BindingAdapter("app:userInitial")
+fun setUserInitial(view: TextView, userName: String?){
+    view.text = userName?.let {
+        userName ->
+        userName.first().toString()
+    }
+}
+
+
 
