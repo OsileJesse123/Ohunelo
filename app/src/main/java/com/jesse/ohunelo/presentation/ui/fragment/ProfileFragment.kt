@@ -31,6 +31,12 @@ class ProfileFragment : Fragment() {
     ): View? {
         _binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_profile, container, false)
+
+        binding.apply {
+            viewModel = this@ProfileFragment.viewModel
+            lifecycleOwner = viewLifecycleOwner
+            executePendingBindings()
+        }
         // Inflate the layout for this fragment
         return binding.root
     }
