@@ -15,6 +15,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiText
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
@@ -44,7 +45,7 @@ class FirebaseAuthenticationService @Inject constructor(
             val user = result.user
 
             if (user != null){
-                updateUserName(user, "$firstName $lastName")
+                updateUserName(user, "$firstName$SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE$lastName")
                 // If registration task is successful and user is not null
                OhuneloResult.Success(AuthUser(
                    id = user.uid,

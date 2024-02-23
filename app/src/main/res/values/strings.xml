@@ -112,7 +112,7 @@
     <string name="this_field_cannot_be_blank">This field cannot be blank</string>
     <string name="invalid_email">Invalid email</string>
     <string name="password_must_contain">Password must contain at least 1 digit, symbol and be at least 8 characters long</string>
-    <string name="name_should">Name should be at most 8 characters long, no whitespaces, numbers and symbols are allowed</string>
+    <string name="name_should">Name should be 3 - %d characters long, no whitespaces, numbers and symbols are allowed</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="user_registered_but_user_null">User registration successful, but no user was created</string>
@@ -148,6 +148,8 @@
     <string name="no_recipes_here">No Recipes Here!</string>
     <string name="update_profile">Update Profile</string>
     <string name="update">Update</string>
+    <string name="edit_was_successful">Edit was successful</string>
+
 
     <plurals name="number_of_items_available">
         <item quantity="one">%d item</item>

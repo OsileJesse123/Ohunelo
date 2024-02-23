@@ -6,6 +6,9 @@ import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidateNameUseCase
 import com.jesse.ohunelo.presentation.uistates.UpdateProfileUiState
+import com.jesse.ohunelo.util.FIRST_NAME_MAX_LENGTH
+import com.jesse.ohunelo.util.LAST_NAME_MAX_LENGTH
+import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -35,23 +38,85 @@ class UpdateProfileViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _updateProfileUiState.update {
+            authenticationRepository.getUser()?.let {
+                user ->
+                _updateProfileUiState.update {
+                        updateProfileUiState ->
+                    val (_, _, email, username) = user
+                    updateProfileUiState.copy(
+                        email = email ?: "",
+                        firstName = username?.split(SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE)?.get(0) ?: "",
+                        lastName = username?.split(SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE)?.get(1) ?: "",
+                    )
+                }
+            }
+
+        }
+    }
+
+    fun updateProfile(){
+        viewModelScope.launch {
+            if(_updateProfileUiState.value.isFormValid()){
+                _updateProfileUiState.update {
                     updateProfileUiState ->
-                updateProfileUiState.copy(user = authenticationRepository.getUser())
+                    updateProfileUiState.copy(
+                        isEnabled = false
+                    )
+                }
+                delay(1000)
+                _updateProfileUiState.update {
+                        updateProfileUiState ->
+                    updateProfileUiState.copy(
+                        exitUpdateProfile = true
+                    )
+                }
             }
         }
     }
 
-    fun onUserNameTextChanged(usernameText: String){
+    fun onErrorMessageShown(){
+        _updateProfileUiState.update {
+                updateProfileUiState ->
+            updateProfileUiState.copy(
+                showErrorMessage = Pair(false, null)
+            )
+        }
+    }
+
+    fun onSuccessMessageShown(){
+        _updateProfileUiState.update {
+                updateProfileUiState ->
+            updateProfileUiState.copy(
+                showSuccessMessage = Pair(false, null)
+            )
+        }
+    }
+
+    fun onFirstNameTextChanged(firstNameText: String){
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
             delay(delayTime)
             _updateProfileUiState.update {
                     updateProfileUiState ->
-                val userNameValidation = validateNameUseCase(usernameText)
+                val userNameValidation = validateNameUseCase(firstNameText, FIRST_NAME_MAX_LENGTH)
                 updateProfileUiState.copy(
-                    userName = usernameText,
-                    userNameError = userNameValidation.errorMessage
+                    firstName = firstNameText,
+                    firstNameError = userNameValidation.errorMessage
+                )
+            }
+        }
+    }
+
+    fun onLastNameTextChanged(lastNameText: String){
+        validationJob?.cancel()
+        validationJob = viewModelScope.launch {
+            delay(delayTime)
+            _updateProfileUiState.update {
+                    updateProfileUiState ->
+                val userNameValidation = validateNameUseCase(lastNameText, LAST_NAME_MAX_LENGTH)
+                updateProfileUiState.copy(
+                    lastName = lastNameText,
+                    lastNameError = userNameValidation.errorMessage
                 )
             }
         }
