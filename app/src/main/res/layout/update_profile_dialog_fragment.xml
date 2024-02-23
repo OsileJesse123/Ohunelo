@@ -4,14 +4,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.jesse.ohunelo.presentation.viewmodels.UpdateProfileViewModel" />
+    </data>
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:paddingVertical="@dimen/grid_3"
+            android:layout_height="600dp"
+            android:paddingTop="@dimen/grid_3"
             android:paddingHorizontal="@dimen/grid_2"
             >
 
@@ -37,6 +43,7 @@
             <ScrollView
                 android:id="@+id/update_profile_scroll_view"
                 android:layout_width="match_parent"
+                android:scrollbars="none"
                 android:layout_height="@dimen/_0dp"
                 android:paddingTop="@dimen/grid_4"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -46,6 +53,19 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="@dimen/grid_1"
+                        android:indeterminateTint="?attr/colorOnSecondary"
+                        app:progressBarVisibility="@{viewModel.updateProfileUiState.enabled}"
+                        app:layout_constraintBottom_toBottomOf="@+id/update_button"
+                        app:layout_constraintEnd_toEndOf="@+id/update_button"
+                        app:layout_constraintStart_toStartOf="@+id/update_button"
+                        app:layout_constraintTop_toTopOf="@+id/update_button" />
+
                     <TextView
                         android:id="@+id/first_name_text"
                         android:layout_width="wrap_content"
@@ -56,10 +76,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <!--
-                    app:errorMessageText="@{viewModel.registerUiStateFlow.firstNameError}"
-                    android:enabled="@{viewModel.registerUiStateFlow.enabled}"
-                    -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/first_name_input_layout"
                         android:layout_width="@dimen/_0dp"
@@ -78,8 +94,11 @@
                         app:boxStrokeColor="@color/box_stroke_color_state"
                         app:hintEnabled="false"
                         app:errorEnabled="true"
+                        app:cursorErrorColor="?attr/colorPrimary"
                         android:textColorHint="@color/orange_100"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:errorMessageText="@{viewModel.updateProfileUiState.firstNameError}"
+                        android:enabled="@{viewModel.updateProfileUiState.enabled}"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -88,11 +107,61 @@
                             android:layout_height="match_parent"
                             android:inputType="text"
                             android:hint="@string/first_name"
+                            android:text="@{viewModel.updateProfileUiState.firstName}"
                             android:textAppearance="?attr/textAppearanceCaption"
                             android:textSize="@dimen/_12sp"
                             />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/last_name_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat"
+                        android:text="@string/last_name"
+                        android:textColor="?attr/colorSecondaryVariant"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/first_name_input_layout" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/last_name_input_layout"
+                        android:layout_width="@dimen/_0dp"
+                        android:layout_height="wrap_content"
+                        app:boxCornerRadiusBottomEnd="@dimen/_10dp"
+                        app:boxCornerRadiusBottomStart="@dimen/_10dp"
+                        app:boxCornerRadiusTopEnd="@dimen/_10dp"
+                        app:boxCornerRadiusTopStart="@dimen/_10dp"
+                        app:startIconDrawable="@drawable/user_icon"
+                        app:layout_constraintTop_toBottomOf="@id/last_name_text"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        android:layout_marginTop="@dimen/grid_1_5"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeColor="@color/box_stroke_color_state"
+                        app:hintEnabled="false"
+                        app:errorEnabled="true"
+                        app:cursorErrorColor="?attr/colorPrimary"
+                        android:textColorHint="@color/orange_100"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:errorMessageText="@{viewModel.updateProfileUiState.lastNameError}"
+                        android:enabled="@{viewModel.updateProfileUiState.enabled}"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/last_name_edit_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="text"
+                            android:hint="@string/last_name"
+                            android:text="@{viewModel.updateProfileUiState.lastName}"
+                            android:textAppearance="?attr/textAppearanceCaption"
+                            android:textSize="@dimen/_12sp"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
 
                     <TextView
                         android:id="@+id/email_text"
@@ -102,12 +171,8 @@
                         android:text="@string/email_address"
                         android:textColor="?attr/colorSecondaryVariant"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/first_name_input_layout" />
+                        app:layout_constraintTop_toBottomOf="@+id/last_name_input_layout" />
 
-                    <!--
-                    app:errorMessageText="@{viewModel.registerUiStateFlow.emailError}"
-                    android:enabled="@{viewModel.registerUiStateFlow.enabled}"
-                    -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/enter_email_address_input_layout"
                         android:layout_width="@dimen/_0dp"
@@ -126,8 +191,11 @@
                         app:boxStrokeColor="@color/box_stroke_color_state"
                         app:hintEnabled="false"
                         app:errorEnabled="true"
+                        app:cursorErrorColor="?attr/colorPrimary"
                         android:textColorHint="@color/orange_100"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:errorMessageText="@{viewModel.updateProfileUiState.emailError}"
+                        android:enabled="@{viewModel.updateProfileUiState.enabled}"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -136,23 +204,25 @@
                             android:layout_height="match_parent"
                             android:inputType="textEmailAddress"
                             android:hint="@string/enter_email_address"
+                            android:text="@{viewModel.updateProfileUiState.email}"
                             android:textAppearance="?attr/textAppearanceCaption"
                             android:textSize="@dimen/_12sp"
                             />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!--
-                    android:enabled="@{viewModel.registerUiStateFlow.enabled}"
-                    -->
+
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/update_button"
                         android:layout_width="@dimen/_0dp"
                         android:layout_height="@dimen/grid_8"
                         android:backgroundTint="?attr/colorSecondary"
                         android:text="@string/update"
-                        android:layout_marginTop="@dimen/grid_4"
+                        android:layout_marginVertical="@dimen/grid_4"
                         app:cornerRadius="@dimen/_15dp"
+                        android:enabled="@{viewModel.updateProfileUiState.enabled}"
+                        app:buttonTextTransparency="@{viewModel.updateProfileUiState.enabled}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

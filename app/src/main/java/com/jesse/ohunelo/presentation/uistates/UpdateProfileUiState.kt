@@ -1,21 +1,29 @@
 package com.jesse.ohunelo.presentation.uistates
 
-import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.util.UiText
 
 data class UpdateProfileUiState(
-    val user: AuthUser? = null,
-    val userName: String = "",
+    val firstName: String = "",
+    val lastName: String = "",
     val email: String = "",
-    val userNameError: UiText? = null,
+    val firstNameError: UiText? = null,
+    val lastNameError: UiText? = null,
     val emailError: UiText? = null,
+    val exitUpdateProfile: Boolean = false,
     /** first is a boolean determining whether or not an error message should be shown.
      *
      *  second is a nullable UiText, this is the error message to be displayed.
      * **/
     val showErrorMessage: Pair<Boolean, UiText?> = Pair(false, null),
+    val showSuccessMessage: Pair<Boolean, UiText?> = Pair(false, null),
     /**
      * This determines whether or not views in the Fragment should be enabled or not
      * **/
     val isEnabled: Boolean = true,
-)
+){
+    fun isFormValid(): Boolean =
+    // So long as firstName, lastName, email and password are not empty and firstNameError, lastNameError, emailError and passwordError are null then,
+        // form is valid.
+        (firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() &&
+                firstNameError == null && lastNameError == null && emailError == null)
+}

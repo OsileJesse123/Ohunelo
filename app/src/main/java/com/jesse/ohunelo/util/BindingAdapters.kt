@@ -1,6 +1,8 @@
 package com.jesse.ohunelo.util
 
 import android.content.res.ColorStateList
+import android.content.res.TypedArray
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,8 +11,8 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
-import androidx.paging.LoadState
 import coil.load
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
@@ -129,6 +131,31 @@ fun setUserInitial(view: TextView, userName: String?){
     view.text = userName?.let {
         userName ->
         userName.first().toString()
+    }
+}
+
+@BindingAdapter("app:progressBarVisibility")
+fun setProgressBarVisibility(view: ProgressBar, isEnabled: Boolean?){
+    isEnabled?.let {
+        isEnabled ->
+        // If other views on the screen are enabled then it should be invisible and vice versa.
+        view.isVisible = !isEnabled
+    }
+}
+
+@BindingAdapter("app:buttonTextTransparency")
+fun setButtonTextTransparency(view: MaterialButton, isEnabled: Boolean?){
+    isEnabled?.let {
+        val textColor = if (isEnabled) {
+            val theme = view.context.theme
+            val typedArray: TypedArray = theme.obtainStyledAttributes(intArrayOf(com.google.android.material.R.attr.colorOnSecondary))
+            val color = typedArray.getColor(0, 0)
+            typedArray.recycle()
+            color
+        } else {
+            Color.TRANSPARENT
+        }
+        view.setTextColor(textColor)
     }
 }
 

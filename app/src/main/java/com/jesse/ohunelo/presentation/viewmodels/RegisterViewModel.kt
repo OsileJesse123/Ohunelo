@@ -8,6 +8,8 @@ import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.domain.usecase.ValidateNameUseCase
 import com.jesse.ohunelo.presentation.uistates.RegisterUiState
+import com.jesse.ohunelo.util.FIRST_NAME_MAX_LENGTH
+import com.jesse.ohunelo.util.LAST_NAME_MAX_LENGTH
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -46,7 +48,7 @@ class RegisterViewModel @Inject constructor(
             delay(delayTime)
             _registerUiStateFlow.update {
                     registerUiState ->
-                val userNameValidation = validateNameUseCase(usernameText)
+                val userNameValidation = validateNameUseCase(usernameText, FIRST_NAME_MAX_LENGTH)
                 registerUiState.copy(
                     firstName = usernameText,
                     firstNameError = userNameValidation.errorMessage
@@ -61,7 +63,7 @@ class RegisterViewModel @Inject constructor(
             delay(delayTime)
             _registerUiStateFlow.update {
                     registerUiState ->
-                val userNameValidation = validateNameUseCase(usernameText)
+                val userNameValidation = validateNameUseCase(usernameText, LAST_NAME_MAX_LENGTH)
                 registerUiState.copy(
                     lastName = usernameText,
                     lastNameError = userNameValidation.errorMessage
