@@ -138,6 +138,7 @@ object AppModule {
     fun provideDatabase(@ApplicationContext context: Context, supportFactory: SupportFactory): RecipeDatabase{
          return Room.databaseBuilder(context, RecipeDatabase::class.java, "recipe_database")
              .openHelperFactory(supportFactory)
+             .fallbackToDestructiveMigration()
              .build()
     }
 

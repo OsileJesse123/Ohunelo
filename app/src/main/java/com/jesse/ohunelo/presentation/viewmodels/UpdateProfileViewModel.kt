@@ -31,7 +31,7 @@ class UpdateProfileViewModel @Inject constructor(
     // This is to ensure that validation of text in EditText is optimal. When user enters text,
     // validation doesn't happen immediately, initial task is canceled and restarted then there is
     // a delay of 500 milliseconds (to ensure that user has finished typing or not) before validation
-    // actually occurs and UI state is updated.
+    // actually occurs and UI state is updated..
     private var validationJob: Job? = null
 
     private val delayTime = 500L
