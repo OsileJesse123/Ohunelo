@@ -107,6 +107,7 @@ class FirebaseAuthenticationService @Inject constructor(
     }
 
     override suspend fun logout() {
+
         firebaseAuth.signOut()
     }
 

@@ -1,9 +1,12 @@
 package com.jesse.ohunelo.presentation.viewmodels
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.jesse.ohunelo.data.model.AuthUser
+import com.jesse.ohunelo.data.network.GoogleSignInHandler
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
@@ -28,7 +31,8 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val validateEmailUseCase: ValidateEmailUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
-    private val authenticationRepository: AuthenticationRepository
+    private val authenticationRepository: AuthenticationRepository,
+    private val googleSignInHandler: GoogleSignInHandler
 ): ViewModel() {
 
     private val _loginUiStateFlow: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState())
@@ -113,6 +117,67 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun startSignInWithGoogle(onBeginSignInSuccess: (result: BeginSignInResult) -> Unit){
+        // Disable buttons and show loader in UI
+        _loginUiStateFlow.update {
+                loginUiState ->
+            loginUiState.copy(
+                isEnabled = false
+            )
+        }
+        googleSignInHandler.startSign(
+            onSignInFailed = {
+                errorMessage ->
+                _loginUiStateFlow.update {
+                        loginUiState ->
+                    loginUiState.copy(
+                        isEnabled = true,
+                        showErrorMessage = Pair(true, errorMessage)
+                    )
+                }
+            },
+            onBeginSignInSuccess = onBeginSignInSuccess
+        )
+    }
+
+    fun finishSignInWithGoogle(result: Intent?){
+        viewModelScope.launch {
+            when(val idTokenResult = googleSignInHandler.getSignInToken(result)){
+                is OhuneloResult.Success -> {
+                    when (val signInResult = authenticationRepository.signInWithGoogle(idTokenResult.data!!)){
+                        is OhuneloResult.Success ->{
+                            Timber.e("ViewModel SignIn with google Successful, user: ${signInResult.data}")
+                            _loginUiStateFlow.update {
+                                    loginUiState ->
+                                loginUiState.copy(
+                                    navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
+                                )
+                            }
+                        }
+                        is OhuneloResult.Error -> {
+                            _loginUiStateFlow.update {
+                                    loginUiState ->
+                                loginUiState.copy(
+                                    showErrorMessage = Pair(true, signInResult.errorMessage),
+                                    isEnabled = true
+                                )
+                            }
+                        }
+                    }
+                }
+                is OhuneloResult.Error -> {
+                    _loginUiStateFlow.update {
+                            loginUiState ->
+                        loginUiState.copy(
+                            showErrorMessage = Pair(true, idTokenResult.errorMessage),
+                            isEnabled = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     fun signInWithTwitter(activity: Activity){
         viewModelScope.launch {
             // Disable buttons and show loader in UI
@@ -126,32 +191,6 @@ class LoginViewModel @Inject constructor(
             when(val signInResult = authenticationRepository.signInWithTwitter(activity)){
                 is OhuneloResult.Success -> {
                     Timber.e("ViewModel Sign in with Twitter Successful, user: ${signInResult.data}")
-                    _loginUiStateFlow.update {
-                            loginUiState ->
-                        loginUiState.copy(
-                            navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
-                            isEnabled = true
-                        )
-                    }
-                }
-                is OhuneloResult.Error -> {
-                    _loginUiStateFlow.update {
-                            loginUiState ->
-                        loginUiState.copy(
-                            showErrorMessage = Pair(true, signInResult.errorMessage),
-                            isEnabled = true
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun finishSignInWithGoogle(idToken: String){
-        viewModelScope.launch {
-            when (val signInResult = authenticationRepository.signInWithGoogle(idToken)){
-                is OhuneloResult.Success ->{
-                    Timber.e("ViewModel SignIn with google Successful, user: ${signInResult.data}")
                     _loginUiStateFlow.update {
                             loginUiState ->
                         loginUiState.copy(
@@ -234,6 +273,7 @@ class LoginViewModel @Inject constructor(
                 loginUiStateFlow ->
             loginUiStateFlow.copy(
                 navigateToNextScreen = Pair(false, ""),
+                isEnabled = true,
             )
         }
     }

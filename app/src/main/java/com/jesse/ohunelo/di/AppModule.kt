@@ -12,6 +12,7 @@ import com.jesse.ohunelo.data.local.database.RecipeDatabasePassphrase
 import com.jesse.ohunelo.data.network.ApiKeyInterceptor
 import com.jesse.ohunelo.data.network.AuthenticationService
 import com.jesse.ohunelo.data.network.FirebaseAuthenticationService
+import com.jesse.ohunelo.data.network.GoogleSignInHandler
 import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.RecipeNetworkDataSourceImpl
 import com.jesse.ohunelo.data.network.SpoonacularService
@@ -141,6 +142,10 @@ object AppModule {
              .fallbackToDestructiveMigration()
              .build()
     }
+
+    @Provides
+    @Singleton
+    fun provideGoogleSignInHandler(@ApplicationContext context: Context) = GoogleSignInHandler(context)
 
     @Provides
     @Singleton
