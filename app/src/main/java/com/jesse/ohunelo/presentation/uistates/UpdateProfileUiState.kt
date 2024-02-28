@@ -5,10 +5,8 @@ import com.jesse.ohunelo.util.UiText
 data class UpdateProfileUiState(
     val firstName: String = "",
     val lastName: String = "",
-    val email: String = "",
     val firstNameError: UiText? = null,
     val lastNameError: UiText? = null,
-    val emailError: UiText? = null,
     val exitUpdateProfile: Boolean = false,
     /** first is a boolean determining whether or not an error message should be shown.
      *
@@ -22,8 +20,8 @@ data class UpdateProfileUiState(
     val isEnabled: Boolean = true,
 ){
     fun isFormValid(): Boolean =
-    // So long as firstName, lastName, email and password are not empty and firstNameError, lastNameError, emailError and passwordError are null then,
+    // So long as firstName, lastName, and password are not empty and firstNameError, lastNameError, and passwordError are null then,
         // form is valid.
-        (firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() &&
-                firstNameError == null && lastNameError == null && emailError == null)
+        (firstName.isNotBlank() && lastName.isNotBlank() &&
+                firstNameError == null && lastNameError == null)
 }

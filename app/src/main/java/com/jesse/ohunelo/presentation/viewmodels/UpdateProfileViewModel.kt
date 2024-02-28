@@ -21,7 +21,6 @@ import javax.inject.Inject
 @HiltViewModel
 class UpdateProfileViewModel @Inject constructor(
     private val validateNameUseCase: ValidateNameUseCase,
-    private val validateEmailUseCase: ValidateEmailUseCase,
     private val authenticationRepository: AuthenticationRepository
 ): ViewModel() {
 
@@ -42,9 +41,8 @@ class UpdateProfileViewModel @Inject constructor(
                 user ->
                 _updateProfileUiState.update {
                         updateProfileUiState ->
-                    val (_, _, email, username) = user
+                    val (_, _, _, username) = user
                     updateProfileUiState.copy(
-                        email = email ?: "",
                         firstName = username?.split(SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE)?.get(0) ?: "",
                         lastName = username?.split(SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE)?.get(1) ?: "",
                     )
@@ -117,21 +115,6 @@ class UpdateProfileViewModel @Inject constructor(
                 updateProfileUiState.copy(
                     lastName = lastNameText,
                     lastNameError = userNameValidation.errorMessage
-                )
-            }
-        }
-    }
-
-    fun onEmailTextChanged(emailText: String){
-        validationJob?.cancel()
-        validationJob = viewModelScope.launch {
-            delay(delayTime)
-            _updateProfileUiState.update {
-                    updateProfileUiState ->
-                val emailValidation = validateEmailUseCase(emailText)
-                updateProfileUiState.copy(
-                    email = emailText,
-                    emailError = emailValidation.errorMessage
                 )
             }
         }
