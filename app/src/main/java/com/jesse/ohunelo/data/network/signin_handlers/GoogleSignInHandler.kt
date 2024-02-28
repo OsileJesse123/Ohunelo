@@ -1,4 +1,4 @@
-package com.jesse.ohunelo.data.network
+package com.jesse.ohunelo.data.network.signin_handlers
 
 import android.content.Context
 import android.content.Intent

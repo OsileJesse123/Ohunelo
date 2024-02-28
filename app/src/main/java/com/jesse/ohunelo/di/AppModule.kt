@@ -1,8 +1,6 @@
 package com.jesse.ohunelo.di
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.room.Room
 import com.jesse.ohunelo.BuildConfig
 import com.jesse.ohunelo.data.local.RecipeLocalDataSource
@@ -12,10 +10,11 @@ import com.jesse.ohunelo.data.local.database.RecipeDatabasePassphrase
 import com.jesse.ohunelo.data.network.ApiKeyInterceptor
 import com.jesse.ohunelo.data.network.AuthenticationService
 import com.jesse.ohunelo.data.network.FirebaseAuthenticationService
-import com.jesse.ohunelo.data.network.GoogleSignInHandler
+import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
 import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.RecipeNetworkDataSourceImpl
 import com.jesse.ohunelo.data.network.SpoonacularService
+import com.jesse.ohunelo.data.network.signin_handlers.FacebookSignInHandler
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.data.repository.AuthenticationRepositoryImpl
 import com.jesse.ohunelo.data.repository.RecipeRepository
@@ -145,11 +144,16 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideRecipeDao(recipeDatabase: RecipeDatabase) = recipeDatabase.recipeDao()
+
+    @Provides
+    @Singleton
     fun provideGoogleSignInHandler(@ApplicationContext context: Context) = GoogleSignInHandler(context)
 
     @Provides
     @Singleton
-    fun provideRecipeDao(recipeDatabase: RecipeDatabase) = recipeDatabase.recipeDao()
+    fun provideFacebookSignInHandler() = FacebookSignInHandler()
+
 }
 
 

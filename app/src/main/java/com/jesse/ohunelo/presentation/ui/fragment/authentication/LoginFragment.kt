@@ -16,12 +16,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 import com.jesse.ohunelo.R
+import com.jesse.ohunelo.data.network.signin_handlers.FacebookSignInHandler
 import com.jesse.ohunelo.databinding.FragmentLoginBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.LoginViewModel
@@ -31,7 +27,7 @@ import com.jesse.ohunelo.util.UiText
 import com.jesse.ohunelo.util.VERIFY_EMAIL_FRAGMENT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -43,8 +39,8 @@ class LoginFragment : Fragment() {
 
     private var loader: LoaderDialogFragment? = null
 
-    private var _callbackManager: CallbackManager? = null
-    private val callbackManager: CallbackManager get() = _callbackManager!!
+    @Inject
+    lateinit var facebookSignInHandler: FacebookSignInHandler
 
     private var startActivityForResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()){
@@ -73,9 +69,6 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loader = LoaderDialogFragment()
-
-        // Initialize callbackManager
-        _callbackManager = CallbackManager.Factory.create()
 
         setOnClickListeners()
 
@@ -167,26 +160,16 @@ class LoginFragment : Fragment() {
     }
 
     private fun startSignInWithFacebook(){
-        LoginManager.getInstance().logInWithReadPermissions(
-            this,
-            callbackManager,
-            listOf( "email", "public_profile")
-        )
-        LoginManager.getInstance().registerCallback(callbackManager, object :
-            FacebookCallback<LoginResult> {
-            override fun onSuccess(result: LoginResult) {
-                viewModel.finishSignInWithFacebook(result.accessToken.token)
-            }
-
-            override fun onCancel() {
+        facebookSignInHandler.signIn(
+            onSignInSuccess = {
+                idToken ->
+                viewModel.finishSignInWithFacebook(idToken)
+            },
+            onSignInFailed = {
                 viewModel.onSignInFailed(UiText.StringResource(R.string.sign_in_cancelled, "Facebook"))
-            }
-
-            override fun onError(error: FacebookException) {
-                Timber.e("Login with facebook failed, Error: ${error.message}")
-                viewModel.onSignInFailed(UiText.StringResource(R.string.sign_in_failed, "Google"))
-            }
-        })
+            },
+            this
+        )
     }
 
     private fun setOnClickListeners() {
@@ -221,7 +204,6 @@ class LoginFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _callbackManager = null
         _binding = null
     }
 }

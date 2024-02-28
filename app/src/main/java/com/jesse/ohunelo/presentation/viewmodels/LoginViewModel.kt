@@ -2,12 +2,14 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import android.app.Activity
 import android.content.Intent
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.jesse.ohunelo.data.model.AuthUser
-import com.jesse.ohunelo.data.network.GoogleSignInHandler
+import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
 import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.data.network.signin_handlers.FacebookSignInHandler
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
@@ -32,7 +34,8 @@ class LoginViewModel @Inject constructor(
     private val validateEmailUseCase: ValidateEmailUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
     private val authenticationRepository: AuthenticationRepository,
-    private val googleSignInHandler: GoogleSignInHandler
+    private val googleSignInHandler: GoogleSignInHandler,
+    private val facebookSignInHandler: FacebookSignInHandler
 ): ViewModel() {
 
     private val _loginUiStateFlow: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState())
@@ -118,13 +121,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun startSignInWithGoogle(onBeginSignInSuccess: (result: BeginSignInResult) -> Unit){
-        // Disable buttons and show loader in UI
-        _loginUiStateFlow.update {
-                loginUiState ->
-            loginUiState.copy(
-                isEnabled = false
-            )
-        }
+        startSignIn()
         googleSignInHandler.startSign(
             onSignInFailed = {
                 errorMessage ->
@@ -219,7 +216,6 @@ class LoginViewModel @Inject constructor(
                     Timber.e("ViewModel SignIn with facebook Successful, user: ${signInResult.data}")
                     _loginUiStateFlow.update {
                             loginUiState ->
-
                         loginUiState.copy(
                             navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
                             isEnabled = true
