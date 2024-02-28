@@ -101,11 +101,6 @@ class UpdateProfileDialogFragment: DialogFragment() {
                 viewModel.onLastNameTextChanged(it.toString())
             }
         }
-        binding.enterEmailAddressEditText.addTextChangedListener {
-                text: Editable? -> text?.let {
-                viewModel.onEmailTextChanged(it.toString())
-            }
-        }
 
     }
 
