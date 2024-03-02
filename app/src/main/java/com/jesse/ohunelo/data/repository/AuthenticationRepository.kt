@@ -4,10 +4,13 @@ import android.app.Activity
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.util.UiText
+import kotlinx.coroutines.flow.StateFlow
 
 interface AuthenticationRepository {
 
-    suspend fun getUser(): AuthUser?
+    val user: StateFlow<AuthUser?>
+
+    suspend fun updateUser()
 
     suspend fun registerUserWithEmailAndPassword(firstName: String, lastName: String, email: String, password: String): OhuneloResult<AuthUser>
 

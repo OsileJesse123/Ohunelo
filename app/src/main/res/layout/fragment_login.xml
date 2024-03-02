@@ -85,6 +85,8 @@
                         android:hint="@string/enter_email_address"
                         android:textAppearance="?attr/textAppearanceCaption"
                         android:textSize="@dimen/_12sp"
+                        android:longClickable="false"
+                        android:importantForAutofill="no"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -136,6 +138,8 @@
                         android:hint="@string/enter_password"
                         android:textAppearance="?attr/textAppearanceCaption"
                         android:textSize="@dimen/_12sp"
+                        android:longClickable="false"
+                        android:importantForAutofill="no"
                         />
 
                 </com.google.android.material.textfield.TextInputLayout>

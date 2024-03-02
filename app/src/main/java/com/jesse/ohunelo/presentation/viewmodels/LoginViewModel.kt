@@ -2,14 +2,13 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import android.app.Activity
 import android.content.Intent
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.jesse.ohunelo.data.model.AuthUser
-import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.network.signin_handlers.FacebookSignInHandler
+import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
@@ -24,6 +23,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -48,7 +48,6 @@ class LoginViewModel @Inject constructor(
     private var validationJob: Job? = null
 
     private val delayTime = 500L
-
 
     fun onEmailTextChanged(emailText: String){
         validationJob?.cancel()
@@ -101,7 +100,7 @@ class LoginViewModel @Inject constructor(
                         _loginUiStateFlow.update {
                                 loginUiState ->
                             loginUiState.copy(
-                                navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
+                                navigateToNextScreen = determineNavigationDestination(getUser()),
                                 isEnabled = true
                             )
                         }
@@ -147,7 +146,7 @@ class LoginViewModel @Inject constructor(
                             _loginUiStateFlow.update {
                                     loginUiState ->
                                 loginUiState.copy(
-                                    navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
+                                    navigateToNextScreen = determineNavigationDestination(getUser()),
                                 )
                             }
                         }
@@ -191,7 +190,7 @@ class LoginViewModel @Inject constructor(
                     _loginUiStateFlow.update {
                             loginUiState ->
                         loginUiState.copy(
-                            navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
+                            navigateToNextScreen = determineNavigationDestination(getUser()),
                             isEnabled = true
                         )
                     }
@@ -217,7 +216,7 @@ class LoginViewModel @Inject constructor(
                     _loginUiStateFlow.update {
                             loginUiState ->
                         loginUiState.copy(
-                            navigateToNextScreen = determineNavigationDestination(authenticationRepository.getUser()),
+                            navigateToNextScreen = determineNavigationDestination(getUser()),
                             isEnabled = true
                         )
                     }
@@ -265,12 +264,15 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onNavigationToNextScreen(){
-        _loginUiStateFlow.update {
-                loginUiStateFlow ->
-            loginUiStateFlow.copy(
-                navigateToNextScreen = Pair(false, ""),
-                isEnabled = true,
-            )
+        viewModelScope.launch {
+            authenticationRepository.updateUser()
+            _loginUiStateFlow.update {
+                    loginUiStateFlow ->
+                loginUiStateFlow.copy(
+                    navigateToNextScreen = Pair(false, ""),
+                    isEnabled = true,
+                )
+            }
         }
     }
 
@@ -304,6 +306,14 @@ class LoginViewModel @Inject constructor(
         } else{
             // else don't bother navigating at all
             Pair(false, "")
+        }
+    }
+
+    private suspend fun getUser(): AuthUser?{
+        return try {
+            authenticationRepository.user.first()
+        } catch (e: Exception){
+            null
         }
     }
 }

@@ -110,6 +110,7 @@
                             android:text="@{viewModel.updateProfileUiState.firstName}"
                             android:textAppearance="?attr/textAppearanceCaption"
                             android:textSize="@dimen/_12sp"
+                            android:importantForAutofill="no"
                             />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -158,6 +159,7 @@
                             android:text="@{viewModel.updateProfileUiState.lastName}"
                             android:textAppearance="?attr/textAppearanceCaption"
                             android:textSize="@dimen/_12sp"
+                            android:importantForAutofill="no"
                             />
 
                     </com.google.android.material.textfield.TextInputLayout>

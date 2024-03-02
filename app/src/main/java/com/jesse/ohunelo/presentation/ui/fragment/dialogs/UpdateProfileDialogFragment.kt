@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
-import android.view.View
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
@@ -21,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class UpdateProfileDialogFragment: DialogFragment() {
+class UpdateProfileDialogFragment(): DialogFragment() {
 
     companion object {
         const val TAG = "UpdateProfileDialogFragment"
@@ -72,12 +71,6 @@ class UpdateProfileDialogFragment: DialogFragment() {
                 window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             }
         } ?: throw IllegalStateException("Activity can't be null")
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
     }
 
     private fun showMessage(message: UiText?, onMessageShown: () -> Unit) {
