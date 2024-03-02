@@ -8,6 +8,10 @@ import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.UiText
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -16,9 +20,19 @@ class AuthenticationRepositoryImpl @Inject constructor(
     private val authenticationService: AuthenticationService,
     private val prefStore: PrefStore
 ): AuthenticationRepository {
-    override suspend fun getUser(): AuthUser? {
-        return withContext(ioDispatcher){
-            authenticationService.getUser()
+
+    private val _user: MutableStateFlow<AuthUser?> = MutableStateFlow(null)
+    override val user: StateFlow<AuthUser?>
+        get() = _user
+
+    init {
+        CoroutineScope(ioDispatcher).launch {
+            updateUser()
+        }
+    }
+    override suspend fun updateUser() {
+        withContext(ioDispatcher){
+            _user.emit(authenticationService.getUser())
         }
     }
 
@@ -48,6 +62,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
         withContext(ioDispatcher){
             authenticationService.logout()
             prefStore.isLoggedIn = false
+            //updateUser()
         }
     }
 

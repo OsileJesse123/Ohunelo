@@ -10,6 +10,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -25,7 +26,17 @@ class VerifyEmailViewModel @Inject constructor(
     val verifyEmailUiState get() = _verifyEmailUiState.asStateFlow()
 
     init {
-        updateUserEmail()
+        viewModelScope.launch {
+            authenticationRepository.user.collectLatest {
+                authUser ->
+                _verifyEmailUiState.update {
+                    verifyEmailUiState ->
+                    verifyEmailUiState.copy(
+                        userEmail = authUser?.email ?: "No Email"
+                    )
+                }
+            }
+        }
         verifyUserEmail()
         hasTheUserBeenVerified()
     }
@@ -33,15 +44,6 @@ class VerifyEmailViewModel @Inject constructor(
     private fun verifyUserEmail(){
         viewModelScope.launch {
             authenticationRepository.verifyUserEmail()
-        }
-    }
-
-    private fun updateUserEmail(){
-        viewModelScope.launch {
-            _verifyEmailUiState.update {
-                    verifyEmailUiState ->
-                verifyEmailUiState.copy(userEmail = authenticationRepository.getUser()?.email ?: "No Email")
-            }
         }
     }
 
