@@ -17,6 +17,7 @@ import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiText
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,6 +26,8 @@ class FirebaseAuthenticationService @Inject constructor(
 ): AuthenticationService {
 
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    private val _user: MutableSharedFlow<AuthUser?> = MutableSharedFlow()
 
     // This'll have to be converted to a flow
     override suspend fun getUser(): AuthUser? {
