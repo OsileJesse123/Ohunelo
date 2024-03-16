@@ -34,7 +34,7 @@ class FirebaseAuthenticationService @Inject constructor(
     override val user: SharedFlow<AuthUser?> = _user.asSharedFlow()
 
     override suspend fun getUser(): AuthUser? {
-        Timber.e("Firebase User: ${firebaseAuth.currentUser?.isEmailVerified}")
+        //Timber.e("Firebase User: ${firebaseAuth.currentUser?.isEmailVerified}")
         return firebaseAuth.currentUser?.let {
             firebaseUser ->
             AuthUser(
