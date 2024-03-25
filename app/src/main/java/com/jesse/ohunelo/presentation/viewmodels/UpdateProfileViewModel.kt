@@ -94,7 +94,7 @@ class UpdateProfileViewModel @Inject constructor(
                     is OhuneloResult.Success -> {
                         _updateProfileUiState.update {
                                 updateProfileUiState ->
-                            authenticationRepository.updateUser()
+                            //authenticationRepository.updateUser()
                             updateProfileUiState.copy(
                                 exitUpdateProfile = true,
                                 isEnabled = true,

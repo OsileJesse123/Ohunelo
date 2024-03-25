@@ -17,9 +17,12 @@ import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
@@ -29,14 +32,18 @@ class FirebaseAuthenticationService @Inject constructor(
 
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    // user backing property
-    private val _user: MutableSharedFlow<AuthUser?> = MutableSharedFlow()
+    private val _user: MutableSharedFlow<AuthUser?> = MutableSharedFlow(
+        replay = 3
+    )
 
     override val user: SharedFlow<AuthUser?> = _user.asSharedFlow()
 
+    init {
+        CoroutineScope(Dispatchers.IO).launch {
+            _user.emit(getUser())
+        }
+    }
     override suspend fun getUser(): AuthUser? {
-        //
-        // Timber.e("Firebase User: ${firebaseAuth.currentUser?.isEmailVerified}")
         return firebaseAuth.currentUser?.let {
             firebaseUser ->
             AuthUser(
@@ -57,12 +64,14 @@ class FirebaseAuthenticationService @Inject constructor(
             if (user != null){
                 updateUserName(user, "$firstName$SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE$lastName")
                 // If registration task is successful and user is not null
-               OhuneloResult.Success(AuthUser(
-                   id = user.uid,
-                   isEmailVerified =  user.isEmailVerified,
-                   email = user.email,
-                   userName = user.displayName
-               ))
+                val authUser = AuthUser(
+                    id = user.uid,
+                    isEmailVerified =  user.isEmailVerified,
+                    email = user.email,
+                    userName = user.displayName
+                )
+                _user.emit(authUser)
+               OhuneloResult.Success(authUser)
             } else {
                 // If registration task is successful and user is null
                 OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_registered_but_user_null))
@@ -90,12 +99,14 @@ class FirebaseAuthenticationService @Inject constructor(
 
             if (user != null){
                 // If login task is successful and user is not null
-                OhuneloResult.Success(AuthUser(
+                val authUser = AuthUser(
                     id = user.uid,
                     isEmailVerified =  user.isEmailVerified,
                     email = user.email,
                     userName = user.displayName
-                ))
+                )
+                _user.emit(authUser)
+                OhuneloResult.Success(authUser)
             } else {
                 // If login task is successful and user is null
                 OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
@@ -117,8 +128,8 @@ class FirebaseAuthenticationService @Inject constructor(
     }
 
     override suspend fun logout() {
-
         firebaseAuth.signOut()
+        _user.emit(null)
     }
 
     override suspend fun verifyUserEmail(): OhuneloResult<Boolean> {
@@ -186,12 +197,14 @@ class FirebaseAuthenticationService @Inject constructor(
 
             if (user != null){
                 // If sign in task is successful and user is not null
-                OhuneloResult.Success(AuthUser(
+                val authUser = AuthUser(
                     id = user.uid,
                     isEmailVerified =  user.isEmailVerified,
                     email = user.email,
                     userName = user.displayName
-                ))
+                )
+                _user.emit(authUser)
+                OhuneloResult.Success(authUser)
             } else {
                 // If login task is successful and user is null
                 OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
@@ -210,12 +223,14 @@ class FirebaseAuthenticationService @Inject constructor(
 
             if (user != null){
                 // If sign in task is successful and user is not null
-                OhuneloResult.Success(AuthUser(
+                val authUser = AuthUser(
                     id = user.uid,
                     isEmailVerified =  user.isEmailVerified,
                     email = user.email,
                     userName = user.displayName
-                ))
+                )
+                _user.emit(authUser)
+                OhuneloResult.Success(authUser)
             } else {
                 // If login task is successful and user is null
                 OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
@@ -240,12 +255,14 @@ class FirebaseAuthenticationService @Inject constructor(
 
                 if (user != null){
                     // If sign in task is successful and user is not null
-                    OhuneloResult.Success(AuthUser(
+                    val authUser = AuthUser(
                         id = user.uid,
                         isEmailVerified =  user.isEmailVerified,
                         email = user.email,
                         userName = user.displayName
-                    ))
+                    )
+                    _user.emit(authUser)
+                    OhuneloResult.Success(authUser)
                 } else {
                     // If login task is successful and user is null
                     OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
@@ -258,12 +275,14 @@ class FirebaseAuthenticationService @Inject constructor(
 
                 if (user != null){
                     // If sign in task is successful and user is not null
-                    OhuneloResult.Success(AuthUser(
+                    val authUser = AuthUser(
                         id = user.uid,
                         isEmailVerified =  user.isEmailVerified,
                         email = user.email,
                         userName = user.displayName
-                    ))
+                    )
+                    _user.emit(authUser)
+                    OhuneloResult.Success(authUser)
                 } else {
                     // If login task is successful and user is null
                     OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
@@ -283,6 +302,12 @@ class FirebaseAuthenticationService @Inject constructor(
             if(user != null){
                 // If user is not null, update the user name
                 updateUserName(user, "$firstName $lastName")
+                _user.emit(AuthUser(
+                    id = user.uid,
+                    isEmailVerified =  user.isEmailVerified,
+                    email = user.email,
+                    userName = user.displayName
+                ))
                 OhuneloResult.Success(true)
             } else{
                 // If user is null, no user was found so no update
