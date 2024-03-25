@@ -100,7 +100,7 @@ class LoginViewModel @Inject constructor(
                         _loginUiStateFlow.update {
                                 loginUiState ->
                             loginUiState.copy(
-                                navigateToNextScreen = determineNavigationDestination(getUser()),
+                                navigateToNextScreen = determineNavigationDestination(loginResult.data),
                                 isEnabled = true
                             )
                         }
@@ -146,7 +146,7 @@ class LoginViewModel @Inject constructor(
                             _loginUiStateFlow.update {
                                     loginUiState ->
                                 loginUiState.copy(
-                                    navigateToNextScreen = determineNavigationDestination(getUser()),
+                                    navigateToNextScreen = determineNavigationDestination(signInResult.data),
                                 )
                             }
                         }
@@ -190,7 +190,7 @@ class LoginViewModel @Inject constructor(
                     _loginUiStateFlow.update {
                             loginUiState ->
                         loginUiState.copy(
-                            navigateToNextScreen = determineNavigationDestination(getUser()),
+                            navigateToNextScreen = determineNavigationDestination(signInResult.data),
                             isEnabled = true
                         )
                     }
@@ -216,7 +216,7 @@ class LoginViewModel @Inject constructor(
                     _loginUiStateFlow.update {
                             loginUiState ->
                         loginUiState.copy(
-                            navigateToNextScreen = determineNavigationDestination(getUser()),
+                            navigateToNextScreen = determineNavigationDestination(signInResult.data),
                             isEnabled = true
                         )
                     }
@@ -265,7 +265,7 @@ class LoginViewModel @Inject constructor(
 
     fun onNavigationToNextScreen(){
         viewModelScope.launch {
-            authenticationRepository.updateUser()
+            //authenticationRepository.updateUser()
             _loginUiStateFlow.update {
                     loginUiStateFlow ->
                 loginUiStateFlow.copy(
@@ -309,11 +309,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getUser(): AuthUser?{
+    /*private suspend fun getUser(): AuthUser?{
         return try {
             authenticationRepository.user.first()
         } catch (e: Exception){
             null
         }
-    }
+    }*/
 }

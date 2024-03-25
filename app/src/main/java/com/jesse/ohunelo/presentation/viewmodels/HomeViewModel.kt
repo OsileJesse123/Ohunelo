@@ -14,6 +14,8 @@ import com.jesse.ohunelo.presentation.uistates.HomeUiState
 import com.jesse.ohunelo.util.UiDrawable
 import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,12 +51,12 @@ class HomeViewModel @Inject constructor(
 
     fun updateUser(){
         viewModelScope.launch {
-            authenticationRepository.updateUser()
+            //authenticationRepository.updateUser()
         }
     }
 
     private fun getUserName(){
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
 
             authenticationRepository.user.collect{
                 Timber.e("User: $it")

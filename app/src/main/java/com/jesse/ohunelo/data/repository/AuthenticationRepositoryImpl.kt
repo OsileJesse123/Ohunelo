@@ -9,10 +9,15 @@ import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.UiText
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 class AuthenticationRepositoryImpl @Inject constructor(
@@ -21,20 +26,21 @@ class AuthenticationRepositoryImpl @Inject constructor(
     private val prefStore: PrefStore
 ): AuthenticationRepository {
 
-    private val _user: MutableStateFlow<AuthUser?> = MutableStateFlow(null)
-    override val user: StateFlow<AuthUser?>
-        get() = _user
+    //private val _user: MutableSharedFlow<AuthUser?> = MutableSharedFlow()
+    override val user = authenticationService.user
 
     init {
         CoroutineScope(ioDispatcher).launch {
-            updateUser()
+            authenticationService.user.collect {
+                Timber.e("AuthService User: $it")
+            }
         }
     }
-    override suspend fun updateUser() {
+    /*override suspend fun updateUser() {
         withContext(ioDispatcher){
             _user.emit(authenticationService.getUser())
         }
-    }
+    }*/
 
     override suspend fun registerUserWithEmailAndPassword(
         firstName: String,
