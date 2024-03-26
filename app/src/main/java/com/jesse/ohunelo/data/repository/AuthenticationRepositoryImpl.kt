@@ -26,21 +26,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
     private val prefStore: PrefStore
 ): AuthenticationRepository {
 
-    //private val _user: MutableSharedFlow<AuthUser?> = MutableSharedFlow()
     override val user = authenticationService.user
-
-    init {
-        CoroutineScope(ioDispatcher).launch {
-            authenticationService.user.collect {
-                Timber.e("AuthService User: $it")
-            }
-        }
-    }
-    /*override suspend fun updateUser() {
-        withContext(ioDispatcher){
-            _user.emit(authenticationService.getUser())
-        }
-    }*/
 
     override suspend fun registerUserWithEmailAndPassword(
         firstName: String,
