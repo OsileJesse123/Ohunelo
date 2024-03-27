@@ -25,18 +25,20 @@ class ResetPasswordViewModel @Inject constructor(
     val resetPasswordUiStateFlow get() = _resetPasswordUiStateFlow.asStateFlow()
 
     private var validationJob: Job? = null
+    private val delayTime = 500L
 
     fun onEmailTextChanged(emailText: String){
+        _resetPasswordUiStateFlow.update {
+                resetPasswordUiState ->
+            resetPasswordUiState.copy(email = emailText)
+        }
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
-            delay(500L)
+            delay(delayTime)
             _resetPasswordUiStateFlow.update {
                     resetPasswordUiState ->
                 val emailValidation = validateEmailUseCase(emailText)
-                resetPasswordUiState.copy(
-                    email = emailText,
-                    emailError = emailValidation.errorMessage
-                )
+                resetPasswordUiState.copy(emailError = emailValidation.errorMessage)
             }
         }
     }
@@ -53,13 +55,16 @@ class ResetPasswordViewModel @Inject constructor(
 
     fun submit(){
         viewModelScope.launch {
+            // Disable all views
+            _resetPasswordUiStateFlow.update {
+                    resetPasswordUiState ->
+                resetPasswordUiState.copy(
+                    isEnabled = false
+                )
+            }
+            // A short delay to ensure that state is up to date before validating
+            delay(delayTime)
             if(_resetPasswordUiStateFlow.value.isFormValid()){
-                _resetPasswordUiStateFlow.update {
-                        resetPasswordUiState ->
-                    resetPasswordUiState.copy(
-                        isEnabled = false
-                    )
-                }
                 val result = authenticationRepository.sendPasswordResetEmail(email =
                 _resetPasswordUiStateFlow.value.email)
                 when(result){
@@ -81,6 +86,13 @@ class ResetPasswordViewModel @Inject constructor(
                             )
                         }
                     }
+                }
+            } else {
+                _resetPasswordUiStateFlow.update {
+                        resetPasswordUiState ->
+                    resetPasswordUiState.copy(
+                        isEnabled = true
+                    )
                 }
             }
         }

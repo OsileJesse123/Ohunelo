@@ -32,7 +32,7 @@ class VerifyEmailViewModel @Inject constructor(
                 _verifyEmailUiState.update {
                     verifyEmailUiState ->
                     verifyEmailUiState.copy(
-                        userEmail = authUser?.email ?: "No Email"
+                        userEmail = authUser?.email ?: " "
                     )
                 }
             }
