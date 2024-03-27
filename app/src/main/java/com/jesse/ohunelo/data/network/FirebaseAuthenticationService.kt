@@ -15,35 +15,39 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiText
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.onSubscription
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
 
 class FirebaseAuthenticationService @Inject constructor(
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ): AuthenticationService {
 
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    private val _user: MutableSharedFlow<AuthUser?> = MutableSharedFlow(
-        replay = 3
-    )
-
-    override val user: SharedFlow<AuthUser?> = _user.asSharedFlow()
-
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-            _user.emit(getUser())
-        }
+    private val _user: MutableSharedFlow<AuthUser?> = MutableSharedFlow()
+    override val user: SharedFlow<AuthUser?> = _user.shareIn(
+        CoroutineScope(ioDispatcher),
+        started = SharingStarted.WhileSubscribed(5000),
+        replay = 1
+    ).onSubscription {
+        emit(getUser())
     }
-    override suspend fun getUser(): AuthUser? {
+
+    private fun getUser(): AuthUser? {
         return firebaseAuth.currentUser?.let {
             firebaseUser ->
             AuthUser(

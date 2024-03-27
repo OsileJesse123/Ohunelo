@@ -49,35 +49,18 @@ class HomeViewModel @Inject constructor(
         getRecipesForHomeScreen()
     }
 
-    fun updateUser(){
-        viewModelScope.launch {
-            //authenticationRepository.updateUser()
-        }
-    }
 
     private fun getUserName(){
-        CoroutineScope(Dispatchers.IO).launch {
-
+        viewModelScope.launch {
             authenticationRepository.user.collect{
-                Timber.e("User: $it")
                 it?.let {
                     user ->
                     _homeUiStateFlow.update {
                             homeUiState ->
-
                         homeUiState.copy(userName = user.userName ?: "")
                     }
                 }
             }
-           /* val result = authenticationRepository.getUser()
-            result?.let {
-                user ->
-                _homeUiStateFlow.update {
-                    homeUiState ->
-
-                    homeUiState.copy(userName = user.userName ?: "")
-                }
-            }*/
         }
     }
 
