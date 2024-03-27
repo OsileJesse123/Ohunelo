@@ -43,21 +43,26 @@ class RegisterViewModel @Inject constructor(
     private val delayTime = 500L
 
     fun onFirstNameTextChanged(usernameText: String){
+        _registerUiStateFlow.update {
+                registerUiState ->
+            registerUiState.copy(firstName = usernameText,)
+        }
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
             delay(delayTime)
             _registerUiStateFlow.update {
                     registerUiState ->
                 val userNameValidation = validateNameUseCase(usernameText, FIRST_NAME_MAX_LENGTH)
-                registerUiState.copy(
-                    firstName = usernameText,
-                    firstNameError = userNameValidation.errorMessage
-                )
+                registerUiState.copy(firstNameError = userNameValidation.errorMessage)
             }
         }
     }
 
     fun onLastNameTextChanged(usernameText: String){
+        _registerUiStateFlow.update {
+                registerUiState ->
+            registerUiState.copy(lastName = usernameText)
+        }
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
             delay(delayTime)
@@ -65,7 +70,6 @@ class RegisterViewModel @Inject constructor(
                     registerUiState ->
                 val userNameValidation = validateNameUseCase(usernameText, LAST_NAME_MAX_LENGTH)
                 registerUiState.copy(
-                    lastName = usernameText,
                     lastNameError = userNameValidation.errorMessage
                 )
             }
@@ -73,21 +77,26 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun onEmailTextChanged(emailText: String){
+        _registerUiStateFlow.update {
+                registerUiState ->
+            registerUiState.copy(email = emailText)
+        }
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
             delay(delayTime)
             _registerUiStateFlow.update {
                     registerUiState ->
                 val emailValidation = validateEmailUseCase(emailText)
-                registerUiState.copy(
-                    email = emailText,
-                    emailError = emailValidation.errorMessage
-                )
+                registerUiState.copy(emailError = emailValidation.errorMessage)
             }
         }
     }
 
     fun onPasswordTextChanged(passwordText: String){
+        _registerUiStateFlow.update {
+                registerUiState ->
+            registerUiState.copy(password = passwordText)
+        }
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
             delay(delayTime)
@@ -96,7 +105,6 @@ class RegisterViewModel @Inject constructor(
                 val passwordValidation = validatePasswordUseCase(password = passwordText,
                     shouldValidatePasswordPattern = true)
                 registerUiState.copy(
-                    password = passwordText,
                     passwordError = passwordValidation.errorMessage
                 )
             }
@@ -105,13 +113,16 @@ class RegisterViewModel @Inject constructor(
 
     fun register(){
         viewModelScope.launch {
-            if(_registerUiStateFlow.value.isFormValid()){
-                _registerUiStateFlow.update {
+            // Disable all views
+            _registerUiStateFlow.update {
                     registerUiState ->
-                    registerUiState.copy(
-                        isEnabled = false
-                        )
-                }
+                registerUiState.copy(
+                    isEnabled = false
+                )
+            }
+            // A short delay to ensure that state is up to date before validating
+            delay(delayTime)
+            if(_registerUiStateFlow.value.isFormValid()){
                 val registerResult = authenticationRepository.registerUserWithEmailAndPassword(
                     // Ensure that first and last name have first letter as capital letter and remaining letters
                     // as small letters
@@ -158,6 +169,13 @@ class RegisterViewModel @Inject constructor(
                             )
                         }
                     }
+                }
+            } else{
+                _registerUiStateFlow.update {
+                        registerUiState ->
+                    registerUiState.copy(
+                        isEnabled = true
+                    )
                 }
             }
         }

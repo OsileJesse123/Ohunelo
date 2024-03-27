@@ -61,13 +61,16 @@ class UpdateProfileViewModel @Inject constructor(
 
     fun updateProfile(){
         viewModelScope.launch {
-            if(_updateProfileUiState.value.isFormValid()){
-                _updateProfileUiState.update {
+            // Disable all views
+            _updateProfileUiState.update {
                     updateProfileUiState ->
-                    updateProfileUiState.copy(
-                        isEnabled = false
-                    )
-                }
+                updateProfileUiState.copy(
+                    isEnabled = false
+                )
+            }
+            // A short delay to ensure that state is up to date before validating
+            delay(delayTime)
+            if(_updateProfileUiState.value.isFormValid()){
                 // Ensure that first and last name have first letter as capital letter and remaining letters
                 // as small letters
                 val firstName = _updateProfileUiState.value.firstName.lowercase(Locale.ROOT).replaceFirstChar {
@@ -112,6 +115,13 @@ class UpdateProfileViewModel @Inject constructor(
                         }
                     }
                 }
+            } else{
+                _updateProfileUiState.update {
+                        updateProfileUiState ->
+                    updateProfileUiState.copy(
+                        isEnabled = true
+                    )
+                }
             }
         }
     }
@@ -135,6 +145,10 @@ class UpdateProfileViewModel @Inject constructor(
     }
 
     fun onFirstNameTextChanged(firstNameText: String){
+        _updateProfileUiState.update {
+                updateProfileUiState ->
+            updateProfileUiState.copy(firstName = firstNameText)
+        }
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
             delay(delayTime)
@@ -142,7 +156,6 @@ class UpdateProfileViewModel @Inject constructor(
                     updateProfileUiState ->
                 val userNameValidation = validateNameUseCase(firstNameText, FIRST_NAME_MAX_LENGTH)
                 updateProfileUiState.copy(
-                    firstName = firstNameText,
                     firstNameError = userNameValidation.errorMessage
                 )
             }
@@ -150,16 +163,17 @@ class UpdateProfileViewModel @Inject constructor(
     }
 
     fun onLastNameTextChanged(lastNameText: String){
+        _updateProfileUiState.update {
+                updateProfileUiState ->
+            updateProfileUiState.copy(lastName = lastNameText)
+        }
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
             delay(delayTime)
             _updateProfileUiState.update {
                     updateProfileUiState ->
                 val userNameValidation = validateNameUseCase(lastNameText, LAST_NAME_MAX_LENGTH)
-                updateProfileUiState.copy(
-                    lastName = lastNameText,
-                    lastNameError = userNameValidation.errorMessage
-                )
+                updateProfileUiState.copy(lastNameError = userNameValidation.errorMessage)
             }
         }
     }

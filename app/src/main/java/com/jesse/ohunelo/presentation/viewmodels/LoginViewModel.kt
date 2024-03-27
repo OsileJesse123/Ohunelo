@@ -34,8 +34,7 @@ class LoginViewModel @Inject constructor(
     private val validateEmailUseCase: ValidateEmailUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
     private val authenticationRepository: AuthenticationRepository,
-    private val googleSignInHandler: GoogleSignInHandler,
-    private val facebookSignInHandler: FacebookSignInHandler
+    private val googleSignInHandler: GoogleSignInHandler
 ): ViewModel() {
 
     private val _loginUiStateFlow: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState())
@@ -50,21 +49,26 @@ class LoginViewModel @Inject constructor(
     private val delayTime = 500L
 
     fun onEmailTextChanged(emailText: String){
+        _loginUiStateFlow.update {
+                loginUiState ->
+            loginUiState.copy(email = emailText)
+        }
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
             delay(delayTime)
             _loginUiStateFlow.update {
                     loginUiState ->
                 val emailValidation = validateEmailUseCase(emailText)
-                loginUiState.copy(
-                    email = emailText,
-                    emailError = emailValidation.errorMessage
-                )
+                loginUiState.copy(emailError = emailValidation.errorMessage)
             }
         }
     }
 
     fun onPasswordTextChanged(passwordText: String){
+        _loginUiStateFlow.update {
+                loginUiState ->
+            loginUiState.copy(password = passwordText)
+        }
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
             delay(delayTime)
@@ -82,14 +86,16 @@ class LoginViewModel @Inject constructor(
 
     fun login(){
         viewModelScope.launch {
+            // Disable buttons and show loader in UI
+            _loginUiStateFlow.update {
+                    loginUiState ->
+                loginUiState.copy(
+                    isEnabled = false
+                )
+            }
+            // A short delay to ensure that state is up to date before validating
+            delay(delayTime)
             if(_loginUiStateFlow.value.isFormValid()){
-                // Disable buttons and show loader in UI
-                _loginUiStateFlow.update {
-                        loginUiState ->
-                    loginUiState.copy(
-                        isEnabled = false
-                    )
-                }
                 val loginResult = authenticationRepository.loginUserWithEmailAndPassword(
                     email = _loginUiStateFlow.value.email,
                     password = _loginUiStateFlow.value.password
@@ -114,6 +120,13 @@ class LoginViewModel @Inject constructor(
                             )
                         }
                     }
+                }
+            } else {
+                _loginUiStateFlow.update {
+                        loginUiState ->
+                    loginUiState.copy(
+                        isEnabled = true
+                    )
                 }
             }
         }

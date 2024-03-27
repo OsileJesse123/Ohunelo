@@ -37,44 +37,49 @@ class UpdateUsernameViewModel @Inject constructor(
     private val delayTime = 500L
 
     fun onFirstNameTextChanged(usernameText: String){
+        _updateUsernameUiStateFlow.update {
+                updateUsernameUiState ->
+            updateUsernameUiState.copy(firstName = usernameText)
+        }
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
             delay(delayTime)
             _updateUsernameUiStateFlow.update {
                     updateUsernameUiState ->
                 val userNameValidation = validateNameUseCase(usernameText, FIRST_NAME_MAX_LENGTH)
-                updateUsernameUiState.copy(
-                    firstName = usernameText,
-                    firstNameError = userNameValidation.errorMessage
-                )
+                updateUsernameUiState.copy(firstNameError = userNameValidation.errorMessage)
             }
         }
     }
 
     fun onLastNameTextChanged(usernameText: String){
+        _updateUsernameUiStateFlow.update {
+                updateUsernameUiState ->
+            updateUsernameUiState.copy(lastName = usernameText)
+        }
         validationJob?.cancel()
         validationJob = viewModelScope.launch {
             delay(delayTime)
             _updateUsernameUiStateFlow.update {
                     updateUsernameUiState ->
                 val userNameValidation = validateNameUseCase(usernameText, LAST_NAME_MAX_LENGTH)
-                updateUsernameUiState.copy(
-                    lastName = usernameText,
-                    lastNameError = userNameValidation.errorMessage
-                )
+                updateUsernameUiState.copy(lastNameError = userNameValidation.errorMessage)
             }
         }
     }
 
     fun updateUserName(){
+        // Disable all views
         viewModelScope.launch {
+            _updateUsernameUiStateFlow.update {
+                    updateUsernameUiState ->
+                updateUsernameUiState.copy(
+                    isEnabled = false
+                )
+            }
+            // A short delay to ensure that state is up to date before validating
+            delay(delayTime)
             if(_updateUsernameUiStateFlow.value.isFormValid()){
-                _updateUsernameUiStateFlow.update {
-                        updateUsernameUiState ->
-                    updateUsernameUiState.copy(
-                        isEnabled = false
-                    )
-                }
                 // Ensure that first and last name have first letter as capital letter and remaining letters
                 // as small letters
                 val firstName = _updateUsernameUiStateFlow.value.firstName.lowercase(Locale.ROOT).replaceFirstChar {
@@ -117,6 +122,13 @@ class UpdateUsernameViewModel @Inject constructor(
                             )
                         }
                     }
+                }
+            } else{
+                _updateUsernameUiStateFlow.update {
+                        updateUsernameUiState ->
+                    updateUsernameUiState.copy(
+                        isEnabled = true
+                    )
                 }
             }
         }
