@@ -265,7 +265,6 @@ class LoginViewModel @Inject constructor(
 
     fun onNavigationToNextScreen(){
         viewModelScope.launch {
-            //authenticationRepository.updateUser()
             _loginUiStateFlow.update {
                     loginUiStateFlow ->
                 loginUiStateFlow.copy(
@@ -308,12 +307,4 @@ class LoginViewModel @Inject constructor(
             Pair(false, "")
         }
     }
-
-    /*private suspend fun getUser(): AuthUser?{
-        return try {
-            authenticationRepository.user.first()
-        } catch (e: Exception){
-            null
-        }
-    }*/
 }

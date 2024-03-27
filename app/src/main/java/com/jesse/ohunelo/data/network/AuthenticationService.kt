@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.SharedFlow
 interface AuthenticationService {
 
     val user: SharedFlow<AuthUser?>
-    suspend fun getUser(): AuthUser?
     suspend fun registerUserWithEmailAndPassword(firstName: String, lastName: String, email: String, password: String): OhuneloResult<AuthUser>
     suspend fun loginUserWithEmailAndPassword(email: String, password: String): OhuneloResult<AuthUser>
     suspend fun logout()
