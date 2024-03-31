@@ -18,9 +18,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -38,13 +42,61 @@ class HomeViewModel @Inject constructor(
     private val _homeUiStateFlow: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val homeUiStateFlow: StateFlow<HomeUiState> get() = _homeUiStateFlow.asStateFlow()
 
+    // The first value in the pair represents the text to be displayed to the user (Good Morning, Good Afternoon etc.)
+    // and the second value represents the icon to match the text
+    val userGreetingUpdate: StateFlow<Pair<UiText?, UiDrawable?>> = flow{
+        while (true){
+            delay(1_000L)
+            when(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)){
+                in 0..11 -> {
+                    emit(
+                        Pair(UiText.StringResource(R.string.good_morning), UiDrawable(R.drawable.sun_icon))
+                    )
+                    /*_homeUiStateFlow.update { it.copy(userGreetingText = UiText.StringResource(
+                    R.string.good_morning), userGreetingIcon = UiDrawable(R.drawable.sun_icon)
+                    ) }*/
+                }
+                in 12..16 -> {
+                    emit(
+                        Pair(UiText.StringResource(R.string.good_afternoon), UiDrawable(R.drawable.sun_icon))
+                    )
+                    /*_homeUiStateFlow.update { it.copy(userGreetingText =
+                    UiText.StringResource(R.string.good_afternoon),
+                        userGreetingIcon = UiDrawable(R.drawable.sun_icon)
+                    ) }*/
+                }
+                in 17..21 -> {
+                    emit(
+                        Pair(UiText.StringResource(R.string.good_evening), UiDrawable(R.drawable.moon_icon))
+                    )
+                    /*_homeUiStateFlow.update { it.copy(userGreetingText =
+                    UiText.StringResource(R.string.good_evening),
+                        userGreetingIcon = UiDrawable(R.drawable.moon_icon)
+                    ) }*/
+                }
+                else -> {
+                    emit(
+                        Pair(UiText.StringResource(R.string.good_evening), UiDrawable(R.drawable.moon_icon))
+                    )
+                    /*_homeUiStateFlow.update { it.copy(userGreetingText =
+                    UiText.StringResource(R.string.good_evening),
+                        userGreetingIcon = UiDrawable(R.drawable.moon_icon)) }*/
+                }
+            }
+        }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000L),
+        initialValue = Pair(null, null)
+    )
+
     private var getRecipesByMealTypeJob: Job? = null
 
     var selectedRecipeCategory = "Main Course"
         private set
 
     init {
-        updateGreeting()
+        //updateGreeting()
         getUserName()
         getRecipesForHomeScreen()
     }

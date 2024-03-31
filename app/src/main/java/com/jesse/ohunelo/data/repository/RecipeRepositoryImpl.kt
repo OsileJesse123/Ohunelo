@@ -32,6 +32,7 @@ class RecipeRepositoryImpl @Inject constructor(
              // Get the recipes from api
             val result = recipeNetworkDataSource.getRecipes(sort = "random");
              // Convert recipes response to recipe entities
+             Timber.e("Recipe from Repo: ${result.results.size}")
             val recipeEntities = withContext(defaultDispatcher){
                 result.results.map {
                     recipeResponse ->
@@ -45,6 +46,7 @@ class RecipeRepositoryImpl @Inject constructor(
                     recipeEntity ->  recipeEntity.toRecipe()
                 }
             }
+             Timber.e("Local Recipe from Repo: ${recipes.size}")
             OhuneloResult.Success(recipes)
         }
          catch (e: HttpException){

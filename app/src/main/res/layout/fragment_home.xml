@@ -91,7 +91,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:tint="?attr/colorPrimary"
-                        app:uiDrawable="@{viewModel.homeUiStateFlow.userGreetingIcon}"
+                        app:uiDrawable="@{viewModel.userGreetingUpdate.second}"
                         tools:src="@drawable/moon_icon" />
 
                     <TextView
@@ -106,7 +106,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/time_of_day_image_view"
                         app:layout_constraintStart_toEndOf="@+id/time_of_day_image_view"
                         app:layout_constraintTop_toTopOf="@+id/time_of_day_image_view"
-                        app:uiText="@{viewModel.homeUiStateFlow.userGreetingText}"
+                        app:uiText="@{viewModel.userGreetingUpdate.first}"
                         tools:text="@string/good_morning" />
 
                     <TextView
