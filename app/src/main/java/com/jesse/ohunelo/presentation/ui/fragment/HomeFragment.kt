@@ -1,9 +1,5 @@
 package com.jesse.ohunelo.presentation.ui.fragment
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +9,11 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.RecipeAdapter
@@ -31,7 +25,6 @@ import com.jesse.ohunelo.util.RecipeViewHolderType
 import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 // todo: Make sure to delete ohunelo_branding.webp and pasta_image after you are done with app
 @AndroidEntryPoint
@@ -46,19 +39,6 @@ class HomeFragment : Fragment() {
     private val viewModel by hiltNavGraphViewModels<HomeViewModel>(R.id.main_nav_graph)
 
     private val sharedViewModel by activityViewModels<SharedViewModel>()
-
-    private val timeReceiver = object: BroadcastReceiver(){
-        override fun onReceive(context: Context?, intent: Intent?) {
-            Timber.tag("UserGreeting").e("Greeting about to be updated")
-            intent?.let {
-                intent ->
-                if(intent.action == Intent.ACTION_TIME_TICK){
-                    Timber.tag("UserGreeting").e("Greeting has been updated")
-                    viewModel.updateGreeting()
-                }
-            }
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -129,21 +109,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Register a BroadcastReceiver to listen for time changes
-        // The Intent.ACTION_TIME_TICK to notifies the app every one minute that time has changed.
-        val intentFilter = IntentFilter(Intent.ACTION_TIME_TICK)
-        context?.registerReceiver(timeReceiver, intentFilter)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        // timeReceiver is unregistered here to ensure that the broadcast receiver is
-        // unregistered before fragment is stopped
-        context?.unregisterReceiver(timeReceiver)
     }
 
     private fun showErrorMessage(errorMessage: UiText?) {

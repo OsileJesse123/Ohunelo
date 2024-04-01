@@ -1,6 +1,8 @@
 package com.jesse.ohunelo.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.Nutrition
@@ -11,6 +13,7 @@ import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.data.repository.RecipeRepository
 import com.jesse.ohunelo.domain.usecase.FormatHomeScreenDataUseCase
 import com.jesse.ohunelo.presentation.uistates.HomeUiState
+import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiDrawable
 import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +26,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -52,35 +56,21 @@ class HomeViewModel @Inject constructor(
                     emit(
                         Pair(UiText.StringResource(R.string.good_morning), UiDrawable(R.drawable.sun_icon))
                     )
-                    /*_homeUiStateFlow.update { it.copy(userGreetingText = UiText.StringResource(
-                    R.string.good_morning), userGreetingIcon = UiDrawable(R.drawable.sun_icon)
-                    ) }*/
                 }
                 in 12..16 -> {
                     emit(
                         Pair(UiText.StringResource(R.string.good_afternoon), UiDrawable(R.drawable.sun_icon))
                     )
-                    /*_homeUiStateFlow.update { it.copy(userGreetingText =
-                    UiText.StringResource(R.string.good_afternoon),
-                        userGreetingIcon = UiDrawable(R.drawable.sun_icon)
-                    ) }*/
                 }
                 in 17..21 -> {
                     emit(
                         Pair(UiText.StringResource(R.string.good_evening), UiDrawable(R.drawable.moon_icon))
                     )
-                    /*_homeUiStateFlow.update { it.copy(userGreetingText =
-                    UiText.StringResource(R.string.good_evening),
-                        userGreetingIcon = UiDrawable(R.drawable.moon_icon)
-                    ) }*/
                 }
                 else -> {
                     emit(
                         Pair(UiText.StringResource(R.string.good_evening), UiDrawable(R.drawable.moon_icon))
                     )
-                    /*_homeUiStateFlow.update { it.copy(userGreetingText =
-                    UiText.StringResource(R.string.good_evening),
-                        userGreetingIcon = UiDrawable(R.drawable.moon_icon)) }*/
                 }
             }
         }
@@ -89,6 +79,16 @@ class HomeViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000L),
         initialValue = Pair(null, null)
     )
+    val userName: LiveData<String> = authenticationRepository.user.flatMapLatest {
+            user ->
+        flow {
+            user?.let {
+                val (_, _, _, username) = it
+
+                emit(username ?: "")
+            } ?: emit("")
+        }
+    }.asLiveData()
 
     private var getRecipesByMealTypeJob: Job? = null
 
@@ -96,25 +96,9 @@ class HomeViewModel @Inject constructor(
         private set
 
     init {
-        //updateGreeting()
-        getUserName()
         getRecipesForHomeScreen()
     }
 
-
-    private fun getUserName(){
-        viewModelScope.launch {
-            authenticationRepository.user.collect{
-                it?.let {
-                    user ->
-                    _homeUiStateFlow.update {
-                            homeUiState ->
-                        homeUiState.copy(userName = user.userName ?: "")
-                    }
-                }
-            }
-        }
-    }
 
     fun getRecipesForHomeScreen(){
         viewModelScope.launch {
@@ -207,28 +191,6 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun updateGreeting(){
-        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-
-        when(currentHour){
-            in 0..11 -> {_homeUiStateFlow.update { it.copy(userGreetingText = UiText.StringResource(
-                R.string.good_morning), userGreetingIcon = UiDrawable(R.drawable.sun_icon)
-            ) }}
-            in 12..16 -> {_homeUiStateFlow.update { it.copy(userGreetingText =
-            UiText.StringResource(R.string.good_afternoon),
-                userGreetingIcon = UiDrawable(R.drawable.sun_icon)
-            ) }}
-            in 17..21 -> {_homeUiStateFlow.update { it.copy(userGreetingText =
-            UiText.StringResource(R.string.good_evening),
-                userGreetingIcon = UiDrawable(R.drawable.moon_icon)
-            ) }}
-            else -> {_homeUiStateFlow.update { it.copy(userGreetingText =
-            UiText.StringResource(R.string.good_evening),
-                userGreetingIcon = UiDrawable(R.drawable.moon_icon)) }}
-        }
-
     }
 
     fun onErrorMessageShown() {

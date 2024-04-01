@@ -142,12 +142,12 @@ class FirebaseAuthenticationService @Inject constructor(
         _user.emit(null)
     }
 
-    override suspend fun verifyUserEmail(): OhuneloResult<Boolean> {
+    override suspend fun verifyUserEmail(): OhuneloResult<Unit> {
         return try{
             val user = firebaseAuth.currentUser
             if (user != null){
                 user.sendEmailVerification().await()
-                OhuneloResult.Success(true)
+                OhuneloResult.Success(Unit)
             } else{
                 OhuneloResult.Error(UiText.StringResource(R.string.send_email_link_failed))
             }
@@ -306,7 +306,7 @@ class FirebaseAuthenticationService @Inject constructor(
         }
     }
 
-    override suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Boolean> {
+    override suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Unit> {
         return try {
             val user = firebaseAuth.currentUser
             if(user != null){
@@ -318,7 +318,7 @@ class FirebaseAuthenticationService @Inject constructor(
                     email = user.email,
                     userName = user.displayName
                 ))
-                OhuneloResult.Success(true)
+                OhuneloResult.Success(Unit)
             } else{
                 // If user is null, no user was found so no update
                 OhuneloResult.Error(UiText.StringResource(R.string.no_user_found))

@@ -1,6 +1,8 @@
 package com.jesse.ohunelo.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
@@ -15,10 +17,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 
@@ -37,27 +45,24 @@ class UpdateProfileViewModel @Inject constructor(
     // actually occurs and UI state is updated.
     private var validationJob: Job? = null
 
-    private val delayTime = 500L
+    // The first value in the pair represents first name and the second value represents the last name
+    val userName: LiveData<Pair<String, String>> = authenticationRepository.user.flatMapLatest {
+            user ->
+        flow {
+            user?.let {
+                val (_, _, _, username) = it
 
-    init {
-        viewModelScope.launch {
-            authenticationRepository.user.collectLatest {
-                it?.let {
-                    user ->
-                    _updateProfileUiState.update {
-                            updateProfileUiState ->
-                        val (_, _, _, username) = user
-                        updateProfileUiState.copy(
-                            firstName = username?.split(SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE)?.get(0) ?: "",
-                            lastName = username?.split(SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE)?.get(1) ?: "",
-                        )
-                    }
-                }
-
-            }
-
+                emit(
+                    Pair(
+                        username?.split(SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE)?.get(0) ?: "",
+                        username?.split(SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE)?.get(1) ?: "",
+                    )
+                )
+            } ?: emit(Pair("", ""))
         }
-    }
+    }.asLiveData()
+
+    private val delayTime = 500L
 
     fun updateProfile(){
         viewModelScope.launch {
