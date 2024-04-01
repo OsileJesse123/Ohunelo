@@ -19,7 +19,7 @@ interface AuthenticationRepository {
 
     suspend fun logout()
 
-    suspend fun verifyUserEmail(): OhuneloResult<Boolean>
+    suspend fun verifyUserEmail(): OhuneloResult<Unit>
 
     suspend fun hasTheUserBeenVerified(): Boolean
 
@@ -31,7 +31,7 @@ interface AuthenticationRepository {
 
     suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser>
 
-    suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Boolean>
+    suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Unit>
 
     suspend fun isAFirstTimeUser(): Boolean
 

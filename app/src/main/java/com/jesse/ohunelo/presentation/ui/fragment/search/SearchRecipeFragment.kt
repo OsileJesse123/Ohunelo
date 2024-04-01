@@ -38,10 +38,6 @@ class SearchRecipeFragment : Fragment() {
 
     private val viewModel by viewModels<SearchRecipeViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.updateRecipes()
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,7 +63,7 @@ class SearchRecipeFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.recipes?.collectLatest {
+                viewModel.recipes.collectLatest {
                     searchRecipeAdapter.submitData(it)
                 }
             }

@@ -1,6 +1,8 @@
 package com.jesse.ohunelo.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
@@ -8,10 +10,12 @@ import com.jesse.ohunelo.presentation.uistates.VerifyEmailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,64 +25,61 @@ class VerifyEmailViewModel @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ): ViewModel() {
 
-    private val _verifyEmailUiState: MutableStateFlow<VerifyEmailUiState> =
-        MutableStateFlow(VerifyEmailUiState())
-    val verifyEmailUiState get() = _verifyEmailUiState.asStateFlow()
+    private val uiActionFlow: MutableSharedFlow<UiAction> = MutableSharedFlow(replay = 1)
+    val userEmail: StateFlow<String> = authenticationRepository.user.flatMapLatest {
+        user ->
+        flow {
+            user?.let {
+                val (_, _, email, _) = it
+                emit(email ?: "")
+            } ?: emit("")
+        }
+    }.stateIn(
+        viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000L),
+        initialValue = ""
+    )
 
-    init {
-        viewModelScope.launch {
-            authenticationRepository.user.collectLatest {
-                authUser ->
-                _verifyEmailUiState.update {
-                    verifyEmailUiState ->
-                    verifyEmailUiState.copy(
-                        userEmail = authUser?.email ?: " "
-                    )
+    val verifyEmailUiState: StateFlow<VerifyEmailUiState> = uiActionFlow.flatMapLatest{
+        uiAction ->
+        flow {
+            when(uiAction){
+                UiAction.Send -> {
+                    emit(VerifyEmailUiState(isEnabled = false))
+                    when(val result = authenticationRepository.verifyUserEmail()){
+                        is OhuneloResult.Success -> {
+                            emit(VerifyEmailUiState(isEnabled = true))
+                        }
+                        is OhuneloResult.Error ->{
+                            emit(VerifyEmailUiState(
+                                isEnabled = true,
+                                showErrorMessage = Pair(true, result.errorMessage)
+                            ))
+                        }
+                    }
+                }
+                UiAction.OnErrorMessageShown -> {
+                    emit(VerifyEmailUiState(showErrorMessage = Pair(false, null)))
+                }
+                UiAction.NavigateToNextScreen -> {
+                    emit(VerifyEmailUiState(isEnabled = false, navigateToNextScreen = true))
                 }
             }
         }
-        verifyUserEmail()
+    }.stateIn(
+        viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000L),
+        initialValue = VerifyEmailUiState()
+    )
+
+    init {
+        sendUiAction(UiAction.Send)
         hasTheUserBeenVerified()
     }
 
-    private fun verifyUserEmail(){
+    fun sendUiAction(uiAction: UiAction) {
         viewModelScope.launch {
-            authenticationRepository.verifyUserEmail()
-        }
-    }
-
-    fun resendEmailLink(){
-        viewModelScope.launch {
-            _verifyEmailUiState.update {
-                verifyEmailUiState ->
-                verifyEmailUiState.copy(isEnabled = false)
-            }
-            when(val result = authenticationRepository.verifyUserEmail()){
-                is OhuneloResult.Success -> {
-                    _verifyEmailUiState.update {
-                            verifyEmailUiState ->
-                        verifyEmailUiState.copy(isEnabled = true)
-                    }
-                }
-                is OhuneloResult.Error ->{
-                    _verifyEmailUiState.update {
-                            verifyEmailUiState ->
-                        verifyEmailUiState.copy(
-                            isEnabled = true,
-                            showErrorMessage = Pair(true, result.errorMessage)
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun onErrorMessageShown(){
-        _verifyEmailUiState.update {
-                verifyEmailUiState ->
-            verifyEmailUiState.copy(
-                showErrorMessage = Pair(false, null)
-            )
+            uiActionFlow.emit(uiAction)
         }
     }
 
@@ -90,16 +91,17 @@ class VerifyEmailViewModel @Inject constructor(
                 delay(1500L)
                 val userEmailVerified = authenticationRepository.hasTheUserBeenVerified()
                 if (userEmailVerified){
-                    _verifyEmailUiState.update {
-                            verifyEmailUiState ->
-                        verifyEmailUiState.copy(
-                            navigateToNextScreen = true
-                        )
-                    }
+                    uiActionFlow.emit(UiAction.NavigateToNextScreen)
                     cancel()
                 }
 
             }
         }
     }
+}
+
+enum class UiAction{
+    Send,
+    OnErrorMessageShown,
+    NavigateToNextScreen
 }

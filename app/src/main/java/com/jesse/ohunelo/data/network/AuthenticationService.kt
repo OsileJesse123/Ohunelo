@@ -12,13 +12,13 @@ interface AuthenticationService {
     suspend fun registerUserWithEmailAndPassword(firstName: String, lastName: String, email: String, password: String): OhuneloResult<AuthUser>
     suspend fun loginUserWithEmailAndPassword(email: String, password: String): OhuneloResult<AuthUser>
     suspend fun logout()
-    suspend fun verifyUserEmail(): OhuneloResult<Boolean>
+    suspend fun verifyUserEmail(): OhuneloResult<Unit>
     suspend fun hasTheUserBeenVerified(): Boolean
     suspend fun sendPasswordResetEmail(email: String): OhuneloResult<UiText>
     suspend fun signInWithGoogle(idToken: String): OhuneloResult<AuthUser>
     suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser>
     suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser>
-    suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Boolean>
+    suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Unit>
     /*suspend fun updateUserEmail(email: String): OhuneloResult<Boolean>
     suspend fun reauthenticateUser()*/
 }

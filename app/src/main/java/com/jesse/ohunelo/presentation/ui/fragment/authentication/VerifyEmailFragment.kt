@@ -15,11 +15,11 @@ import androidx.navigation.fragment.findNavController
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.FragmentVerifyEmailBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
-import com.jesse.ohunelo.presentation.uistates.RegisterUiState
-import com.jesse.ohunelo.presentation.uistates.VerifyEmailUiState
+import com.jesse.ohunelo.presentation.viewmodels.UiAction
 import com.jesse.ohunelo.presentation.viewmodels.VerifyEmailViewModel
 import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -56,23 +56,31 @@ class VerifyEmailFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.verifyEmailUiState.collect{
-                    verifyEmailUiState ->
-                    if (verifyEmailUiState.navigateToNextScreen){
-                        navigateToNextScreen()
+                launch {
+                    viewModel.verifyEmailUiState.collect{
+                            verifyEmailUiState ->
+                        if (verifyEmailUiState.navigateToNextScreen){
+                            navigateToNextScreen()
+                        }
+                        if(!verifyEmailUiState.isEnabled){
+                            // If the buttons are not enabled then show the loader
+                            showLoader()
+                        } else {
+                            // Else hide the loader if it is visible
+                            hideLoader()
+                        }
+                        if(verifyEmailUiState.showErrorMessage.first){
+                            showErrorMessage(verifyEmailUiState.showErrorMessage.second)
+                        }
+                        /*if(verifyEmailUiState.userEmail.isNotEmpty()){
+                            binding.verifyEmailInstruction1.text = getString(R.string.verify_your_email_instruction_1, verifyEmailUiState.userEmail)
+                        }*/
                     }
-                    if(!verifyEmailUiState.isEnabled){
-                        // If the buttons are not enabled then show the loader
-                        showLoader()
-                    } else {
-                        // Else hide the loader if it is visible
-                        hideLoader()
-                    }
-                    if(verifyEmailUiState.showErrorMessage.first){
-                        showErrorMessage(verifyEmailUiState.showErrorMessage.second)
-                    }
-                    if(verifyEmailUiState.userEmail.isNotEmpty()){
-                        binding.verifyEmailInstruction1.text = getString(R.string.verify_your_email_instruction_1, verifyEmailUiState.userEmail)
+                }
+                launch {
+                    viewModel.userEmail.collectLatest {
+                        userEmail ->
+                        binding.verifyEmailInstruction1.text = getString(R.string.verify_your_email_instruction_1, userEmail)
                     }
                 }
             }
@@ -85,7 +93,7 @@ class VerifyEmailFragment : Fragment() {
             findNavController().navigateUp()
         }
         binding.resendEmailButton.setOnClickListener {
-            viewModel.resendEmailLink()
+            viewModel.sendUiAction(UiAction.Send)
         }
         binding.continueButton.setOnClickListener {
             navigateToNextScreen()
@@ -98,7 +106,7 @@ class VerifyEmailFragment : Fragment() {
             errorMessage?.asString(requireContext()),
             Toast.LENGTH_LONG
         ).show()
-        viewModel.onErrorMessageShown()
+        viewModel.sendUiAction(UiAction.OnErrorMessageShown)
     }
     private fun showLoader(){
         loader?.show(childFragmentManager, LoaderDialogFragment.TAG)

@@ -58,7 +58,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun verifyUserEmail(): OhuneloResult<Boolean> {
+    override suspend fun verifyUserEmail(): OhuneloResult<Unit> {
         return withContext(ioDispatcher){
             authenticationService.verifyUserEmail()
         }
@@ -94,7 +94,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Boolean> {
+    override suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Unit> {
         return withContext(ioDispatcher){
             authenticationService.updateTheUserName(firstName, lastName)
         }
