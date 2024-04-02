@@ -120,7 +120,7 @@
             />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/log_out_card"
+            android:id="@+id/edit_email_card"
             style="@style/Widget.App.ProfileOptionsCardView"
             android:layout_width="@dimen/_0dp"
             android:layout_height="wrap_content"
@@ -132,6 +132,56 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/grid_2"
+                android:paddingVertical="@dimen/grid_1"
+                android:clipToPadding="false"
+                >
+
+                <ImageView
+                    android:id="@+id/edit_email_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/edit_email_image"
+                    android:src="@drawable/email_outline_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?attr/colorSecondaryVariant" />
+
+                <TextView
+                    android:id="@+id/edit_email_text"
+                    style="?attr/textAppearanceBody1"
+                    android:layout_width="@dimen/_0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_email"
+                    android:textColor="?attr/colorSecondaryVariant"
+                    android:layout_marginStart="@dimen/grid_1"
+                    app:layout_constraintTop_toTopOf="@+id/edit_email_image"
+                    app:layout_constraintBottom_toBottomOf="@id/edit_email_image"
+                    app:layout_constraintStart_toEndOf="@+id/edit_email_image" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/log_out_card"
+            style="@style/Widget.App.ProfileOptionsCardView"
+            android:layout_width="@dimen/_0dp"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="?attr/colorBackgroundCustom"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/grey"
+            android:layout_marginTop="@dimen/grid_2"
+            android:layout_marginHorizontal="@dimen/grid_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_email_card"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
