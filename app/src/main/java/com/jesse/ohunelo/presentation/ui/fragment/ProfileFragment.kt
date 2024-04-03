@@ -55,6 +55,9 @@ class ProfileFragment : Fragment() {
             editProfileIcon.setOnClickListener {
                 showUpdateProfileDialog()
             }
+            editEmailCard.setOnClickListener {
+
+            }
         }
     }
 
