@@ -19,6 +19,6 @@ interface AuthenticationService {
     suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser>
     suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser>
     suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Unit>
-    /*suspend fun updateUserEmail(email: String): OhuneloResult<Boolean>
-    suspend fun reauthenticateUser()*/
+    suspend fun updateUserEmail(email: String): OhuneloResult<Boolean>
+    suspend fun reauthenticateUser()
 }

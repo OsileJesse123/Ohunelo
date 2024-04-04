@@ -329,6 +329,14 @@ class FirebaseAuthenticationService @Inject constructor(
         }
     }
 
+    override suspend fun updateUserEmail(email: String): OhuneloResult<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun reauthenticateUser() {
+        TODO("Not yet implemented")
+    }
+
     private suspend fun updateUserName(user: FirebaseUser, userName: String){
         val profileUpdates = UserProfileChangeRequest.Builder()
             .setDisplayName(userName)
