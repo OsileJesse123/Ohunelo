@@ -1,4 +1,4 @@
-package com.jesse.ohunelo.presentation.ui.fragment
+package com.jesse.ohunelo.presentation.ui.fragment.profile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,7 +14,6 @@ import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LogoutDialogFragment
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.UpdateProfileDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -56,7 +55,7 @@ class ProfileFragment : Fragment() {
                 showUpdateProfileDialog()
             }
             editEmailCard.setOnClickListener {
-
+                findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToEditEmailFragment())
             }
         }
     }
