@@ -309,6 +309,7 @@ class FirebaseAuthenticationService @Inject constructor(
     override suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Unit> {
         return try {
             val user = firebaseAuth.currentUser
+
             if(user != null){
                 // If user is not null, update the user name
                 updateUserName(user, "$firstName $lastName")

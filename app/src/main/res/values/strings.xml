@@ -151,6 +151,7 @@
     <string name="edit_was_successful">Edit was successful</string>
     <string name="edit_email_image">edit email image</string>
     <string name="edit_email">Edit Email</string>
+    <string name="enter_new_email_address">Enter new email address</string>
 
 
     <plurals name="number_of_items_available">

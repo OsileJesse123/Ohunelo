@@ -276,7 +276,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.jesse.ohunelo.presentation.ui.fragment.ProfileFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.profile.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile"
         >
@@ -291,6 +291,9 @@
             app:popUpToInclusive="true"
             app:popUpTo="@id/main_nav_graph"
             />
+        <action
+            android:id="@+id/action_profileFragment_to_editEmailFragment"
+            app:destination="@id/editEmailFragment" />
 
     </fragment>
 
@@ -311,5 +314,12 @@
             />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/editEmailFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.profile.EditEmailFragment"
+        android:label="EditEmailFragment"
+        tools:layout="@layout/fragment_edit_email"
+        />
 
 </navigation>
