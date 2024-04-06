@@ -4,6 +4,7 @@ import android.app.Activity
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.UpdateStatus
 import kotlinx.coroutines.flow.SharedFlow
 
 interface AuthenticationService {
@@ -19,6 +20,6 @@ interface AuthenticationService {
     suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser>
     suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser>
     suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Unit>
-    suspend fun updateUserEmail(email: String): OhuneloResult<Boolean>
+    suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus>
     suspend fun reauthenticateUser()
 }

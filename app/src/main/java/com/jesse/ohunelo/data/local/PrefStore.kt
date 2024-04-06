@@ -6,9 +6,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-const val SHARED_PREF = "com.jesse.ohunelo.shared_pref"
-const val LOGGED_IN = "com.jesse.ohunelo.logged_in"
-const val FIRST_TIME_USER = "com.jesse.ohunelo.first_time_user"
+private const val SHARED_PREF = "com.jesse.ohunelo.shared_pref"
+private const val LOGGED_IN = "com.jesse.ohunelo.logged_in"
+private const val FIRST_TIME_USER = "com.jesse.ohunelo.first_time_user"
+private const val USER_TYPE = "com.jesse.ohunelo.user_type"
 
 @Singleton
 class PrefStore @Inject constructor(
@@ -29,4 +30,8 @@ class PrefStore @Inject constructor(
     var isFirstTimeUser: Boolean
         set(value) = editor.putBoolean(FIRST_TIME_USER, value).apply()
         get() = sharedPreferences.getBoolean(FIRST_TIME_USER, true)
+
+    var userType: String?
+        set(value) = editor.putString(USER_TYPE, value).apply()
+        get() = sharedPreferences.getString(USER_TYPE, null)
 }

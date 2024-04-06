@@ -53,8 +53,6 @@ class AuthenticationRepositoryImpl @Inject constructor(
     override suspend fun logout() {
         withContext(ioDispatcher){
             authenticationService.logout()
-            prefStore.isLoggedIn = false
-            //updateUser()
         }
     }
 
