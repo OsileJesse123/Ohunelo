@@ -2,7 +2,6 @@ package com.jesse.ohunelo.data.local.models
 
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.Notification
-import com.jesse.ohunelo.util.DateUtils
 import com.jesse.ohunelo.util.NotificationType
 import com.jesse.ohunelo.util.UiDrawable
 import com.jesse.ohunelo.util.UiText

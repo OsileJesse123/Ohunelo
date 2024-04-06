@@ -7,17 +7,21 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.jesse.ohunelo.R
+import com.jesse.ohunelo.data.local.PrefStore
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.UpdateStatus
+import com.jesse.ohunelo.util.UserType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,9 +35,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class FirebaseAuthenticationService @Inject constructor(
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val prefStore: PrefStore
 ): AuthenticationService {
 
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -116,6 +123,7 @@ class FirebaseAuthenticationService @Inject constructor(
                     userName = user.displayName
                 )
                 _user.emit(authUser)
+                prefStore.userType = UserType.EMAIL_PASSWORD.userType
                 OhuneloResult.Success(authUser)
             } else {
                 // If login task is successful and user is null
@@ -139,6 +147,10 @@ class FirebaseAuthenticationService @Inject constructor(
 
     override suspend fun logout() {
         firebaseAuth.signOut()
+        prefStore.apply {
+            isLoggedIn = false
+            userType = null
+        }
         _user.emit(null)
     }
 
@@ -214,6 +226,7 @@ class FirebaseAuthenticationService @Inject constructor(
                     userName = user.displayName
                 )
                 _user.emit(authUser)
+                prefStore.userType = UserType.GOOGLE.userType
                 OhuneloResult.Success(authUser)
             } else {
                 // If login task is successful and user is null
@@ -239,6 +252,7 @@ class FirebaseAuthenticationService @Inject constructor(
                     email = user.email,
                     userName = user.displayName
                 )
+                prefStore.userType = UserType.FACEBOOK.userType
                 _user.emit(authUser)
                 OhuneloResult.Success(authUser)
             } else {
@@ -271,6 +285,7 @@ class FirebaseAuthenticationService @Inject constructor(
                         email = user.email,
                         userName = user.displayName
                     )
+                    prefStore.userType = UserType.TWITTER.userType
                     _user.emit(authUser)
                     OhuneloResult.Success(authUser)
                 } else {
@@ -330,10 +345,27 @@ class FirebaseAuthenticationService @Inject constructor(
         }
     }
 
-    override suspend fun updateUserEmail(email: String): OhuneloResult<Boolean> {
-        TODO("Not yet implemented")
+    override suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus> = suspendCoroutine {
+        continuation ->
+        firebaseAuth.currentUser?.let {
+            user ->
+            user.updateEmail(email).addOnSuccessListener {
+                continuation.resume(OhuneloResult.Success(data = UpdateStatus.SUCCESS))
+            }
+            .addOnFailureListener {
+                exception ->
+                when(exception){
+                    is FirebaseAuthUserCollisionException -> {
+                        continuation.resume(OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.email_already_in_use)))
+                    }
+                    is FirebaseAuthRecentLoginRequiredException -> {
+                        continuation.resume(OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.reauthenticate_message), data = UpdateStatus.REAUTHENTICATE))
+                    }
+                    else -> continuation.resume(OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.edit_email_failed)))
+                }
+             }
+        }
     }
-
     override suspend fun reauthenticateUser() {
         TODO("Not yet implemented")
     }

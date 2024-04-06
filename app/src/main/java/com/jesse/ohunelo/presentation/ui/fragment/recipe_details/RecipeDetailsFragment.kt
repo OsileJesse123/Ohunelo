@@ -20,8 +20,8 @@ import com.jesse.ohunelo.adapters.ViewPagerAdapter
 import com.jesse.ohunelo.databinding.FragmentRecipeDetailsBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.DisplayImageDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.RecipeDetailsViewModel
-import com.jesse.ohunelo.util.BottomSheetBehaviorStateWrapper
 import dagger.hilt.android.AndroidEntryPoint
+import com.jesse.ohunelo.util.BottomSheetBehaviorStateWrapper
 
 @AndroidEntryPoint
 class RecipeDetailsFragment : Fragment() {
