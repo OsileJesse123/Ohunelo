@@ -21,5 +21,9 @@ interface AuthenticationService {
     suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser>
     suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Unit>
     suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus>
-    suspend fun reauthenticateUser()
+    suspend fun reauthenticateUserEmailPassword(email: String, password: String): OhuneloResult<UiText>
+    suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<UiText>
+    suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText>
+    suspend fun reauthenticateTwitter(token: String, secret: String): OhuneloResult<UiText>
+
 }
