@@ -1,8 +1,10 @@
 package com.jesse.ohunelo.data.network
 
 import android.app.Activity
+import android.content.Context
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -12,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.OAuthProvider
+import com.google.firebase.auth.TwitterAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.local.PrefStore
@@ -22,6 +25,7 @@ import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiText
 import com.jesse.ohunelo.util.UpdateStatus
 import com.jesse.ohunelo.util.UserType
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -366,8 +370,63 @@ class FirebaseAuthenticationService @Inject constructor(
              }
         }
     }
-    override suspend fun reauthenticateUser() {
-        TODO("Not yet implemented")
+
+    override suspend fun reauthenticateUserEmailPassword(
+        email: String,
+        password: String
+    ): OhuneloResult<UiText> = suspendCoroutine {
+        continuation ->
+        firebaseAuth.currentUser?.let {
+            user ->
+            val credential = EmailAuthProvider.getCredential(
+                email, password
+            )
+            user.reauthenticate(credential).addOnSuccessListener {
+                continuation.resume(OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success)))
+            }.addOnFailureListener {
+                continuation.resume(OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail)))
+            }
+        }
+
+    }
+
+    override suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<UiText> = suspendCoroutine{
+        continuation ->
+        firebaseAuth.currentUser?.let {
+            user ->
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            user.reauthenticate(credential).addOnSuccessListener {
+                continuation.resume(OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success)))
+            }.addOnFailureListener {
+                continuation.resume(OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail)))
+            }
+        }
+    }
+
+    override suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText> = suspendCoroutine {
+        continuation ->
+        firebaseAuth.currentUser?.let {
+            user ->
+            val credential = FacebookAuthProvider.getCredential(accessToken)
+            user.reauthenticate(credential).addOnSuccessListener {
+                continuation.resume(OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success)))
+            }.addOnFailureListener {
+                continuation.resume(OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail)))
+            }
+        }
+    }
+
+    override suspend fun reauthenticateTwitter(token: String, secret: String): OhuneloResult<UiText> = suspendCoroutine{
+            continuation ->
+        firebaseAuth.currentUser?.let {
+                user ->
+            val credential = TwitterAuthProvider.getCredential(token, secret)
+            user.reauthenticate(credential).addOnSuccessListener {
+                continuation.resume(OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success)))
+            }.addOnFailureListener {
+                continuation.resume(OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail)))
+            }
+        }
     }
 
     private suspend fun updateUserName(user: FirebaseUser, userName: String){
