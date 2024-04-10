@@ -11,8 +11,6 @@ interface AuthenticationRepository {
 
     val user: SharedFlow<AuthUser?>
 
-    //suspend fun updateUser()
-
     suspend fun registerUserWithEmailAndPassword(firstName: String, lastName: String, email: String, password: String): OhuneloResult<AuthUser>
 
     suspend fun loginUserWithEmailAndPassword(email: String, password: String): OhuneloResult<AuthUser>
@@ -40,4 +38,15 @@ interface AuthenticationRepository {
     suspend fun updateIsAFirstTimeUser()
 
     suspend fun updateIsUserLoggedIn(isUserLoggedIn: Boolean)
+
+    suspend fun reauthenticateUserEmailPassword(email: String, password: String): OhuneloResult<UiText>
+
+    suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<UiText>
+
+    suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText>
+
+    suspend fun reauthenticateTwitter(token: String, secret: String): OhuneloResult<UiText>
+
+    suspend fun getUserType(): String?
+
 }

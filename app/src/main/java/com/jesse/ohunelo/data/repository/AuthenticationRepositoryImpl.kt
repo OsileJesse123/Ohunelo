@@ -121,4 +121,40 @@ class AuthenticationRepositoryImpl @Inject constructor(
             prefStore.isLoggedIn = isUserLoggedIn
         }
     }
+
+    override suspend fun reauthenticateUserEmailPassword(
+        email: String,
+        password: String
+    ): OhuneloResult<UiText> {
+        return withContext(ioDispatcher){
+            authenticationService.reauthenticateUserEmailPassword(email, password)
+        }
+    }
+
+    override suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<UiText> {
+        return withContext(ioDispatcher){
+            authenticationService.reauthenticateGoogle(idToken)
+        }
+    }
+
+    override suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText> {
+        return withContext(ioDispatcher){
+            authenticationService.reauthenticateFacebook(accessToken)
+        }
+    }
+
+    override suspend fun reauthenticateTwitter(
+        token: String,
+        secret: String
+    ): OhuneloResult<UiText> {
+        return withContext(ioDispatcher){
+            authenticationService.reauthenticateTwitter(token, secret)
+        }
+    }
+
+    override suspend fun getUserType(): String? {
+        return withContext(ioDispatcher){
+            prefStore.userType
+        }
+    }
 }

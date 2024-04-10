@@ -154,7 +154,7 @@
     <string name="edit_email">Edit Email</string>
     <string name="enter_new_email_address">Enter new email address</string>
     <string name="reauthenticate_message">You haven\'t logged in for sometime, you need to be re-authenticated</string>
-    <string name="reauthenticate_success">You have successfully been re-authenticated</string>
+    <string name="reauthenticate_success">You have successfully been re-authenticated, please proceed to update</string>
     <string name="reauthenticate_fail">re-authentication failed</string>
 
 
