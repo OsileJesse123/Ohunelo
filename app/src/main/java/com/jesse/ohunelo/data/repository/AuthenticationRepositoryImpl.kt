@@ -7,6 +7,7 @@ import com.jesse.ohunelo.data.network.AuthenticationService
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.UpdateStatus
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -155,6 +156,12 @@ class AuthenticationRepositoryImpl @Inject constructor(
     override suspend fun getUserType(): String? {
         return withContext(ioDispatcher){
             prefStore.userType
+        }
+    }
+
+    override suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus> {
+        return withContext(ioDispatcher){
+            authenticationService.updateUserEmail(email)
         }
     }
 }

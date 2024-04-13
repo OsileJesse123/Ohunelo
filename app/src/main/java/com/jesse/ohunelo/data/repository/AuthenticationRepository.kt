@@ -4,6 +4,7 @@ import android.app.Activity
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.UpdateStatus
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -38,6 +39,8 @@ interface AuthenticationRepository {
     suspend fun updateIsAFirstTimeUser()
 
     suspend fun updateIsUserLoggedIn(isUserLoggedIn: Boolean)
+
+    suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus>
 
     suspend fun reauthenticateUserEmailPassword(email: String, password: String): OhuneloResult<UiText>
 
