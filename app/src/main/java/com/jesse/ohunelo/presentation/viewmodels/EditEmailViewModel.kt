@@ -43,4 +43,21 @@ class EditEmailViewModel @Inject constructor(
             }
         }
     }
+
+    fun editEmail(){
+        viewModelScope.launch {
+            _editEmailUiState.update {
+                    editEmailUiState ->
+                editEmailUiState.copy(
+                    isLoading = true
+                )
+            }
+            if(_editEmailUiState.value.isEmailValid()){
+                val result = authenticationRepository.updateUserEmail(_editEmailUiState.value.email)
+                when(result){
+
+                }
+            }
+        }
+    }
 }
