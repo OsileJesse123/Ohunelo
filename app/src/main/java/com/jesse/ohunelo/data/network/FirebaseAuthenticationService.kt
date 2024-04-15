@@ -59,12 +59,6 @@ class FirebaseAuthenticationService @Inject constructor(
     }
 
     private fun getUser(): AuthUser? {
-        firebaseAuth.currentUser?.let {
-            user ->
-            for (info in user.providerData){
-                Timber.e("Know User Type: ProviderData: ${info.providerId}")
-            }
-        }
         return firebaseAuth.currentUser?.let {
             firebaseUser ->
             AuthUser(
@@ -349,83 +343,82 @@ class FirebaseAuthenticationService @Inject constructor(
         }
     }
 
-    override suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus> = suspendCoroutine {
-        continuation ->
-        firebaseAuth.currentUser?.let {
-            user ->
-            user.updateEmail(email).addOnSuccessListener {
-                continuation.resume(OhuneloResult.Success(data = UpdateStatus.SUCCESS))
-            }
-            .addOnFailureListener {
-                exception ->
-                when(exception){
-                    is FirebaseAuthUserCollisionException -> {
-                        continuation.resume(OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.email_already_in_use)))
-                    }
-                    is FirebaseAuthRecentLoginRequiredException -> {
-                        continuation.resume(OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.reauthenticate_message), data = UpdateStatus.REAUTHENTICATE))
-                    }
-                    else -> continuation.resume(OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.edit_email_failed)))
-                }
-             }
+    override suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus> {
+        return try{
+            firebaseAuth.currentUser?.let {
+                    user ->
+                user.updateEmail(email).await()
+                _user.emit(getUser())
+                (OhuneloResult.Success(data = UpdateStatus.SUCCESS))
+            } ?: OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.edit_email_failed))
+        } catch (e: FirebaseAuthUserCollisionException){
+            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.email_already_in_use))
+        } catch (e: FirebaseAuthRecentLoginRequiredException){
+            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.reauthenticate_message), data = UpdateStatus.REAUTHENTICATE)
+        } catch (e: Exception){
+            Timber.e("Update email failed, Exception: $e")
+            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.edit_email_failed))
         }
     }
 
     override suspend fun reauthenticateUserEmailPassword(
         email: String,
         password: String
-    ): OhuneloResult<UiText> = suspendCoroutine {
-        continuation ->
-        firebaseAuth.currentUser?.let {
-            user ->
-            val credential = EmailAuthProvider.getCredential(
-                email, password
-            )
-            user.reauthenticate(credential).addOnSuccessListener {
-                continuation.resume(OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success)))
-            }.addOnFailureListener {
-                continuation.resume(OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail)))
-            }
-        }
-
-    }
-
-    override suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<UiText> = suspendCoroutine{
-        continuation ->
-        firebaseAuth.currentUser?.let {
-            user ->
-            val credential = GoogleAuthProvider.getCredential(idToken, null)
-            user.reauthenticate(credential).addOnSuccessListener {
-                continuation.resume(OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success)))
-            }.addOnFailureListener {
-                continuation.resume(OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail)))
-            }
-        }
-    }
-
-    override suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText> = suspendCoroutine {
-        continuation ->
-        firebaseAuth.currentUser?.let {
-            user ->
-            val credential = FacebookAuthProvider.getCredential(accessToken)
-            user.reauthenticate(credential).addOnSuccessListener {
-                continuation.resume(OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success)))
-            }.addOnFailureListener {
-                continuation.resume(OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail)))
-            }
-        }
-    }
-
-    override suspend fun reauthenticateTwitter(token: String, secret: String): OhuneloResult<UiText> = suspendCoroutine{
-            continuation ->
-        firebaseAuth.currentUser?.let {
+    ): OhuneloResult<UiText> {
+        return try {
+            firebaseAuth.currentUser?.let {
                 user ->
-            val credential = TwitterAuthProvider.getCredential(token, secret)
-            user.reauthenticate(credential).addOnSuccessListener {
-                continuation.resume(OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success)))
-            }.addOnFailureListener {
-                continuation.resume(OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail)))
-            }
+                val credential = EmailAuthProvider.getCredential(
+                    email, password
+                )
+                user.reauthenticate(credential).await()
+                OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success))
+            } ?: OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+
+        } catch (e: Exception){
+            Timber.e("Re-authenticate with email/password failed, Exception: $e")
+            OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+        }
+    }
+
+    override suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<UiText> {
+        return try {
+            firebaseAuth.currentUser?.let {
+                    user ->
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
+                user.reauthenticate(credential).await()
+                OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success))
+            } ?:OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+        } catch (e: Exception){
+            Timber.e("Re-authenticate with google failed, Exception: $e")
+            OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+        }
+    }
+    override suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText> {
+        return try {
+            firebaseAuth.currentUser?.let {
+                    user ->
+                val credential = FacebookAuthProvider.getCredential(accessToken)
+                user.reauthenticate(credential).await()
+                OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success))
+            } ?: OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+        } catch (e: Exception){
+            Timber.e("Re-authenticate with facebook failed, Exception: $e")
+            OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+        }
+    }
+
+    override suspend fun reauthenticateTwitter(token: String, secret: String): OhuneloResult<UiText> {
+        return try {
+            firebaseAuth.currentUser?.let {
+                    user ->
+                val credential = TwitterAuthProvider.getCredential(token, secret)
+                user.reauthenticate(credential).await()
+                OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success))
+            } ?: OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+        } catch (e: Exception){
+            Timber.e("Re-authenticate with twitter failed, Exception: $e")
+            OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
         }
     }
 

@@ -2,9 +2,14 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.R
+import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.presentation.uistates.EditEmailUiState
+import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.UpdateStatus
+import com.jesse.ohunelo.util.UserType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -53,11 +58,47 @@ class EditEmailViewModel @Inject constructor(
                 )
             }
             if(_editEmailUiState.value.isEmailValid()){
-                val result = authenticationRepository.updateUserEmail(_editEmailUiState.value.email)
-                when(result){
-
+                when(val result = authenticationRepository.updateUserEmail(_editEmailUiState.value.email)){
+                    is OhuneloResult.Success ->{
+                        if (result.data == UpdateStatus.SUCCESS){
+                          _editEmailUiState.update {
+                                  editEmailUiState ->
+                              editEmailUiState.copy(
+                                  message = UiText.StringResource(R.string.edit_was_successful)
+                              )
+                          }
+                          return@launch
+                        }
+                    }
+                    is OhuneloResult.Error -> {
+                        if (result.data == UpdateStatus.REAUTHENTICATE){
+                            _editEmailUiState.update {
+                                    editEmailUiState ->
+                                editEmailUiState.copy(
+                                    message = result.errorMessage,
+                                    reauthenticate = Pair(true, UserType.getUserType(authenticationRepository.getUserType()))
+                                )
+                            }
+                            return@launch
+                        }
+                        _editEmailUiState.update {
+                                editEmailUiState ->
+                            editEmailUiState.copy(
+                                message = result.errorMessage
+                            )
+                        }
+                    }
                 }
             }
+        }
+    }
+
+    fun onMessageShown(){
+        _editEmailUiState.update {
+                editEmailUiState ->
+            editEmailUiState.copy(
+                message = null
+            )
         }
     }
 }

@@ -33,7 +33,19 @@ enum class UserType(val userType: String){
     EMAIL_PASSWORD("email/password"),
     GOOGLE("google"),
     FACEBOOK("facebook"),
-    TWITTER("twitter")
+    TWITTER("twitter");
+
+    companion object {
+        fun getUserType(userTypeText: String?): UserType?{
+            return when(userTypeText){
+                EMAIL_PASSWORD.userType -> EMAIL_PASSWORD
+                GOOGLE.userType -> GOOGLE
+                FACEBOOK.userType -> FACEBOOK
+                TWITTER.userType -> TWITTER
+                else -> null
+            }
+        }
+    }
 }
 
 enum class UpdateStatus{

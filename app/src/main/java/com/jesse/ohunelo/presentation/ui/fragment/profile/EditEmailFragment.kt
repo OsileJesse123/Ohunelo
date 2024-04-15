@@ -9,12 +9,18 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.FragmentEditEmailBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
+import com.jesse.ohunelo.presentation.uistates.EditEmailUiState
 import com.jesse.ohunelo.presentation.viewmodels.EditEmailViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EditEmailFragment : Fragment() {
@@ -45,12 +51,24 @@ class EditEmailFragment : Fragment() {
         loader = LoaderDialogFragment()
 
         setOnClickListeners()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.editEmailUiState.collectLatest {
+                    editEmailUiState ->
+
+                }
+            }
+        }
     }
 
     private fun setOnClickListeners(){
         binding.apply {
             editEmailToolBar.setNavigationOnClickListener {
                 findNavController().navigateUp()
+            }
+            updateButton.setOnClickListener {
+                viewModel.editEmail()
             }
         }
     }
