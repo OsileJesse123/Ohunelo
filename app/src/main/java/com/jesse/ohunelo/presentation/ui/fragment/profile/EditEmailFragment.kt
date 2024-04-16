@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -18,6 +19,8 @@ import com.jesse.ohunelo.databinding.FragmentEditEmailBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
 import com.jesse.ohunelo.presentation.uistates.EditEmailUiState
 import com.jesse.ohunelo.presentation.viewmodels.EditEmailViewModel
+import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.UserType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -56,10 +59,43 @@ class EditEmailFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.editEmailUiState.collectLatest {
                     editEmailUiState ->
+                    // If there is a message to be shown, show it
+                    editEmailUiState.message?.let {
+                        message ->
+                        showMessage(message)
+                        viewModel.onMessageShown()
+                    }
+                    if (editEmailUiState.navigateBack){
+                        findNavController().navigateUp()
+                    }
+                    // If user should be re-authenticated
+                    if (editEmailUiState.reauthenticate.first){
+                        // Find out what method was used to login then initiate reauthentication
+                        when(editEmailUiState.reauthenticate.second){
+                            UserType.EMAIL_PASSWORD -> {
 
+                            }
+                            UserType.GOOGLE -> {
+
+                            }
+                            UserType.FACEBOOK -> {
+
+                            }
+                            UserType.TWITTER -> {
+
+                            }
+                            else -> {
+
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private fun showMessage(message: UiText){
+        Toast.makeText(requireContext(), message.asString(requireContext()), Toast.LENGTH_SHORT).show()
     }
 
     private fun setOnClickListeners(){
