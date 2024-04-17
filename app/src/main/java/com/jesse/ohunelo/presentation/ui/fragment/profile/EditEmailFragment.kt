@@ -73,7 +73,7 @@ class EditEmailFragment : Fragment() {
                         // Find out what method was used to login then initiate reauthentication
                         when(editEmailUiState.reauthenticate.second){
                             UserType.EMAIL_PASSWORD -> {
-
+                                // Initiate re-authenticate
                             }
                             UserType.GOOGLE -> {
 
