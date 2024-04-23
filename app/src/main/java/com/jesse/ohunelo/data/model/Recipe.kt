@@ -7,7 +7,6 @@ import com.jesse.ohunelo.data.network.models.ExtendedIngredient
 import com.jesse.ohunelo.util.UiText
 import kotlinx.parcelize.Parcelize
 
-// recipe
 @Parcelize
 data class Recipe(
     val id: Int = 0,
