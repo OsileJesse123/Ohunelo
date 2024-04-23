@@ -156,6 +156,7 @@
     <string name="reauthenticate_message">You haven\'t logged in for sometime, you need to be re-authenticated</string>
     <string name="reauthenticate_success">You have successfully been re-authenticated, please proceed to update</string>
     <string name="reauthenticate_fail">re-authentication failed</string>
+    <string name="re_authenticate">Re-authenticate</string>
 
 
     <plurals name="number_of_items_available">
