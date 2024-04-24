@@ -44,27 +44,28 @@ class EditEmailViewModel @Inject constructor(
             _editEmailUiState.update {
                     editEmailUiState ->
                 val emailValidation = validateEmailUseCase(emailText)
-                editEmailUiState.copy(emailError = emailValidation.errorMessage, isEnabled = emailValidation.successful)
+                editEmailUiState.copy(emailError = emailValidation.errorMessage)
             }
         }
     }
 
     fun editEmail(){
-        viewModelScope.launch {
-            _editEmailUiState.update {
-                    editEmailUiState ->
-                editEmailUiState.copy(
-                    isLoading = true
-                )
-            }
             if(_editEmailUiState.value.isEmailValid()){
+                viewModelScope.launch {
+                    _editEmailUiState.update {
+                            editEmailUiState ->
+                        editEmailUiState.copy(
+                            isLoading = true,
+                        )
+                    }
                 when(val result = authenticationRepository.updateUserEmail(_editEmailUiState.value.email)){
                     is OhuneloResult.Success ->{
                         if (result.data == UpdateStatus.SUCCESS){
                           _editEmailUiState.update {
                                   editEmailUiState ->
                               editEmailUiState.copy(
-                                  message = UiText.StringResource(R.string.edit_was_successful)
+                                  message = UiText.StringResource(R.string.edit_was_successful),
+                                  isLoading = false
                               )
                           }
                           return@launch
@@ -84,7 +85,8 @@ class EditEmailViewModel @Inject constructor(
                         _editEmailUiState.update {
                                 editEmailUiState ->
                             editEmailUiState.copy(
-                                message = result.errorMessage
+                                message = result.errorMessage,
+                                isLoading = false
                             )
                         }
                     }
@@ -93,11 +95,29 @@ class EditEmailViewModel @Inject constructor(
         }
     }
 
+    fun renableButton(){
+        _editEmailUiState.update {
+                editEmailUiState ->
+            editEmailUiState.copy(
+                isLoading = false
+            )
+        }
+    }
+
     fun onMessageShown(){
         _editEmailUiState.update {
                 editEmailUiState ->
             editEmailUiState.copy(
                 message = null
+            )
+        }
+    }
+
+    fun onReauthenticateInitiated(){
+        _editEmailUiState.update {
+                editEmailUiState ->
+            editEmailUiState.copy(
+                reauthenticate = Pair(false, null)
             )
         }
     }

@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class UpdateProfileDialogFragment(): DialogFragment() {
+class UpdateProfileDialogFragment: DialogFragment() {
 
     companion object {
         const val TAG = "UpdateProfileDialogFragment"

@@ -52,13 +52,14 @@ class FirebaseAuthenticationService @Inject constructor(
     private val _user: MutableSharedFlow<AuthUser?> = MutableSharedFlow()
     override val user: SharedFlow<AuthUser?> = _user.shareIn(
         CoroutineScope(ioDispatcher),
-        started = SharingStarted.WhileSubscribed(1000),
+        started = SharingStarted.Lazily,
         replay = 1
     ).onSubscription {
         emit(getUser())
     }
 
     private fun getUser(): AuthUser? {
+        Timber.e("Service User: ${firebaseAuth.currentUser}")
         return firebaseAuth.currentUser?.let {
             firebaseUser ->
             AuthUser(

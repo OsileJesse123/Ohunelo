@@ -6,7 +6,6 @@ import com.jesse.ohunelo.util.UserType
 data class EditEmailUiState(
     val email: String = "",
     val emailError: UiText? = null,
-    val isEnabled: Boolean = false,
     val isLoading: Boolean = false,
     val message: UiText? = null,
     val navigateBack: Boolean = false,

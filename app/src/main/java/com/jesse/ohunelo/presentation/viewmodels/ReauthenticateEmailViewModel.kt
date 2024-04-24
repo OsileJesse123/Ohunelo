@@ -2,6 +2,8 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.ReauthenticateEmailUiState
@@ -18,8 +20,8 @@ import javax.inject.Inject
 class ReauthenticateEmailViewModel @Inject constructor(
     private val validateEmailUseCase: ValidateEmailUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
-
-    ): ViewModel() {
+    private val authenticationRepository: AuthenticationRepository
+): ViewModel() {
 
     private val _reauthenticateEmailUiState: MutableStateFlow<ReauthenticateEmailUiState> =
         MutableStateFlow(ReauthenticateEmailUiState())
@@ -70,6 +72,58 @@ class ReauthenticateEmailViewModel @Inject constructor(
     }
 
     fun reauthenticate(){
+        viewModelScope.launch {
+            delay(delayTime)
+            if (_reauthenticateEmailUiState.value.isFormValid()){
+                // Disable buttons and show loader in UI
+                _reauthenticateEmailUiState.update {
+                        reauthenticateEmailUiState ->
+                    reauthenticateEmailUiState.copy(
+                        isEnabled = false
+                    )
+                }
+                val reauthenticateResult = authenticationRepository
+                    .reauthenticateUserEmailPassword(
+                        email = _reauthenticateEmailUiState.value.email,
+                        password = _reauthenticateEmailUiState.value.password
+                )
+                when(reauthenticateResult){
+                    is OhuneloResult.Success -> {
+                        _reauthenticateEmailUiState.update {
+                                reauthenticateEmailUiState ->
+                            reauthenticateEmailUiState.copy(
+                                dismiss = true,
+                                message = reauthenticateResult.data
+                            )
+                        }
+                    }
+                    is OhuneloResult.Error -> {
+                        _reauthenticateEmailUiState.update {
+                                reauthenticateEmailUiState ->
+                            reauthenticateEmailUiState.copy(
+                                message = reauthenticateResult.errorMessage,
+                                isEnabled = true,
+                            )
+                        }
+                    }
+                }
+            } else {
+                _reauthenticateEmailUiState.update {
+                        reauthenticateEmailUiState ->
+                    reauthenticateEmailUiState.copy(
+                        isEnabled = true
+                    )
+                }
+            }
+        }
+    }
 
+    fun onMessageShown(){
+        _reauthenticateEmailUiState.update {
+                reauthenticateEmailUiState ->
+            reauthenticateEmailUiState.copy(
+                message = null
+            )
+        }
     }
 }

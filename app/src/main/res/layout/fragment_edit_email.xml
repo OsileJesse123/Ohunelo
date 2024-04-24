@@ -13,6 +13,17 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.fragment.profile.EditEmailFragment">
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/grid_1"
+            android:indeterminateTint="?attr/colorOnSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/update_button"
+            app:layout_constraintEnd_toEndOf="@+id/update_button"
+            app:layout_constraintStart_toStartOf="@+id/update_button"
+            app:layout_constraintTop_toTopOf="@+id/update_button" />
+
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/edit_email_tool_bar"
             android:layout_width="match_parent"
@@ -85,7 +96,8 @@
             android:backgroundTint="?attr/colorSecondary"
             android:text="@string/update"
             app:cornerRadius="@dimen/_15dp"
-            android:enabled="@{viewModel.editEmailUiState.isEnabled}"
+            app:buttonTextTransparency="@{!viewModel.editEmailUiState.loading}"
+            android:enabled="@{!viewModel.editEmailUiState.loading}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/enter_email_address_input_layout" />

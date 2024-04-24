@@ -64,7 +64,25 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-
+    fun onPasswordTextChanged(passwordText: String){
+        _loginUiStateFlow.update {
+                loginUiState ->
+            loginUiState.copy(password = passwordText)
+        }
+        validationJob?.cancel()
+        validationJob = viewModelScope.launch {
+            delay(delayTime)
+            _loginUiStateFlow.update {
+                    loginUiState ->
+                val passwordValidation = validatePasswordUseCase(password = passwordText,
+                    shouldValidatePasswordPattern = false)
+                loginUiState.copy(
+                    password = passwordText,
+                    passwordError = passwordValidation.errorMessage
+                )
+            }
+        }
+    }
 
     fun login(){
         viewModelScope.launch {

@@ -2,128 +2,153 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="viewModel"
+            type="com.jesse.ohunelo.presentation.viewmodels.ReauthenticateEmailViewModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/grid_2"
-        android:paddingVertical="@dimen/grid_4"
-        >
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/email_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:text="@string/email_address"
-            android:textColor="?attr/colorSecondaryVariant"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/enter_email_address_input_layout"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="wrap_content"
-            app:boxCornerRadiusBottomEnd="@dimen/_10dp"
-            app:boxCornerRadiusBottomStart="@dimen/_10dp"
-            app:boxCornerRadiusTopEnd="@dimen/_10dp"
-            app:boxCornerRadiusTopStart="@dimen/_10dp"
-            app:startIconDrawable="@drawable/email_outline_icon"
-            app:layout_constraintTop_toBottomOf="@id/email_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginTop="@dimen/grid_1_5"
-            app:boxStrokeWidth="1dp"
-            app:boxStrokeColor="@color/box_stroke_color_state"
-            app:hintEnabled="false"
-            app:errorEnabled="true"
-            app:cursorErrorColor="?attr/colorPrimary"
-            android:textColorHint="@color/orange_100"
-            app:errorMessageText="@{viewModel.loginUiStateFlow.emailError}"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:enabled="@{viewModel.loginUiStateFlow.enabled}"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/grid_2"
+            android:paddingVertical="@dimen/grid_4"
             >
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/enter_email_address_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textEmailAddress"
-                android:hint="@string/enter_email_address"
-                android:textAppearance="?attr/textAppearanceCaption"
-                android:textSize="@dimen/_12sp"
-                android:longClickable="false"
-                android:importantForAutofill="no"
-                />
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/grid_1"
+                android:indeterminateTint="?attr/colorOnSecondary"
+                app:progressBarVisibility="@{viewModel.reauthenticateEmailUiState.enabled}"
+                app:layout_constraintBottom_toBottomOf="@+id/reauthenticate_button"
+                app:layout_constraintEnd_toEndOf="@+id/reauthenticate_button"
+                app:layout_constraintStart_toStartOf="@+id/reauthenticate_button"
+                app:layout_constraintTop_toTopOf="@+id/reauthenticate_button" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/email_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/email_address"
+                android:textColor="?attr/colorSecondaryVariant"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/password_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
-            android:text="@string/password"
-            android:textColor="?attr/colorSecondaryVariant"
-            android:layout_marginTop="@dimen/grid_0_25"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/enter_email_address_input_layout" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/enter_email_address_input_layout"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="wrap_content"
+                app:boxCornerRadiusBottomEnd="@dimen/_10dp"
+                app:boxCornerRadiusBottomStart="@dimen/_10dp"
+                app:boxCornerRadiusTopEnd="@dimen/_10dp"
+                app:boxCornerRadiusTopStart="@dimen/_10dp"
+                app:startIconDrawable="@drawable/email_outline_icon"
+                app:layout_constraintTop_toBottomOf="@id/email_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginTop="@dimen/grid_1_5"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeColor="@color/box_stroke_color_state"
+                app:hintEnabled="false"
+                app:errorEnabled="true"
+                app:cursorErrorColor="?attr/colorPrimary"
+                android:textColorHint="@color/orange_100"
+                app:errorMessageText="@{viewModel.reauthenticateEmailUiState.emailError}"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:enabled="@{viewModel.reauthenticateEmailUiState.enabled}"
+                >
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/enter_password_input_layout"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleDrawable="@drawable/show_password_selector"
-            app:boxCornerRadiusBottomEnd="@dimen/_10dp"
-            app:boxCornerRadiusBottomStart="@dimen/_10dp"
-            app:boxCornerRadiusTopEnd="@dimen/_10dp"
-            app:boxCornerRadiusTopStart="@dimen/_10dp"
-            app:startIconDrawable="@drawable/lock_icon"
-            app:layout_constraintTop_toBottomOf="@id/password_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginTop="@dimen/grid_1_5"
-            app:boxStrokeWidth="1dp"
-            app:boxStrokeColor="@color/box_stroke_color_state"
-            app:hintEnabled="false"
-            app:errorEnabled="true"
-            app:cursorErrorColor="?attr/colorPrimary"
-            android:textColorHint="@color/orange_100"
-            app:errorIconDrawable="@null"
-            app:errorMessageText="@{viewModel.loginUiStateFlow.passwordError}"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:enabled="@{viewModel.loginUiStateFlow.enabled}"
-            >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/enter_email_address_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/enter_email_address"
+                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:textSize="@dimen/_12sp"
+                    android:longClickable="false"
+                    android:importantForAutofill="no"
+                    />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/enter_password_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textPassword"
-                android:hint="@string/enter_password"
-                android:textAppearance="?attr/textAppearanceCaption"
-                android:textSize="@dimen/_12sp"
-                android:longClickable="false"
-                android:importantForAutofill="no"
-                />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/password_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/password"
+                android:textColor="?attr/colorSecondaryVariant"
+                android:layout_marginTop="@dimen/grid_0_25"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enter_email_address_input_layout" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/reauthenticate_button"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="@dimen/grid_8"
-            android:backgroundTint="?attr/colorSecondary"
-            android:text="@string/re_authenticate"
-            android:layout_marginTop="@dimen/grid_4"
-            app:cornerRadius="@dimen/_15dp"
-            android:enabled="@{viewModel.loginUiStateFlow.enabled}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/enter_password_input_layout" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/enter_password_input_layout"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleDrawable="@drawable/show_password_selector"
+                app:boxCornerRadiusBottomEnd="@dimen/_10dp"
+                app:boxCornerRadiusBottomStart="@dimen/_10dp"
+                app:boxCornerRadiusTopEnd="@dimen/_10dp"
+                app:boxCornerRadiusTopStart="@dimen/_10dp"
+                app:startIconDrawable="@drawable/lock_icon"
+                app:layout_constraintTop_toBottomOf="@id/password_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginTop="@dimen/grid_1_5"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeColor="@color/box_stroke_color_state"
+                app:hintEnabled="false"
+                app:errorEnabled="true"
+                app:cursorErrorColor="?attr/colorPrimary"
+                android:textColorHint="@color/orange_100"
+                app:errorIconDrawable="@null"
+                app:errorMessageText="@{viewModel.reauthenticateEmailUiState.passwordError}"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:enabled="@{viewModel.reauthenticateEmailUiState.enabled}"
+                >
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/enter_password_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPassword"
+                    android:hint="@string/enter_password"
+                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:textSize="@dimen/_12sp"
+                    android:longClickable="false"
+                    android:importantForAutofill="no"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/reauthenticate_button"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="@dimen/grid_8"
+                android:backgroundTint="?attr/colorSecondary"
+                android:text="@string/re_authenticate"
+                android:layout_marginTop="@dimen/grid_4"
+                app:cornerRadius="@dimen/_15dp"
+                android:enabled="@{viewModel.reauthenticateEmailUiState.enabled}"
+                app:buttonTextTransparency="@{viewModel.reauthenticateEmailUiState.enabled}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enter_password_input_layout" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>
