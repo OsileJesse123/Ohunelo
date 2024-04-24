@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -17,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.FragmentEditEmailBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
-import com.jesse.ohunelo.presentation.uistates.EditEmailUiState
+import com.jesse.ohunelo.presentation.ui.fragment.dialogs.ReauthenticateEmailDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.EditEmailViewModel
 import com.jesse.ohunelo.util.UiText
 import com.jesse.ohunelo.util.UserType
@@ -59,6 +60,7 @@ class EditEmailFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.editEmailUiState.collectLatest {
                     editEmailUiState ->
+                    binding.progressBar.isVisible = editEmailUiState.isLoading
                     // If there is a message to be shown, show it
                     editEmailUiState.message?.let {
                         message ->
@@ -74,6 +76,11 @@ class EditEmailFragment : Fragment() {
                         when(editEmailUiState.reauthenticate.second){
                             UserType.EMAIL_PASSWORD -> {
                                 // Initiate re-authenticate
+                                ReauthenticateEmailDialogFragment{
+                                    viewModel.renableButton()
+                                }.show(childFragmentManager,
+                                    ReauthenticateEmailDialogFragment.TAG)
+                                viewModel.onReauthenticateInitiated()
                             }
                             UserType.GOOGLE -> {
 
@@ -85,7 +92,7 @@ class EditEmailFragment : Fragment() {
 
                             }
                             else -> {
-
+                                // Do nothing
                             }
                         }
                     }
@@ -104,7 +111,7 @@ class EditEmailFragment : Fragment() {
                 findNavController().navigateUp()
             }
             updateButton.setOnClickListener {
-                viewModel.editEmail()
+                viewModel?.editEmail()
             }
         }
     }
