@@ -395,6 +395,7 @@ class FirebaseAuthenticationService @Inject constructor(
             OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
         }
     }
+
     override suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText> {
         return try {
             firebaseAuth.currentUser?.let {

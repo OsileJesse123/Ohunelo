@@ -1,9 +1,12 @@
 package com.jesse.ohunelo.presentation.viewmodels
 
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.presentation.uistates.EditEmailUiState
@@ -17,12 +20,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class EditEmailViewModel @Inject constructor(
     private val validateEmailUseCase: ValidateEmailUseCase,
-    private val authenticationRepository: AuthenticationRepository
+    private val authenticationRepository: AuthenticationRepository,
+    private val googleSignInHandler: GoogleSignInHandler
 ): ViewModel() {
 
     private val _editEmailUiState: MutableStateFlow<EditEmailUiState> = MutableStateFlow(
@@ -49,6 +54,61 @@ class EditEmailViewModel @Inject constructor(
         }
     }
 
+    fun startReauthenticateWithGoogle(onBeginSignInSuccess: (result: BeginSignInResult) -> Unit){
+        googleSignInHandler.startSign(
+            onSignInFailed = {
+                    errorMessage ->
+                _editEmailUiState.update {
+                        editEmailUiState ->
+                    editEmailUiState.copy(
+                        isLoading = false,
+                        message = errorMessage
+                    )
+                }
+            },
+            onBeginSignInSuccess = onBeginSignInSuccess
+        )
+    }
+
+    fun finishReauthenticateWithGoogle(result: Intent?){
+        viewModelScope.launch {
+            when(val idTokenResult = googleSignInHandler.getSignInToken(result)){
+                is OhuneloResult.Success -> {
+                    when (val signInResult = authenticationRepository.reauthenticateGoogle(idTokenResult.data!!)){
+                        is OhuneloResult.Success ->{
+                            Timber.e("ViewModel SignIn with google Successful, user: ${signInResult.data}")
+                            _editEmailUiState.update {
+                                    editEmailUiState ->
+                                editEmailUiState.copy(
+                                    message = signInResult.data,
+                                    navigateBack = true,
+                                )
+                            }
+                        }
+                        is OhuneloResult.Error -> {
+                            _editEmailUiState.update {
+                                    editEmailUiState ->
+                                editEmailUiState.copy(
+                                    message = signInResult.errorMessage,
+                                    isLoading = false
+                                )
+                            }
+                        }
+                    }
+                }
+                is OhuneloResult.Error -> {
+                    _editEmailUiState.update {
+                            editEmailUiState ->
+                        editEmailUiState.copy(
+                            message = idTokenResult.errorMessage,
+                            isLoading = false
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     fun editEmail(){
             if(_editEmailUiState.value.isEmailValid()){
                 viewModelScope.launch {
@@ -65,7 +125,7 @@ class EditEmailViewModel @Inject constructor(
                                   editEmailUiState ->
                               editEmailUiState.copy(
                                   message = UiText.StringResource(R.string.edit_was_successful),
-                                  isLoading = false
+                                  navigateBack = true
                               )
                           }
                           return@launch
