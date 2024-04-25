@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
@@ -35,6 +37,12 @@ class EditEmailFragment : Fragment() {
     private val viewModel by viewModels<EditEmailViewModel>()
 
     private var loader: LoaderDialogFragment? = null
+
+    private var startActivityForResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()){
+            result ->
+        viewModel.finishReauthenticateWithGoogle(result.data)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,7 +91,13 @@ class EditEmailFragment : Fragment() {
                                 viewModel.onReauthenticateInitiated()
                             }
                             UserType.GOOGLE -> {
-
+                                viewModel.run {
+                                    startReauthenticateWithGoogle {
+                                            result ->
+                                        startActivityForResultLauncher.launch(IntentSenderRequest.Builder(result.pendingIntent.intentSender).build())
+                                    }
+                                    onReauthenticateInitiated()
+                                }
                             }
                             UserType.FACEBOOK -> {
 
