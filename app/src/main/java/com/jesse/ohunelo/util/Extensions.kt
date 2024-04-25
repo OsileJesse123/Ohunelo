@@ -1,9 +1,11 @@
 package com.jesse.ohunelo.util
 
+import android.content.Context
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.view.WindowInsetsController
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
@@ -171,4 +173,21 @@ private fun TextView.addClickablePartTextResizable(
         return applyExtraHighlights(builder)
     }
     return builder
+}
+
+fun Fragment.showSoftKeyboard(view: View) {
+    if (view.requestFocus()) {
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }
+}
+
+fun Fragment.hideSoftKeyboard(){
+    requireActivity().apply {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        currentFocus?.let {
+                view ->
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
 }

@@ -77,6 +77,7 @@ class EditEmailFragment : Fragment() {
                     }
                     if (editEmailUiState.navigateBack){
                         findNavController().navigateUp()
+                        viewModel.onNavigateBack()
                     }
                     // If user should be re-authenticated
                     if (editEmailUiState.reauthenticate.first){

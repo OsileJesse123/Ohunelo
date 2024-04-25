@@ -25,6 +25,8 @@ import com.jesse.ohunelo.databinding.FragmentSearchRecipeDisplayBinding
 import com.jesse.ohunelo.presentation.viewmodels.SearchRecipeDisplayViewModel
 import com.jesse.ohunelo.util.GridSpacingItemDecoration
 import com.jesse.ohunelo.util.UiTextThrowable
+import com.jesse.ohunelo.util.hideSoftKeyboard
+import com.jesse.ohunelo.util.showSoftKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -137,23 +139,6 @@ class SearchRecipeDisplayFragment : Fragment() {
             })
             layoutManager = GridLayoutManager(requireContext(), 1).apply {
                 addItemDecoration(GridSpacingItemDecoration(1,spacing,false))
-            }
-        }
-    }
-
-    private fun showSoftKeyboard(view: View) {
-        if (view.requestFocus()) {
-            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-            imm?.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-        }
-    }
-
-    private fun hideSoftKeyboard(){
-        requireActivity().apply {
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            currentFocus?.let {
-                view ->
-                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             }
         }
     }
