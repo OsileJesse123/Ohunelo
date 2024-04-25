@@ -81,7 +81,7 @@ class EditEmailViewModel @Inject constructor(
                                     editEmailUiState ->
                                 editEmailUiState.copy(
                                     message = signInResult.data,
-                                    navigateBack = true,
+                                    isLoading = false
                                 )
                             }
                         }
@@ -178,6 +178,15 @@ class EditEmailViewModel @Inject constructor(
                 editEmailUiState ->
             editEmailUiState.copy(
                 reauthenticate = Pair(false, null)
+            )
+        }
+    }
+
+    fun onNavigateBack(){
+        _editEmailUiState.update {
+                editEmailUiState ->
+            editEmailUiState.copy(
+                navigateBack = false
             )
         }
     }
