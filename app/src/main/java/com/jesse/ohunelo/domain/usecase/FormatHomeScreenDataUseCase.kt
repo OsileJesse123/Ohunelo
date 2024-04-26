@@ -2,6 +2,9 @@ package com.jesse.ohunelo.domain.usecase
 
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.RecipeRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 /**
@@ -11,12 +14,12 @@ class FormatHomeScreenDataUseCase @Inject constructor(
     private val recipeRepository: RecipeRepository,
 ){
 
-    private var homeScreenData = HomeScreenData()
+    suspend operator fun invoke(selectedRecipeCategory: String): HomeScreenData = coroutineScope {
+        var homeScreenData = HomeScreenData()
+        val deferredRandomRecipes = async{ recipeRepository.getRandomRecipes() }
+        val deferredRecipesByCategory = async{recipeRepository.getRecipesByMealType(selectedRecipeCategory.lowercase())}
 
-    suspend operator fun invoke(selectedRecipeCategory: String): HomeScreenData{
-        val randomRecipes = recipeRepository.getRandomRecipes()
-        val recipesByCategory = recipeRepository.getRecipesByMealType(selectedRecipeCategory.lowercase())
-
+        val (randomRecipes, recipesByCategory) = awaitAll(deferredRandomRecipes, deferredRecipesByCategory)
 
         homeScreenData = when(randomRecipes){
             is OhuneloResult.Success ->{
@@ -38,7 +41,7 @@ class FormatHomeScreenDataUseCase @Inject constructor(
             }
         }
 
-        return homeScreenData
+        homeScreenData
     }
 
 }

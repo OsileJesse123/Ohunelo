@@ -1,5 +1,6 @@
 package com.jesse.ohunelo.presentation.viewmodels
 
+import android.app.Activity
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -50,6 +51,31 @@ class EditEmailViewModel @Inject constructor(
                     editEmailUiState ->
                 val emailValidation = validateEmailUseCase(emailText)
                 editEmailUiState.copy(emailError = emailValidation.errorMessage)
+            }
+        }
+    }
+
+    fun reauthenticateTwitter(activity: Activity){
+        viewModelScope.launch {
+            when(val reauthenticateResult = authenticationRepository.reauthenticateTwitter(activity)){
+                is OhuneloResult.Success -> {
+                    _editEmailUiState.update {
+                            editEmailUiState ->
+                        editEmailUiState.copy(
+                            message = reauthenticateResult.data,
+                            isLoading = false
+                        )
+                    }
+                }
+                is OhuneloResult.Error -> {
+                    _editEmailUiState.update {
+                            editEmailUiState ->
+                        editEmailUiState.copy(
+                            isLoading = false,
+                            message = reauthenticateResult.errorMessage
+                        )
+                    }
+                }
             }
         }
     }
@@ -179,6 +205,41 @@ class EditEmailViewModel @Inject constructor(
             editEmailUiState.copy(
                 reauthenticate = Pair(false, null)
             )
+        }
+    }
+
+    fun onFacebookReauthenticateFailed(errorMessage: UiText){
+        _editEmailUiState.update {
+                editEmailUiState ->
+            editEmailUiState.copy(
+                isLoading = false,
+                message = errorMessage
+            )
+        }
+    }
+
+    fun finishReauthenticateWithFacebook(idToken: String){
+        viewModelScope.launch {
+            when (val signInResult = authenticationRepository.reauthenticateFacebook(idToken)){
+                is OhuneloResult.Success ->{
+                    _editEmailUiState.update {
+                            editEmailUiState ->
+                        editEmailUiState.copy(
+                            message = signInResult.data,
+                            isLoading = false
+                        )
+                    }
+                }
+                is OhuneloResult.Error -> {
+                    _editEmailUiState.update {
+                            editEmailUiState ->
+                        editEmailUiState.copy(
+                            message = signInResult.errorMessage,
+                            isLoading = false
+                        )
+                    }
+                }
+            }
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import com.jesse.ohunelo.databinding.FragmentProfileBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LogoutDialogFragment
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.UpdateProfileDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.ProfileViewModel
+import com.jesse.ohunelo.util.UserType
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -56,6 +58,15 @@ class ProfileFragment : Fragment() {
             }
             editEmailCard.setOnClickListener {
                 findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToEditEmailFragment())
+            }
+            editPasswordCard.apply {
+                val userType = viewModel.getUserType()
+                isVisible = userType != null && userType == UserType.EMAIL_PASSWORD
+                if (isVisible){
+                    setOnClickListener {
+
+                    }
+                }
             }
         }
     }

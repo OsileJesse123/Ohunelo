@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
+import com.jesse.ohunelo.util.UserType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,6 +15,8 @@ class ProfileViewModel @Inject constructor(
 ): ViewModel() {
 
     val user = authenticationRepository.user.asLiveData()
+
+    fun getUserType(): UserType? = UserType.getUserType(authenticationRepository.getUserType())
 
     fun logout(){
         viewModelScope.launch {
