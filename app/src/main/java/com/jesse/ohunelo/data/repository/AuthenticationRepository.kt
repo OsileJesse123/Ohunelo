@@ -48,8 +48,8 @@ interface AuthenticationRepository {
 
     suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText>
 
-    suspend fun reauthenticateTwitter(token: String, secret: String): OhuneloResult<UiText>
+    suspend fun reauthenticateTwitter(activity: Activity): OhuneloResult<UiText>
 
-    suspend fun getUserType(): String?
+    fun getUserType(): String?
 
 }

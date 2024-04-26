@@ -305,6 +305,7 @@ class FirebaseAuthenticationService @Inject constructor(
                         email = user.email,
                         userName = user.displayName
                     )
+                    prefStore.userType = UserType.TWITTER.userType
                     _user.emit(authUser)
                     OhuneloResult.Success(authUser)
                 } else {
@@ -410,13 +411,24 @@ class FirebaseAuthenticationService @Inject constructor(
         }
     }
 
-    override suspend fun reauthenticateTwitter(token: String, secret: String): OhuneloResult<UiText> {
+    override suspend fun reauthenticateTwitter(activity: Activity): OhuneloResult<UiText> {
         return try {
+            val provider = OAuthProvider.newBuilder("twitter.com")
+            val pendingResultTask = firebaseAuth.pendingAuthResult
+            val credential = if(pendingResultTask != null){
+                pendingResultTask.await().credential
+            } else {
+                firebaseAuth
+                    .startActivityForSignInWithProvider(activity, provider.build()).await().credential
+            }
             firebaseAuth.currentUser?.let {
                     user ->
-                val credential = TwitterAuthProvider.getCredential(token, secret)
-                user.reauthenticate(credential).await()
-                OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success))
+                if (credential != null) {
+                    user.reauthenticate(credential).await()
+                    OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success))
+                } else {
+                    OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+                }
             } ?: OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
         } catch (e: Exception){
             Timber.e("Re-authenticate with twitter failed, Exception: $e")

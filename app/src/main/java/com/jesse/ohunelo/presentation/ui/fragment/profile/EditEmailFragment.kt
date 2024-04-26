@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.jesse.ohunelo.R
+import com.jesse.ohunelo.data.network.signin_handlers.FacebookSignInHandler
 import com.jesse.ohunelo.databinding.FragmentEditEmailBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.ReauthenticateEmailDialogFragment
@@ -27,6 +28,7 @@ import com.jesse.ohunelo.util.UserType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditEmailFragment : Fragment() {
@@ -37,6 +39,9 @@ class EditEmailFragment : Fragment() {
     private val viewModel by viewModels<EditEmailViewModel>()
 
     private var loader: LoaderDialogFragment? = null
+
+    @Inject
+    lateinit var facebookSignInHandler: FacebookSignInHandler
 
     private var startActivityForResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()){
@@ -81,7 +86,7 @@ class EditEmailFragment : Fragment() {
                     }
                     // If user should be re-authenticated
                     if (editEmailUiState.reauthenticate.first){
-                        // Find out what method was used to login then initiate reauthentication
+                        // Find out what method was used to login then initiate re-authentication
                         when(editEmailUiState.reauthenticate.second){
                             UserType.EMAIL_PASSWORD -> {
                                 // Initiate re-authenticate
@@ -101,13 +106,28 @@ class EditEmailFragment : Fragment() {
                                 }
                             }
                             UserType.FACEBOOK -> {
-
+                                facebookSignInHandler.signIn(
+                                    onSignInSuccess = {
+                                            idToken ->
+                                        viewModel.finishReauthenticateWithFacebook(idToken)
+                                    },
+                                    onSignInFailed = {
+                                        viewModel.onFacebookReauthenticateFailed(UiText.StringResource(R.string.sign_in_cancelled, "Facebook"))
+                                    },
+                                    this@EditEmailFragment
+                                )
+                                viewModel.onReauthenticateInitiated()
                             }
                             UserType.TWITTER -> {
-
+                                viewModel.run {
+                                    reauthenticateTwitter(requireActivity())
+                                    onReauthenticateInitiated()
+                                }
                             }
                             else -> {
-                                // Do nothing
+                                viewModel.onReauthenticateInitiated()
+                                Toast.makeText(requireContext(),
+                                    getString(R.string.unknown_user), Toast.LENGTH_SHORT).show()
                             }
                         }
                     }

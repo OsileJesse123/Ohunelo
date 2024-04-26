@@ -145,18 +145,16 @@ class AuthenticationRepositoryImpl @Inject constructor(
     }
 
     override suspend fun reauthenticateTwitter(
-        token: String,
-        secret: String
+        activity: Activity
     ): OhuneloResult<UiText> {
         return withContext(ioDispatcher){
-            authenticationService.reauthenticateTwitter(token, secret)
+            authenticationService.reauthenticateTwitter(activity)
         }
     }
 
-    override suspend fun getUserType(): String? {
-        return withContext(ioDispatcher){
-            prefStore.userType
-        }
+    override fun getUserType(): String? {
+        return prefStore.userType
+
     }
 
     override suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus> {

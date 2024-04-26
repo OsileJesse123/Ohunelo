@@ -24,6 +24,6 @@ interface AuthenticationService {
     suspend fun reauthenticateUserEmailPassword(email: String, password: String): OhuneloResult<UiText>
     suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<UiText>
     suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText>
-    suspend fun reauthenticateTwitter(token: String, secret: String): OhuneloResult<UiText>
+    suspend fun reauthenticateTwitter(activity: Activity): OhuneloResult<UiText>
 
 }
