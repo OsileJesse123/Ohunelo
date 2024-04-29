@@ -42,6 +42,8 @@ interface AuthenticationRepository {
 
     suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus>
 
+    suspend fun updateUserPassword(password: String): OhuneloResult<UiText>
+
     suspend fun reauthenticateUserEmailPassword(email: String, password: String): OhuneloResult<UiText>
 
     suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<UiText>

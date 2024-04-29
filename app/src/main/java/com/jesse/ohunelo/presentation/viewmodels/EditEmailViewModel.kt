@@ -141,7 +141,7 @@ class EditEmailViewModel @Inject constructor(
                     _editEmailUiState.update {
                             editEmailUiState ->
                         editEmailUiState.copy(
-                            isLoading = true,
+                            isLoading = true
                         )
                     }
                 when(val result = authenticationRepository.updateUserEmail(_editEmailUiState.value.email)){

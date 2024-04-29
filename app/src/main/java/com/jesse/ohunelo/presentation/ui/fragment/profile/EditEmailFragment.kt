@@ -38,7 +38,6 @@ class EditEmailFragment : Fragment() {
 
     private val viewModel by viewModels<EditEmailViewModel>()
 
-    private var loader: LoaderDialogFragment? = null
 
     @Inject
     lateinit var facebookSignInHandler: FacebookSignInHandler
@@ -53,7 +52,7 @@ class EditEmailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = DataBindingUtil.inflate<FragmentEditEmailBinding?>(inflater, R.layout.fragment_edit_email, container, false).apply {
+        _binding = DataBindingUtil.inflate<FragmentEditEmailBinding>(inflater, R.layout.fragment_edit_email, container, false).apply {
             viewModel = this@EditEmailFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
             executePendingBindings()
@@ -64,8 +63,6 @@ class EditEmailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        loader = LoaderDialogFragment()
 
         setOnClickListeners()
 
@@ -90,9 +87,10 @@ class EditEmailFragment : Fragment() {
                         when(editEmailUiState.reauthenticate.second){
                             UserType.EMAIL_PASSWORD -> {
                                 // Initiate re-authenticate
-                                ReauthenticateEmailDialogFragment{
+                                ReauthenticateEmailDialogFragment(
+                                    onDismiss = {
                                     viewModel.renableButton()
-                                }.show(childFragmentManager,
+                                }).show(childFragmentManager,
                                     ReauthenticateEmailDialogFragment.TAG)
                                 viewModel.onReauthenticateInitiated()
                             }
@@ -162,7 +160,6 @@ class EditEmailFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        loader = null
         _binding = null
     }
 }

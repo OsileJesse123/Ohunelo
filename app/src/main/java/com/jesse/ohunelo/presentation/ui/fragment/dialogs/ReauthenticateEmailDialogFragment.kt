@@ -24,7 +24,8 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class ReauthenticateEmailDialogFragment(
-    private val onDismiss: () -> Unit
+    private val onDismiss: () -> Unit,
+    private val onSuccess: (() -> Unit)? = null
 ): DialogFragment() {
 
     companion object {
@@ -38,7 +39,6 @@ class ReauthenticateEmailDialogFragment(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            Timber.e("Re-auth dialog: i just got created")
             _binding = ReauthenticateEmailDialogFragmentBinding.inflate(layoutInflater)
 
             binding.apply {
@@ -56,6 +56,7 @@ class ReauthenticateEmailDialogFragment(
                     viewModel.reauthenticateEmailUiState.collectLatest {
                         reauthenticateEmailUiState ->
                         if (reauthenticateEmailUiState.dismiss){
+                            onSuccess?.invoke()
                             dismiss()
                         }
                         reauthenticateEmailUiState.message?.let {
@@ -86,7 +87,6 @@ class ReauthenticateEmailDialogFragment(
     }
 
     private fun setOnTextChangedListener(){
-
         binding.enterEmailAddressEditText.addTextChangedListener {
                 text: Editable? -> text?.let {
                 viewModel.onEmailTextChanged(it.toString())

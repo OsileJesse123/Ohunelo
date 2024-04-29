@@ -150,16 +150,19 @@
     <string name="update">Update</string>
     <string name="edit_was_successful">Edit was successful</string>
     <string name="edit_email_failed">Failed to update email</string>
+    <string name="edit_password_failed">Failed to update password</string>
     <string name="edit_email_image">edit email image</string>
     <string name="edit_password_image">edit password image</string>
     <string name="edit_password">Edit Password</string>
     <string name="edit_email">Edit Email</string>
     <string name="enter_new_email_address">Enter new email address</string>
+    <string name="enter_new_password">Enter new password</string>
     <string name="reauthenticate_message">You haven\'t logged in for sometime, you need to be re-authenticated</string>
     <string name="reauthenticate_success">re-authentication successful, please proceed to update</string>
     <string name="reauthenticate_fail">re-authentication failed</string>
     <string name="re_authenticate">Re-authenticate</string>
     <string name="unknown_user">Unknown user</string>
+    <string name="weak_password">Weak password</string>
 
 
     <plurals name="number_of_items_available">
