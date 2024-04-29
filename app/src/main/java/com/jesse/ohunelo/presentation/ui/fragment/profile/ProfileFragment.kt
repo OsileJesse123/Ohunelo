@@ -60,11 +60,11 @@ class ProfileFragment : Fragment() {
                 findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToEditEmailFragment())
             }
             editPasswordCard.apply {
-                val userType = viewModel.getUserType()
+                val userType = viewModel?.getUserType()
                 isVisible = userType != null && userType == UserType.EMAIL_PASSWORD
                 if (isVisible){
                     setOnClickListener {
-
+                        findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToEditPasswordFragment())
                     }
                 }
             }

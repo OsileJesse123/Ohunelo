@@ -291,9 +291,24 @@
             app:popUpToInclusive="true"
             app:popUpTo="@id/main_nav_graph"
             />
+
         <action
             android:id="@+id/action_profileFragment_to_editEmailFragment"
-            app:destination="@id/editEmailFragment" />
+            app:destination="@id/editEmailFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
+
+        <action
+            android:id="@+id/action_profileFragment_to_editPasswordFragment"
+            app:destination="@id/editPasswordFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            />
 
     </fragment>
 
@@ -320,6 +335,12 @@
         android:name="com.jesse.ohunelo.presentation.ui.fragment.profile.EditEmailFragment"
         android:label="EditEmailFragment"
         tools:layout="@layout/fragment_edit_email"
+        />
+    <fragment
+        android:id="@+id/editPasswordFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.profile.EditPasswordFragment"
+        android:label="EditPasswordFragment"
+        tools:layout="@layout/fragment_edit_password"
         />
 
 </navigation>

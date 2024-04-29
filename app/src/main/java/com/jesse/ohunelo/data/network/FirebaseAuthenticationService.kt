@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.OAuthProvider
@@ -363,6 +364,26 @@ class FirebaseAuthenticationService @Inject constructor(
         }
     }
 
+    override suspend fun updateUserPassword(password: String): OhuneloResult<UiText> {
+        return try {
+            firebaseAuth.currentUser?.let {
+                user ->
+                user.updatePassword(password).await()
+                (OhuneloResult.Success(data = UiText.StringResource(R.string.edit_was_successful)))
+            } ?: OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.edit_password_failed))
+        }
+        catch (e: FirebaseAuthWeakPasswordException){
+            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.weak_password))
+        }
+        catch (e: FirebaseAuthInvalidUserException){
+            OhuneloResult.Error(UiText.StringResource(R.string.no_user_record_corresponding))
+        }
+        catch (e: Exception){
+            Timber.e("Update password failed, Exception: $e")
+            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.edit_password_failed))
+        }
+    }
+
     override suspend fun reauthenticateUserEmailPassword(
         email: String,
         password: String
@@ -377,7 +398,15 @@ class FirebaseAuthenticationService @Inject constructor(
                 OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success))
             } ?: OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
 
-        } catch (e: Exception){
+        }
+        catch (e: FirebaseAuthInvalidCredentialsException){
+            Timber.e("Re-authenticate with email/password failed 1, Exception: $e")
+            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.invalid_credentials))
+        }
+        catch (e: FirebaseAuthInvalidUserException){
+            OhuneloResult.Error(UiText.StringResource(R.string.no_user_record_corresponding))
+        }
+        catch (e: Exception){
             Timber.e("Re-authenticate with email/password failed, Exception: $e")
             OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
         }
