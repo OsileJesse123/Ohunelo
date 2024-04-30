@@ -25,7 +25,6 @@ import timber.log.Timber
 @AndroidEntryPoint
 class ReauthenticateEmailDialogFragment(
     private val onDismiss: () -> Unit,
-    private val onSuccess: (() -> Unit)? = null
 ): DialogFragment() {
 
     companion object {
@@ -56,7 +55,6 @@ class ReauthenticateEmailDialogFragment(
                     viewModel.reauthenticateEmailUiState.collectLatest {
                         reauthenticateEmailUiState ->
                         if (reauthenticateEmailUiState.dismiss){
-                            onSuccess?.invoke()
                             dismiss()
                         }
                         reauthenticateEmailUiState.message?.let {

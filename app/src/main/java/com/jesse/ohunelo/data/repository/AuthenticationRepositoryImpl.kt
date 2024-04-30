@@ -152,7 +152,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateUserPassword(password: String): OhuneloResult<UiText> {
+    override suspend fun updateUserPassword(password: String): OhuneloResult<UpdateStatus> {
         return withContext(ioDispatcher){
             authenticationService.updateUserPassword(password)
         }

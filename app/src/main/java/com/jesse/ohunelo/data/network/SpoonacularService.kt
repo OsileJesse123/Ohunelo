@@ -13,6 +13,7 @@ interface SpoonacularService {
         @Query("type") mealType: String = "",
         @Query("addRecipeInformation") addRecipeInformation: Boolean = true,
         @Query("addRecipeNutrition") addRecipeNutrition: Boolean = true,
+        @Query("addRecipeInstructions") addRecipeInstructions: Boolean = true,
         @Query("fillIngredients") fillIngredients: Boolean = true,
         @Query("sort") sort: String = "",
         @Query("query") searchQuery: String = "",
