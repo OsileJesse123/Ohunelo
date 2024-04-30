@@ -1,7 +1,6 @@
-package com.jesse.ohunelo.data.network
+package com.jesse.ohunelo.data.network.firebase
 
 import android.app.Activity
-import android.content.Context
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.EmailAuthProvider
@@ -15,33 +14,27 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.OAuthProvider
-import com.google.firebase.auth.TwitterAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.local.PrefStore
 import com.jesse.ohunelo.data.model.AuthUser
+import com.jesse.ohunelo.data.network.AuthenticationService
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiText
 import com.jesse.ohunelo.util.UpdateStatus
 import com.jesse.ohunelo.util.UserType
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class FirebaseAuthenticationService @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
@@ -364,19 +357,30 @@ class FirebaseAuthenticationService @Inject constructor(
         }
     }
 
-    override suspend fun updateUserPassword(password: String): OhuneloResult<UiText> {
+    override suspend fun updateUserPassword(password: String): OhuneloResult<UpdateStatus> {
         return try {
             firebaseAuth.currentUser?.let {
                 user ->
                 user.updatePassword(password).await()
-                (OhuneloResult.Success(data = UiText.StringResource(R.string.edit_was_successful)))
+                (OhuneloResult.Success(data = UpdateStatus.SUCCESS))
             } ?: OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.edit_password_failed))
         }
         catch (e: FirebaseAuthWeakPasswordException){
             OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.weak_password))
         }
+        catch (e: FirebaseAuthRecentLoginRequiredException){
+            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.reauthenticate_message), data = UpdateStatus.REAUTHENTICATE)
+        }
         catch (e: FirebaseAuthInvalidUserException){
-            OhuneloResult.Error(UiText.StringResource(R.string.no_user_record_corresponding))
+            Timber.e("Update password failed 2, Exception: $e, Cause: ${e.cause}, ErrorCode: ${e.errorCode}")
+            when(e.errorCode){
+                FirebaseErrorCode.ERROR_USER_TOKEN_EXPIRED.name -> {
+                    OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.user_credential_no_longer_valid))
+                }
+                else -> {
+                    OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.no_user_record_corresponding))
+                }
+            }
         }
         catch (e: Exception){
             Timber.e("Update password failed, Exception: $e")

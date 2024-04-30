@@ -33,9 +33,11 @@ class RecipeRepositoryImpl @Inject constructor(
             val result = recipeNetworkDataSource.getRecipes(sort = "random");
              // Convert recipes response to recipe entities
              Timber.e("Recipe from Repo: ${result.results.size}")
+             Timber.e("Recipe from Repo instructions: ${result.results[0].analyzedInstructions}, instructions: ${result.results[0].analyzedInstructions.size}")
             val recipeEntities = withContext(defaultDispatcher){
                 result.results.map {
                     recipeResponse ->
+
                     recipeResponse.toRecipeEntity()
                 }
             }

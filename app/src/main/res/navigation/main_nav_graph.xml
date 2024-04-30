@@ -341,6 +341,16 @@
         android:name="com.jesse.ohunelo.presentation.ui.fragment.profile.EditPasswordFragment"
         android:label="EditPasswordFragment"
         tools:layout="@layout/fragment_edit_password"
-        />
+        >
+        <action
+            android:id="@+id/action_editPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/main_nav_graph"/>
+    </fragment>
 
 </navigation>

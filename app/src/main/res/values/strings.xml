@@ -163,6 +163,7 @@
     <string name="re_authenticate">Re-authenticate</string>
     <string name="unknown_user">Unknown user</string>
     <string name="weak_password">Weak password</string>
+    <string name="user_credential_no_longer_valid">The user\'s credential is no longer valid. The user must sign in again.</string>
 
 
     <plurals name="number_of_items_available">

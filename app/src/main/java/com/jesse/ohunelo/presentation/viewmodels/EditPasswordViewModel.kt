@@ -2,10 +2,14 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.EditPasswordUiState
+import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.UpdateStatus
+import com.jesse.ohunelo.util.UserType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -43,18 +47,6 @@ class EditPasswordViewModel @Inject constructor(
         }
     }
 
-    fun startEditPassword(){
-        if(_editPasswordUiState.value.isPasswordValid()){
-            _editPasswordUiState.update {
-                editPasswordUiState ->
-                editPasswordUiState.copy(
-                    isLoading = true,
-                    reauthenticate = true
-                )
-            }
-        }
-    }
-
     fun onMessageShown(){
         _editPasswordUiState.update {
             editPasswordUiState ->
@@ -64,16 +56,16 @@ class EditPasswordViewModel @Inject constructor(
         }
     }
 
-    fun onNavigateBack(){
+    fun onLogout(){
         _editPasswordUiState.update {
             editPasswordUiState ->
             editPasswordUiState.copy(
-                navigateBack = false
+                logout = false
             )
         }
     }
 
-    fun finishEditPassword(){
+    fun editPassword(){
         if (_editPasswordUiState.value.isPasswordValid()){
             viewModelScope.launch {
                 _editPasswordUiState.update {
@@ -84,19 +76,33 @@ class EditPasswordViewModel @Inject constructor(
                 }
                 when(val result = authenticationRepository.updateUserPassword(_editPasswordUiState.value.password)){
                     is OhuneloResult.Success -> {
-                        _editPasswordUiState.update {
-                                editPasswordUiState ->
-                            editPasswordUiState.copy(
-                                message = result.data
-                            )
+                        if (result.data == UpdateStatus.SUCCESS){
+                            _editPasswordUiState.update {
+                                    editPasswordUiState ->
+                                editPasswordUiState.copy(
+                                    message = UiText.StringResource(R.string.edit_was_successful),
+                                    logout = true
+                                )
+                            }
                         }
                     }
                     is OhuneloResult.Error -> {
+                        if (result.data == UpdateStatus.REAUTHENTICATE){
+                            _editPasswordUiState.update {
+                                    editPasswordUiState ->
+                                editPasswordUiState.copy(
+                                    message = result.errorMessage,
+                                    reauthenticate = true
+                                )
+                            }
+                            return@launch
+                        }
                         _editPasswordUiState.update {
                                 editPasswordUiState ->
                             editPasswordUiState.copy(
                                 isLoading = false,
-                                message = result.errorMessage
+                                message = result.errorMessage,
+                                logout = false
                             )
                         }
                     }

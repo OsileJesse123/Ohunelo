@@ -23,6 +23,7 @@ import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class EditPasswordFragment : Fragment() {
@@ -56,24 +57,22 @@ class EditPasswordFragment : Fragment() {
                 viewModel.editPasswordUiState.collectLatest {
                     editPasswordUiState ->
                     binding.progressBar.isVisible = editPasswordUiState.isLoading
+                    Timber.e("UiState: $editPasswordUiState")
                     // If there is a message to be shown, show it
                     editPasswordUiState.message?.let {
                             message ->
                         showMessage(message)
                         viewModel.onMessageShown()
                     }
-                    if (editPasswordUiState.navigateBack){
-                        findNavController().navigateUp()
-                        viewModel.onNavigateBack()
+                    if (editPasswordUiState.logout){
+                        findNavController().navigate(EditPasswordFragmentDirections.actionEditPasswordFragmentToLoginFragment())
+                        viewModel.onLogout()
                     }
                     if(editPasswordUiState.reauthenticate){
                         // Initiate re-authenticate
                         ReauthenticateEmailDialogFragment(
                             onDismiss = {
                                 viewModel.renableButton()
-                            },
-                            onSuccess = {
-                                viewModel.finishEditPassword()
                             }
                         ).show(childFragmentManager,
                             ReauthenticateEmailDialogFragment.TAG)
@@ -95,7 +94,7 @@ class EditPasswordFragment : Fragment() {
                 findNavController().navigateUp()
             }
             updateButton.setOnClickListener {
-                viewModel?.startEditPassword()
+                viewModel?.editPassword()
             }
         }
     }

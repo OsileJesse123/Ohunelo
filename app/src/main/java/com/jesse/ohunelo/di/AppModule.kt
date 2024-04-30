@@ -9,7 +9,7 @@ import com.jesse.ohunelo.data.local.database.RecipeDatabase
 import com.jesse.ohunelo.data.local.database.RecipeDatabasePassphrase
 import com.jesse.ohunelo.data.network.ApiKeyInterceptor
 import com.jesse.ohunelo.data.network.AuthenticationService
-import com.jesse.ohunelo.data.network.FirebaseAuthenticationService
+import com.jesse.ohunelo.data.network.firebase.FirebaseAuthenticationService
 import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
 import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.RecipeNetworkDataSourceImpl
