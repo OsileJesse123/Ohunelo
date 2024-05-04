@@ -168,6 +168,16 @@ class EditEmailViewModel @Inject constructor(
                             }
                             return@launch
                         }
+                        if(result.data == UpdateStatus.LOG_OUT){
+                            _editEmailUiState.update {
+                                    editEmailUiState ->
+                                editEmailUiState.copy(
+                                    message = result.errorMessage,
+                                    logout = true
+                                )
+                            }
+                            return@launch
+                        }
                         _editEmailUiState.update {
                                 editEmailUiState ->
                             editEmailUiState.copy(
@@ -178,6 +188,15 @@ class EditEmailViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun onLogout(){
+        _editEmailUiState.update {
+                editEmailUiState ->
+            editEmailUiState.copy(
+                logout = false
+            )
         }
     }
 

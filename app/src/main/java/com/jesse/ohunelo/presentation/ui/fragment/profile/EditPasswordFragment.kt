@@ -23,7 +23,6 @@ import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class EditPasswordFragment : Fragment() {
@@ -57,7 +56,6 @@ class EditPasswordFragment : Fragment() {
                 viewModel.editPasswordUiState.collectLatest {
                     editPasswordUiState ->
                     binding.progressBar.isVisible = editPasswordUiState.isLoading
-                    Timber.e("UiState: $editPasswordUiState")
                     // If there is a message to be shown, show it
                     editPasswordUiState.message?.let {
                             message ->

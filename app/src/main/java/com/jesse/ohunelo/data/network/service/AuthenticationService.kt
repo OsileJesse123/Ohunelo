@@ -1,4 +1,4 @@
-package com.jesse.ohunelo.data.network
+package com.jesse.ohunelo.data.network.service
 
 import android.app.Activity
 import com.jesse.ohunelo.data.model.AuthUser

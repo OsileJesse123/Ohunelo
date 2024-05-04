@@ -97,6 +97,15 @@ class EditPasswordViewModel @Inject constructor(
                             }
                             return@launch
                         }
+                        if(result.data == UpdateStatus.LOG_OUT){
+                            _editPasswordUiState.update {
+                                    editPasswordUiState ->
+                                editPasswordUiState.copy(
+                                    message = result.errorMessage,
+                                    logout = true
+                                )
+                            }
+                        }
                         _editPasswordUiState.update {
                                 editPasswordUiState ->
                             editPasswordUiState.copy(

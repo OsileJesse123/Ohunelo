@@ -1,6 +1,7 @@
-package com.jesse.ohunelo.data.network
+package com.jesse.ohunelo.data.network.data_source
 
 import com.jesse.ohunelo.data.network.models.RecipesByMealTypeResponse
+import com.jesse.ohunelo.data.network.service.SpoonacularService
 import com.jesse.ohunelo.di.IODispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
