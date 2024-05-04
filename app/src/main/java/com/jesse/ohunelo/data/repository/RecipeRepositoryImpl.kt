@@ -5,9 +5,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.RecipePagingSource
-import com.jesse.ohunelo.data.local.RecipeLocalDataSource
+import com.jesse.ohunelo.data.local.data_source.RecipeLocalDataSource
 import com.jesse.ohunelo.data.model.Recipe
-import com.jesse.ohunelo.data.network.RecipeNetworkDataSource
+import com.jesse.ohunelo.data.network.data_source.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.di.IODispatcher

@@ -129,6 +129,12 @@ class EditEmailFragment : Fragment() {
                             }
                         }
                     }
+
+                    // If user should be forcefully logged out
+                    if(editEmailUiState.logout){
+                        findNavController().navigate(EditPasswordFragmentDirections.actionEditPasswordFragmentToLoginFragment())
+                        viewModel.onLogout()
+                    }
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.jesse.ohunelo.data.local
+package com.jesse.ohunelo.data.local.data_source
 
 import com.jesse.ohunelo.data.local.models.RecipeEntity
 

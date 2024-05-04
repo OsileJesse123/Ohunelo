@@ -1,4 +1,4 @@
-package com.jesse.ohunelo.data.network
+package com.jesse.ohunelo.data.network.service
 
 import com.jesse.ohunelo.data.network.models.RecipesByMealTypeResponse
 import com.jesse.ohunelo.util.HOME_SCREEN_RECIPES_AMOUNT

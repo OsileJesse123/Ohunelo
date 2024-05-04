@@ -335,7 +335,21 @@
         android:name="com.jesse.ohunelo.presentation.ui.fragment.profile.EditEmailFragment"
         android:label="EditEmailFragment"
         tools:layout="@layout/fragment_edit_email"
-        />
+        >
+
+        <action
+            android:id="@+id/action_editEmailFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/main_nav_graph"
+            />
+
+    </fragment>
+
     <fragment
         android:id="@+id/editPasswordFragment"
         android:name="com.jesse.ohunelo.presentation.ui.fragment.profile.EditPasswordFragment"

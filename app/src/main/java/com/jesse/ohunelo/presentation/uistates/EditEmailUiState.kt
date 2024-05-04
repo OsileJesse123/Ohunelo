@@ -9,7 +9,8 @@ data class EditEmailUiState(
     val isLoading: Boolean = false,
     val message: UiText? = null,
     val navigateBack: Boolean = false,
-    val reauthenticate: Pair<Boolean, UserType?> = Pair(false, null)
+    val reauthenticate: Pair<Boolean, UserType?> = Pair(false, null),
+    val logout: Boolean = false
 ){
     // email is valid if it is not empty and emailError is null
     fun isEmailValid() = (email.isNotEmpty() && emailError == null)

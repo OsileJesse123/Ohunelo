@@ -1,4 +1,4 @@
-package com.jesse.ohunelo.data.network
+package com.jesse.ohunelo.data.network.data_source
 
 import com.jesse.ohunelo.data.network.models.RecipeResponse
 import com.jesse.ohunelo.data.network.models.RecipesByMealTypeResponse
