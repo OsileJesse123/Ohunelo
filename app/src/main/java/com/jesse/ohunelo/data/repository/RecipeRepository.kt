@@ -1,6 +1,7 @@
 package com.jesse.ohunelo.data.repository
 
 import androidx.paging.PagingData
+import com.jesse.ohunelo.data.model.Notification
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import kotlinx.coroutines.flow.Flow

@@ -1,5 +1,7 @@
 package com.jesse.ohunelo.data.network.service
 
+import com.jesse.ohunelo.data.network.models.RandomFoodJokeResponse
+import com.jesse.ohunelo.data.network.models.RandomFoodTriviaResponse
 import com.jesse.ohunelo.data.network.models.RecipesByMealTypeResponse
 import com.jesse.ohunelo.util.HOME_SCREEN_RECIPES_AMOUNT
 import retrofit2.http.GET
@@ -7,7 +9,7 @@ import retrofit2.http.Query
 
 interface SpoonacularService {
 
-    @GET("complexSearch")
+    @GET("recipes/complexSearch")
     suspend fun getRecipes(
         @Query("number") number: Int = HOME_SCREEN_RECIPES_AMOUNT,
         @Query("type") mealType: String = "",
@@ -19,4 +21,10 @@ interface SpoonacularService {
         @Query("query") searchQuery: String = "",
         @Query("offset") offset: Int = 0
     ): RecipesByMealTypeResponse
+
+    @GET("food/jokes/random")
+    suspend fun getRandomFoodJoke(): RandomFoodJokeResponse
+
+    @GET("food/trivia/random")
+    suspend fun getRandomFoodTrivia(): RandomFoodTriviaResponse
 }

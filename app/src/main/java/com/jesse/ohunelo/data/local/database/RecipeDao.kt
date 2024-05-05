@@ -10,8 +10,6 @@ import com.jesse.ohunelo.data.local.models.RecipeEntity
 @Dao
 interface RecipeDao {
 
-
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipes(recipes: List<RecipeEntity>)
 
