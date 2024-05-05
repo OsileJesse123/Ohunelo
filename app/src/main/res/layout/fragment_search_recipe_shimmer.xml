@@ -9,7 +9,7 @@
 
     <include
         layout="@layout/search_recipe_item"
-        android:layout_width="240dp"
+        android:layout_width="230dp"
         android:layout_height="240dp"
         android:layout_columnSpan="2"
         android:layout_rowSpan="2"
@@ -21,7 +21,7 @@
 
     <include
         layout="@layout/search_recipe_item"
-        android:layout_width="100dp"
+        android:layout_width="72dp"
         android:layout_height="100dp"
         android:layout_marginStart="@dimen/grid_1"
         android:layout_marginBottom="@dimen/grid_1"
@@ -33,7 +33,7 @@
 
     <include
         layout="@layout/search_recipe_item"
-        android:layout_width="100dp"
+        android:layout_width="72dp"
         android:layout_height="100dp"
         android:layout_marginStart="@dimen/grid_1"
         android:layout_marginBottom="@dimen/grid_1"
@@ -46,7 +46,7 @@
 
     <include
         layout="@layout/search_recipe_item"
-        android:layout_width="100dp"
+        android:layout_width="72dp"
         android:layout_height="100dp"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
@@ -59,7 +59,7 @@
 
     <include
         layout="@layout/search_recipe_item"
-        android:layout_width="100dp"
+        android:layout_width="72dp"
         android:layout_height="100dp"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
@@ -71,7 +71,7 @@
 
     <include
         layout="@layout/search_recipe_item"
-        android:layout_width="240dp"
+        android:layout_width="230dp"
         android:layout_height="240dp"
         android:layout_columnSpan="2"
         android:layout_rowSpan="2"
@@ -83,7 +83,7 @@
 
     <include
         layout="@layout/search_recipe_item"
-        android:layout_width="240dp"
+        android:layout_width="230dp"
         android:layout_height="240dp"
         android:layout_columnSpan="2"
         android:layout_rowSpan="2"
@@ -95,7 +95,7 @@
 
     <include
         layout="@layout/search_recipe_item"
-        android:layout_width="100dp"
+        android:layout_width="72dp"
         android:layout_height="100dp"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
@@ -107,7 +107,7 @@
 
     <include
         layout="@layout/search_recipe_item"
-        android:layout_width="100dp"
+        android:layout_width="72dp"
         android:layout_height="100dp"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"

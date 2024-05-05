@@ -3,20 +3,19 @@ package com.jesse.ohunelo.di
 import android.content.Context
 import androidx.room.Room
 import com.jesse.ohunelo.BuildConfig
-import com.jesse.ohunelo.data.local.data_source.RecipeLocalDataSource
-import com.jesse.ohunelo.data.local.data_source.RecipeLocalDataSourceImpl
 import com.jesse.ohunelo.data.local.database.RecipeDatabase
 import com.jesse.ohunelo.data.local.database.RecipeDatabasePassphrase
 import com.jesse.ohunelo.data.network.ApiKeyInterceptor
-import com.jesse.ohunelo.data.network.service.AuthenticationService
-import com.jesse.ohunelo.data.network.firebase.FirebaseAuthenticationService
-import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
 import com.jesse.ohunelo.data.network.data_source.RecipeNetworkDataSource
-import com.jesse.ohunelo.data.network.data_source.RecipeNetworkDataSourceImpl
+import com.jesse.ohunelo.data.network.firebase.FirebaseAuthenticationService
+import com.jesse.ohunelo.data.network.service.AuthenticationService
 import com.jesse.ohunelo.data.network.service.SpoonacularService
 import com.jesse.ohunelo.data.network.signin_handlers.FacebookSignInHandler
+import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.data.repository.AuthenticationRepositoryImpl
+import com.jesse.ohunelo.data.repository.NotificationRepository
+import com.jesse.ohunelo.data.repository.NotificationRepositoryImpl
 import com.jesse.ohunelo.data.repository.RecipeRepository
 import com.jesse.ohunelo.data.repository.RecipeRepositoryImpl
 import com.jesse.ohunelo.domain.usecase.FormatHomeScreenDataUseCase
@@ -46,7 +45,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    private const val BASE_URL = "https://api.spoonacular.com/recipes/"
+    private const val BASE_URL = "https://api.spoonacular.com/"
 
     @Provides
     fun providesMoshi(): Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
@@ -117,13 +116,15 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideNotificationRepository(notificationRepositoryImpl: NotificationRepositoryImpl): NotificationRepository = notificationRepositoryImpl
+
+    @Provides
+    @Singleton
     fun provideAuthenticationService(authenticationService: FirebaseAuthenticationService): AuthenticationService = authenticationService
 
     @Provides
-    fun provideRecipeNetworkDataSource(recipeNetworkDataSourceImpl: RecipeNetworkDataSourceImpl): RecipeNetworkDataSource = recipeNetworkDataSourceImpl
-
-    @Provides
-    fun provideRecipeLocalDataSource(recipeLocalDataSourceImpl: RecipeLocalDataSourceImpl): RecipeLocalDataSource = recipeLocalDataSourceImpl
+    fun provideRecipeNetworkDataSource(spoonacularService: SpoonacularService):
+            RecipeNetworkDataSource = RecipeNetworkDataSource(spoonacularService)
 
     @Provides
     @Singleton
