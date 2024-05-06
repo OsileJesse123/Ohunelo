@@ -23,6 +23,16 @@ data class NotificationEntity(
     @ColumnInfo(name = "has_been_read")
     val hasBeenRead: Boolean = false
 ){
+
+    companion object {
+        fun fromNotification(notification: Notification): NotificationEntity = NotificationEntity(
+            id = notification.id,
+            notificationType = if (notification.notificationTypeIcon == UiDrawable(R.drawable.food_trivia_icon)) NotificationType.FOOD_TRIVIA else NotificationType.FOOD_JOKE,
+            addedOn = notification.addedOn,
+            notificationContent = notification.notificationContent,
+            hasBeenRead = notification.hasBeenRead
+        )
+    }
     fun toNotification(): Notification {
         return Notification(id = id, notificationContent = notificationContent, addedOn = addedOn,
             hasBeenRead = hasBeenRead, notificationTypeText = getNotificationTypeText(),

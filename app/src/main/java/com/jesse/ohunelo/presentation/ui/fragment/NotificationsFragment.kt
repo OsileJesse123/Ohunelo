@@ -53,15 +53,12 @@ class NotificationsFragment : Fragment() {
 
         setupRecycler()
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.notificationItems.collect{
-                    groupedItems ->
-                    Timber.e("GroupedItems: $groupedItems")
-                    notificationsAdapter.submitList(groupedItems)
-                }
-            }
+        viewModel.notifications.observe(viewLifecycleOwner){
+                groupedItems ->
+            Timber.e("GroupedItems: $groupedItems")
+            notificationsAdapter.submitList(groupedItems)
         }
+
     }
 
     private fun setupRecycler(){
