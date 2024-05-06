@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.jesse.ohunelo.data.local.database.typeconverters.AnalyzedInstructionsListTypeConverter
+import com.jesse.ohunelo.data.local.database.typeconverters.DateTypeConverter
 import com.jesse.ohunelo.data.local.database.typeconverters.ExtendedIngredientListTypeConverter
 import com.jesse.ohunelo.data.local.database.typeconverters.NotificationEntityTypeConverter
 import com.jesse.ohunelo.data.local.database.typeconverters.NutritionEntityTypeConverter
@@ -17,7 +18,7 @@ private const val DATABASE_VERSION = 1
 @Database(entities = [RecipeEntity::class, NutritionEntity::class, NotificationEntity::class], version = DATABASE_VERSION)
 @TypeConverters(NutritionEntityTypeConverter::class, ExtendedIngredientListTypeConverter::class,
     AnalyzedInstructionsListTypeConverter::class, StringListTypeConverter::class,
-    NotificationEntityTypeConverter::class)
+    NotificationEntityTypeConverter::class, DateTypeConverter::class)
 abstract class RecipeDatabase: RoomDatabase() {
 
     abstract fun recipeDao(): RecipeDao

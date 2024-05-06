@@ -2,14 +2,17 @@ package com.jesse.ohunelo.data.repository
 
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.local.database.NotificationDao
+import com.jesse.ohunelo.data.local.models.NotificationEntity
 import com.jesse.ohunelo.data.model.Notification
 import com.jesse.ohunelo.data.network.data_source.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.di.IODispatcher
+import com.jesse.ohunelo.util.NotificationType
 import com.jesse.ohunelo.util.UiText
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -23,100 +26,41 @@ class NotificationRepositoryImpl @Inject constructor(
     private val notificationDao: NotificationDao
 ): NotificationRepository {
 
-    override suspend fun getRandomFoodJoke(): OhuneloResult<Flow<List<Notification>>> {
-        return withContext(ioDispatcher){
+    override suspend fun synchronizeNotifications(notificationType: NotificationType): Notification? {
+         return withContext(ioDispatcher){
             try {
-                // Get food joke from api
-                val notificationResult = recipeNetworkDataSource.getRandomFoodJoke()
-                // Save food joke locally
-                notificationDao.insertNotification(notificationResult.toNotificationEntity())
-                // Get notification from local storage, convert to regular notification and
-                // return flow to UI
-                val notifications = withContext(defaultDispatcher){
-                    notificationDao.getNotifications().map {
-                            notifications ->
-                        notifications.map {
-                                notificationEntity ->
-                            notificationEntity.toNotification()
-                        }
-                    }
+                // If notification type is FOOD_JOKE then get a random food joke else
+                // get a random food trivia
+                val notificationEntity = if (notificationType == NotificationType.FOOD_JOKE){
+                    recipeNetworkDataSource.getRandomFoodJoke().toNotificationEntity()
                 }
-                OhuneloResult.Success(notifications)
-            }
-            catch (e: HttpException){
-                Timber.e("HTTPError: $e, ErrorMessage: ${e.message()}")
-                val notifications = withContext(defaultDispatcher){
-                    notificationDao.getNotifications().map {
-                            notifications ->
-                        notifications.map {
-                                notificationEntity ->
-                            notificationEntity.toNotification()
-                        }
-                    }
+                else {
+                    recipeNetworkDataSource.getRandomFoodTrivia().toNotificationEntity()
                 }
-                OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.failed_to_get_food_joke), data = notifications)
-            }
-            catch (e: Exception){
-                Timber.e("GeneralError: $e, ErrorMessage: ${e.message}")
-                val notifications = withContext(defaultDispatcher){
-                    notificationDao.getNotifications().map {
-                            notifications ->
-                        notifications.map {
-                                notificationEntity ->
-                            notificationEntity.toNotification()
-                        }
-                    }
-                }
-                OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.failed_to_get_food_joke), data = notifications)
+                // Save notification locally
+                notificationDao.insertNotification(notificationEntity)
+                // Get notification from local storage and return it
+                notificationDao.getNotification(notificationEntity.id).toNotification()
+            } catch (e: Exception){
+                Timber.e("Failed to get food joke/trivia, Error: $e")
+                null
             }
         }
     }
 
-    override suspend fun getRandomFoodTrivia(): OhuneloResult<Flow<List<Notification>>> {
-        return withContext(ioDispatcher){
-            try {
-                // Get food trivia from api
-                val notificationResult = recipeNetworkDataSource.getRandomFoodTrivia()
-                notificationDao.insertNotification(notificationResult.toNotificationEntity())
-                // Get notification from local storage, convert to regular notification and
-                // return flow to UI
-                val notifications = withContext(defaultDispatcher){
-                    notificationDao.getNotifications().map {
-                            notifications ->
-                        notifications.map {
-                                notificationEntity ->
-                            notificationEntity.toNotification()
-                        }
-                    }
-                }
-                OhuneloResult.Success(notifications)
+    override fun getNotifications(): Flow<List<Notification>> {
+        return notificationDao.getNotifications().map {
+                notifications ->
+            notifications.map {
+                    notificationEntity ->
+                notificationEntity.toNotification()
             }
-            catch (e: HttpException){
-                Timber.e("HTTPError: $e, ErrorMessage: ${e.message()}")
-                val notifications = withContext(defaultDispatcher){
-                    notificationDao.getNotifications().map {
-                            notifications ->
-                        notifications.map {
-                                notificationEntity ->
-                            notificationEntity.toNotification()
-                        }
-                    }
-                }
-                OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.failed_to_get_food_joke), data = notifications)
-            }
-            catch (e: Exception){
-                Timber.e("GeneralError: $e, ErrorMessage: ${e.message}")
-                val notifications = withContext(defaultDispatcher){
-                    notificationDao.getNotifications().map {
-                            notifications ->
-                        notifications.map {
-                                notificationEntity ->
-                            notificationEntity.toNotification()
-                        }
-                    }
-                }
-                OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.failed_to_get_food_joke), data = notifications)
-            }
+        }.flowOn(ioDispatcher)
+    }
+
+    override suspend fun updateNotification(notification: Notification) {
+        withContext(ioDispatcher){
+            notificationDao.updateNotification(NotificationEntity.fromNotification(notification))
         }
     }
 }

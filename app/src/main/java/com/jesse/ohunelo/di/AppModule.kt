@@ -149,6 +149,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideNotificationDao(recipeDatabase: RecipeDatabase) = recipeDatabase.notificationDao()
+
+    @Provides
+    @Singleton
     fun provideGoogleSignInHandler(@ApplicationContext context: Context) = GoogleSignInHandler(context)
 
     @Provides
