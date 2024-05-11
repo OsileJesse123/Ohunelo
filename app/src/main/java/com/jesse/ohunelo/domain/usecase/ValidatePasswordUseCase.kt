@@ -1,12 +1,13 @@
 package com.jesse.ohunelo.domain.usecase
 
 import com.jesse.ohunelo.R
+import com.jesse.ohunelo.domain.ValidationResult
 import com.jesse.ohunelo.util.UiText
 import javax.inject.Inject
 
 class ValidatePasswordUseCase @Inject constructor(){
 
-    operator fun invoke(password: String, shouldValidatePasswordPattern: Boolean): ValidationResult{
+    operator fun invoke(password: String, shouldValidatePasswordPattern: Boolean): ValidationResult {
         if (password.isBlank()){
             return ValidationResult(
                 successful = false,

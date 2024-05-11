@@ -1,4 +1,4 @@
-package com.jesse.ohunelo.domain.usecase
+package com.jesse.ohunelo.domain
 
 import com.jesse.ohunelo.util.UiText
 

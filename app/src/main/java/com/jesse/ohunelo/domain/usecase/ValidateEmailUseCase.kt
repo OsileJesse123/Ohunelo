@@ -1,6 +1,7 @@
 package com.jesse.ohunelo.domain.usecase
 
 import com.jesse.ohunelo.R
+import com.jesse.ohunelo.domain.ValidationResult
 import com.jesse.ohunelo.util.EmailMatcher
 import com.jesse.ohunelo.util.UiText
 import javax.inject.Inject
@@ -9,7 +10,7 @@ class ValidateEmailUseCase @Inject constructor(
     private val emailMatcher: EmailMatcher
 ) {
 
-    operator fun invoke(email: String): ValidationResult{
+    operator fun invoke(email: String): ValidationResult {
 
         if(email.isBlank()){
             return ValidationResult(

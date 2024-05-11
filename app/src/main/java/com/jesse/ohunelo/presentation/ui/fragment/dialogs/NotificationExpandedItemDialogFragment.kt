@@ -1,6 +1,7 @@
 package com.jesse.ohunelo.presentation.ui.fragment.dialogs
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -11,6 +12,7 @@ import com.jesse.ohunelo.databinding.NotificationsExpandedItemBinding
 
 class NotificationExpandedItemDialogFragment(
     private val notification: Notification,
+    private val onDismissNotification: (Notification) -> Unit
 ) : DialogFragment() {
 
     companion object {
@@ -21,6 +23,9 @@ class NotificationExpandedItemDialogFragment(
         return activity?.let {
             val binding = NotificationsExpandedItemBinding.inflate(layoutInflater).apply {
                 notification = this@NotificationExpandedItemDialogFragment.notification
+                closeImage.setOnClickListener {
+                    dismiss()
+                }
                 executePendingBindings()
             }
 
@@ -30,6 +35,7 @@ class NotificationExpandedItemDialogFragment(
 
             notificationDialog.apply {
                 window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                isCancelable = false
 
                 // Set dialog size according to screen size
                 val mDisplayWidth = resources.displayMetrics.widthPixels
@@ -37,5 +43,12 @@ class NotificationExpandedItemDialogFragment(
                 window?.setLayout((mDisplayWidth * 0.75f).toInt(), (mDisplayHeight * 0.5f).toInt())
             }
         } ?: throw IllegalStateException("Activity can't be null")
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        if(!notification.hasBeenRead){
+            onDismissNotification(notification.copy(hasBeenRead = true))
+        }
+        super.onDismiss(dialog)
     }
 }

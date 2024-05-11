@@ -70,7 +70,13 @@ class NotificationsFragment : Fragment() {
     }
 
     private fun showNotificationDetailsInDialog(selectedNotification: Notification){
-        NotificationExpandedItemDialogFragment(selectedNotification).show(
+        NotificationExpandedItemDialogFragment(
+            selectedNotification,
+            onDismissNotification = {
+                notification ->
+                viewModel.updateNotification(notification)
+            }
+        ).show(
             childFragmentManager, NotificationExpandedItemDialogFragment.TAG
         )
     }

@@ -1,12 +1,13 @@
 package com.jesse.ohunelo.domain.usecase
 
 import com.jesse.ohunelo.R
+import com.jesse.ohunelo.domain.ValidationResult
 import com.jesse.ohunelo.util.UiText
 import javax.inject.Inject
 
 class ValidateNameUseCase @Inject constructor(){
 
-    operator fun invoke(username: String, nameMaxLength: Int): ValidationResult{
+    operator fun invoke(username: String, nameMaxLength: Int): ValidationResult {
         if (username.isBlank()){
             return ValidationResult(
                 successful = false,

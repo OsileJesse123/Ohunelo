@@ -29,17 +29,13 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationsViewModel @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
-    notificationsRepository: NotificationRepository
+    private val notificationsRepository: NotificationRepository
 ): ViewModel() {
 
-    val notifications : LiveData<List<GroupedNotificationItem>>
-
-    init {
-        notifications = notificationsRepository.getNotifications().map {
-                notifications ->
-            getGroupedNotificationItem(notifications)
-        }.asLiveData()
-    }
+    val notifications : LiveData<List<GroupedNotificationItem>> = notificationsRepository.getNotifications().map {
+            notifications ->
+        getGroupedNotificationItem(notifications)
+    }.asLiveData()
 
     private suspend fun getGroupedNotificationItem(notificationItems: List<Notification>): List<GroupedNotificationItem>{
        return withContext(defaultDispatcher) {
@@ -69,5 +65,11 @@ class NotificationsViewModel @Inject constructor(
 
            groupedItems
        }
+    }
+
+    fun updateNotification(notification: Notification){
+        viewModelScope.launch {
+            notificationsRepository.updateNotification(notification)
+        }
     }
 }
