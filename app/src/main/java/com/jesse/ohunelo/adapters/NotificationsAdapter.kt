@@ -84,29 +84,20 @@ class NotificationsAdapter(
                 }
             }
         }
-    class NamesDiffUtil: DiffUtil.ItemCallback<String>(){
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-            TODO("Not yet implemented")
-        }
-    }
 
     class NotificationsDiffUtil: DiffUtil.ItemCallback<GroupedNotificationItem>(){
         override fun areItemsTheSame(
             oldItem: GroupedNotificationItem,
             newItem: GroupedNotificationItem
         ): Boolean {
-            return newItem.header == oldItem.header && newItem.notification == oldItem.notification
+            return newItem.notification?.id == oldItem.notification?.id
         }
 
         override fun areContentsTheSame(
             oldItem: GroupedNotificationItem,
             newItem: GroupedNotificationItem
         ): Boolean {
-            return newItem == oldItem
+            return newItem.notification == oldItem.notification
         }
     }
 
