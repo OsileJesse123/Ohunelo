@@ -166,6 +166,7 @@
     <string name="user_credential_no_longer_valid">The user\'s credential is no longer valid. The user must sign in again.</string>
     <string name="failed_to_get_food_trivia">Failed to get food trivia!</string>
     <string name="failed_to_get_food_joke">Failed to get food joke!</string>
+    <string name="no_notifications">No Notifications</string>
 
 
     <plurals name="number_of_items_available">
