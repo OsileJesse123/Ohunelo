@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -55,8 +56,8 @@ class NotificationsFragment : Fragment() {
 
         viewModel.notifications.observe(viewLifecycleOwner){
                 groupedItems ->
-            Timber.e("GroupedItems: $groupedItems")
             notificationsAdapter.submitList(groupedItems)
+            binding.noNotificationsText.isVisible = groupedItems.isNullOrEmpty()
         }
 
     }

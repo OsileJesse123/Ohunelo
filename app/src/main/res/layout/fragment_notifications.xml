@@ -50,6 +50,17 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <TextView
+            android:id="@+id/no_notifications_text"
+            style="?attr/textAppearanceHeadline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_notifications"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginHorizontal="@dimen/grid_2"
+            />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
