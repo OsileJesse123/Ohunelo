@@ -53,7 +53,7 @@ class FirebaseAuthenticationService @Inject constructor(
     }
 
     private fun getUser(): AuthUser? {
-        Timber.e("Service User: ${firebaseAuth.currentUser}")
+        Timber.e("Service User: ${firebaseAuth.currentUser?.displayName}")
         return firebaseAuth.currentUser?.let {
             firebaseUser ->
             AuthUser(
