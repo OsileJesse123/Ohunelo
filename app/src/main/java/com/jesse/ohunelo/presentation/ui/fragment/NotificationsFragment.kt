@@ -1,5 +1,7 @@
 package com.jesse.ohunelo.presentation.ui.fragment
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,14 +13,19 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jesse.ohunelo.R
+import com.jesse.ohunelo.adapters.NotificationHeaderAdapter
 import com.jesse.ohunelo.adapters.NotificationsAdapter
 import com.jesse.ohunelo.data.model.Notification
 import com.jesse.ohunelo.databinding.FragmentNotificationsBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.NotificationExpandedItemDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.NotificationsViewModel
+import com.jesse.ohunelo.util.PermissionRequest
+import com.jesse.ohunelo.util.PermissionStatus
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -33,6 +40,10 @@ class NotificationsFragment : Fragment() {
 
     private var _notificationsAdapter: NotificationsAdapter? = null
     private val notificationsAdapter: NotificationsAdapter get() = _notificationsAdapter!!
+
+    @SuppressLint("InlinedApi")
+    // POST_NOTIFICATIONS is automatically granted on API<33.
+    val permissionRequest = PermissionRequest(this, Manifest.permission.POST_NOTIFICATIONS)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,10 +65,31 @@ class NotificationsFragment : Fragment() {
 
         setupRecycler()
 
+        val notificationHeaderAdapter = NotificationHeaderAdapter { permissionRequest.launch() }
+
         viewModel.notifications.observe(viewLifecycleOwner){
                 groupedItems ->
             notificationsAdapter.submitList(groupedItems)
             binding.noNotificationsText.isVisible = groupedItems.isNullOrEmpty()
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                permissionRequest.status.collectLatest{
+                    status ->
+                    when(status){
+                        is PermissionStatus.Granted -> binding.notificationsRecycler.adapter = notificationsAdapter
+                        is PermissionStatus.Denied -> {
+                            val concatAdapter = ConcatAdapter(notificationHeaderAdapter, notificationsAdapter)
+                            binding.notificationsRecycler.adapter = concatAdapter
+                            notificationHeaderAdapter.shouldShowRationale = status.shouldShowRationale
+                        }
+                        else -> {
+                            // Do Nothing
+                        }
+                    }
+                }
+            }
         }
 
     }
