@@ -167,6 +167,9 @@
     <string name="failed_to_get_food_trivia">Failed to get food trivia!</string>
     <string name="failed_to_get_food_joke">Failed to get food joke!</string>
     <string name="no_notifications">No Notifications</string>
+    <string name="permission_request">Ohunelo requires the notification permission</string>
+    <string name="permission_rationale">Please grant the notification permission so that the app can demonstrate usage of the Notification APIs.</string>
+    <string name="grant">Grant</string>
 
 
     <plurals name="number_of_items_available">

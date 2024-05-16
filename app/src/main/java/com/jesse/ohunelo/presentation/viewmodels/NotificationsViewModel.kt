@@ -11,6 +11,7 @@ import com.jesse.ohunelo.data.repository.NotificationRepository
 import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.DateUtils
+import com.jesse.ohunelo.util.NotificationType
 import com.jesse.ohunelo.util.UiDrawable
 import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,6 +37,12 @@ class NotificationsViewModel @Inject constructor(
             notifications ->
         getGroupedNotificationItem(notifications)
     }.asLiveData()
+
+    init {
+        viewModelScope.launch {
+            notificationsRepository.synchronizeNotifications(NotificationType.FOOD_JOKE)
+        }
+    }
 
     private suspend fun getGroupedNotificationItem(notificationItems: List<Notification>): List<GroupedNotificationItem>{
        return withContext(defaultDispatcher) {
