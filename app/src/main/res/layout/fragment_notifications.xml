@@ -45,7 +45,7 @@
                 tools:listitem="@layout/notifications_item"
                 android:clipToPadding="false"
                 android:paddingBottom="@dimen/grid_2"
-                android:paddingVertical="@dimen/grid_2"
+                android:paddingHorizontal="@dimen/grid_2"
                 />
 
         </androidx.core.widget.NestedScrollView>

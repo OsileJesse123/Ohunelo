@@ -23,6 +23,7 @@ import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.util.EmailMatcher
 import com.jesse.ohunelo.util.EmailMatcherImpl
+import com.jesse.ohunelo.util.NotificationHelper
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -158,6 +159,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFacebookSignInHandler() = FacebookSignInHandler()
+
+    @Provides
+    @Singleton
+    fun provideNotificationHelper(@ApplicationContext context: Context) = NotificationHelper(context)
 
 }
 

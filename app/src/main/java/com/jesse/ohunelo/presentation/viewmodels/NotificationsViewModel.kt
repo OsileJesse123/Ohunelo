@@ -11,6 +11,7 @@ import com.jesse.ohunelo.data.repository.NotificationRepository
 import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.DateUtils
+import com.jesse.ohunelo.util.NotificationHelper
 import com.jesse.ohunelo.util.NotificationType
 import com.jesse.ohunelo.util.UiDrawable
 import com.jesse.ohunelo.util.UiText
@@ -30,7 +31,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationsViewModel @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
-    private val notificationsRepository: NotificationRepository
+    private val notificationsRepository: NotificationRepository,
+    private val notificationHelper: NotificationHelper
 ): ViewModel() {
 
     val notifications : LiveData<List<GroupedNotificationItem>> = notificationsRepository.getNotifications().map {
@@ -40,7 +42,10 @@ class NotificationsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            notificationsRepository.synchronizeNotifications(NotificationType.FOOD_JOKE)
+            val notification = notificationsRepository.synchronizeNotifications(NotificationType.FOOD_JOKE)
+            notification?.let {
+                notificationHelper.showNotification(it)
+            }
         }
     }
 
