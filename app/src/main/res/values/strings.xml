@@ -168,8 +168,10 @@
     <string name="failed_to_get_food_joke">Failed to get food joke!</string>
     <string name="no_notifications">No Notifications</string>
     <string name="permission_request">Ohunelo requires the notification permission</string>
-    <string name="permission_rationale">Please grant the notification permission so that the app can demonstrate usage of the Notification APIs.</string>
+    <string name="permission_rationale">Ohunelo wants to send you daily food jokes and trivia to keep your kitchen fun! Grant notification permission to receive these delightful tidbits.</string>
     <string name="grant">Grant</string>
+    <string name="channel_name">food trivia/food joke</string>
+    <string name="channel_description">All food trivia and food jokes</string>
 
 
     <plurals name="number_of_items_available">

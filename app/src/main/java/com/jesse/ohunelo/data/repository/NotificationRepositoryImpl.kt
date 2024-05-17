@@ -40,7 +40,7 @@ class NotificationRepositoryImpl @Inject constructor(
                 // Save notification locally
                 notificationDao.insertNotification(notificationEntity)
                 // Get notification from local storage and return it
-                notificationDao.getNotification(notificationEntity.id).toNotification()
+                notificationDao.getNotification(notificationEntity.notificationContent).toNotification()
             } catch (e: Exception){
                 Timber.e("Failed to get food joke/trivia, Error: $e")
                 null

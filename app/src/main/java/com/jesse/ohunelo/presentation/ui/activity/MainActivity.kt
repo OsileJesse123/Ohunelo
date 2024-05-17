@@ -18,8 +18,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.facebook.FacebookSdk
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.ActivityMainBinding
+import com.jesse.ohunelo.presentation.viewmodels.MainViewModel
 import com.jesse.ohunelo.presentation.viewmodels.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
     private var keepShowingSplashScreen = true
 
     private val sharedViewModel by viewModels<SharedViewModel>()
+
+    private val mainViewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Returns an instance of Splash Screen
@@ -62,9 +66,16 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                sharedViewModel.shouldKeepShowingSplashScreen.collect{
-                    if(!it){
-                        Handler(Looper.getMainLooper()).postDelayed({ keepShowingSplashScreen = false }, 1_000L)
+                launch {
+                    sharedViewModel.shouldKeepShowingSplashScreen.collect{
+                        if(!it){
+                            Handler(Looper.getMainLooper()).postDelayed({ keepShowingSplashScreen = false }, 1_000L)
+                        }
+                    }
+                }
+                launch {
+                    mainViewModel.unreadNotificationsCount.collectLatest {
+                        setupNotificationBadge(it)
                     }
                 }
             }
@@ -87,6 +98,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.notificationFragment -> {
                     showBottomNavigationView()
+                    sharedViewModel.stopShowingSplashScreen()
                 }
 
                 R.id.profileFragment -> {
@@ -150,6 +162,23 @@ class MainActivity : AppCompatActivity() {
             })
             animator.start()
             previousTranslationY = to
+        }
+    }
+
+    private fun setupNotificationBadge(unreadNotificationCount: Int){
+        val badge = binding.ohuneloBottomNav.getOrCreateBadge(R.id.notificationFragment)
+        if (unreadNotificationCount == 0){
+            binding.ohuneloBottomNav.getBadge(R.id.notificationFragment)?.let {
+                badgeDrawable ->
+                badgeDrawable.isVisible = false
+                badgeDrawable.clearNumber()
+            }
+
+        } else {
+            badge.apply {
+                isVisible = true
+                number = unreadNotificationCount
+            }
         }
     }
 

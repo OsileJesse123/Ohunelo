@@ -17,10 +17,10 @@ interface NotificationDao {
     @Update
     suspend fun updateNotification(notification: NotificationEntity)
 
-    @Query("SELECT * FROM notification")
+    @Query("SELECT * FROM notification ORDER BY id DESC")
     fun getNotifications(): Flow<List<NotificationEntity>>
 
-    @Query("SELECT * FROM notification WHERE :notificationId = id")
-    suspend fun getNotification(notificationId: Int): NotificationEntity
+    @Query("SELECT * FROM notification WHERE :notificationContent = notification_content")
+    suspend fun getNotification(notificationContent: String): NotificationEntity
 
 }
