@@ -40,19 +40,10 @@ class NotificationsViewModel @Inject constructor(
         getGroupedNotificationItem(notifications)
     }.asLiveData()
 
-    init {
-        viewModelScope.launch {
-            val notification = notificationsRepository.synchronizeNotifications(NotificationType.FOOD_JOKE)
-            notification?.let {
-                notificationHelper.showNotification(it)
-            }
-        }
-    }
-
     private suspend fun getGroupedNotificationItem(notificationItems: List<Notification>): List<GroupedNotificationItem>{
        return withContext(defaultDispatcher) {
-           val groupedItems = mutableListOf<GroupedNotificationItem>()
 
+           val groupedItems = mutableListOf<GroupedNotificationItem>()
 
            val todayItems = notificationItems.filter { notification -> DateUtils.isToday(notification.addedOn) }
            val yesterdayItems = notificationItems.filter { notification -> DateUtils.isYesterday(notification.addedOn) }
@@ -60,6 +51,7 @@ class NotificationsViewModel @Inject constructor(
                    notification ->
                !DateUtils.isToday(notification.addedOn) && !DateUtils.isYesterday(notification.addedOn)
            }
+
            if (todayItems.isNotEmpty()) {
                groupedItems.add(GroupedNotificationItem(header = UiText.StringResource(R.string.today)))
                groupedItems.addAll(todayItems.map { GroupedNotificationItem(notification = it) })

@@ -55,7 +55,7 @@ class NotificationRepositoryImpl @Inject constructor(
                     notificationEntity ->
                 notificationEntity.toNotification()
             }
-        }.flowOn(ioDispatcher)
+        }.flowOn(defaultDispatcher)
     }
 
     override suspend fun updateNotification(notification: Notification) {
