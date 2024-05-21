@@ -6,10 +6,12 @@ import com.jesse.ohunelo.util.NotificationType
 import kotlinx.coroutines.flow.Flow
 
 interface NotificationRepository {
-    suspend fun synchronizeNotifications(notificationType: NotificationType): Notification?
+    suspend fun synchronizeNotifications(notificationType: NotificationType): OhuneloResult<Notification>
 
     fun getNotifications(): Flow<List<Notification>>
 
     suspend fun updateNotification(notification: Notification)
+
+    fun enableBiDailyNotifications()
 
 }
