@@ -1,16 +1,25 @@
 package com.jesse.ohunelo.workmanager.worker
 
 import android.content.Context
+import android.util.Log
 import androidx.hilt.work.HiltWorker
+import androidx.work.BackoffPolicy
+import androidx.work.Constraints
 import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.data.repository.NotificationRepository
+import com.jesse.ohunelo.util.NOTIFICATION_WORKER_TAG
 import com.jesse.ohunelo.util.NotificationHelper
 import com.jesse.ohunelo.util.NotificationType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import java.util.concurrent.TimeUnit
 
 @HiltWorker
 class NotificationWorker @AssistedInject constructor(
@@ -23,6 +32,7 @@ class NotificationWorker @AssistedInject constructor(
 
     private val notificationTypes = listOf(NotificationType.FOOD_JOKE, NotificationType.FOOD_TRIVIA)
     override suspend fun doWork(): Result {
+        Log.e("Worker", "Work started")
         return if(authenticationRepository.isUserLoggedIn()){
             when(val notificationsResult = notificationRepository.synchronizeNotifications(notificationTypes.random())){
                 is OhuneloResult.Success -> {
@@ -38,6 +48,20 @@ class NotificationWorker @AssistedInject constructor(
             }
         } else {
             Result.failure()
+        }
+    }
+
+    companion object{
+        fun enableBiDailyNotifications(): PeriodicWorkRequest{
+            val constraints = Constraints.Builder()
+                .setRequiresStorageNotLow(true)
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+            val notificationWorkerRequest = PeriodicWorkRequestBuilder<NotificationWorker>(20, TimeUnit.SECONDS)
+                .setConstraints(constraints)
+                .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
+                .build()
+            return notificationWorkerRequest
         }
     }
 }

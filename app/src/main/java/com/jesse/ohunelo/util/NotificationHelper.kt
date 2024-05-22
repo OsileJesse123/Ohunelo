@@ -10,11 +10,11 @@ import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.Notification
 import javax.inject.Inject
 
+private const val CHANNEL_FOOD_JOKE_AND_TRIVIA = "food_joke_and_trivia"
+
 class NotificationHelper @Inject constructor(
     private val context: Context
 ) {
-
-    private val CHANNEL_FOOD_JOKE_AND_TRIVIA = "food_joke_and_trivia"
 
     private val notificationManager: NotificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -28,13 +28,14 @@ class NotificationHelper @Inject constructor(
 
         val builder = NotificationCompat.Builder(context, CHANNEL_FOOD_JOKE_AND_TRIVIA)
             .setSmallIcon(R.drawable.ohunelo_logo)
-            .setContentTitle(notification.notificationTypeText.asString(context))
+            .setContentTitle(notification.notificationTypeUiText().asString(context))
             .setContentText(notification.notificationContent)
-            .setLargeIcon(Icon.createWithResource(context, notification.notificationTypeIcon.resId))
+            .setLargeIcon(Icon.createWithResource(context, notification.notificationTypeIcon().resId))
             .setStyle(NotificationCompat.BigTextStyle().bigText(notification.notificationContent))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setColor(context.resources.getColor(R.color.orange_500, null))
+            .setAutoCancel(true)
         notificationManager.notify(notification.id, builder.build())
     }
 

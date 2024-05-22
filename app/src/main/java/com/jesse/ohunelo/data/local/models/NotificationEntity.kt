@@ -27,7 +27,7 @@ data class NotificationEntity(
     companion object {
         fun fromNotification(notification: Notification): NotificationEntity = NotificationEntity(
             id = notification.id,
-            notificationType = if (notification.notificationTypeIcon == UiDrawable(R.drawable.food_trivia_icon)) NotificationType.FOOD_TRIVIA else NotificationType.FOOD_JOKE,
+            notificationType = if (notification.notificationType == NotificationType.FOOD_TRIVIA) NotificationType.FOOD_TRIVIA else NotificationType.FOOD_JOKE,
             addedOn = notification.addedOn,
             notificationContent = notification.notificationContent,
             hasBeenRead = notification.hasBeenRead
@@ -35,23 +35,6 @@ data class NotificationEntity(
     }
     fun toNotification(): Notification {
         return Notification(id = id, notificationContent = notificationContent, addedOn = addedOn,
-            hasBeenRead = hasBeenRead, notificationTypeText = getNotificationTypeText(),
-            notificationTypeIcon = getNotificationTypeIcon())
-    }
-
-
-
-    private fun getNotificationTypeText(): UiText{
-        return when(notificationType){
-            NotificationType.FOOD_TRIVIA -> {UiText.StringResource(R.string.food_trivia)}
-            NotificationType.FOOD_JOKE -> {UiText.StringResource(R.string.food_joke)}
-        }
-    }
-
-    private fun getNotificationTypeIcon(): UiDrawable{
-        return when(notificationType){
-            NotificationType.FOOD_TRIVIA -> {UiDrawable(R.drawable.food_trivia_icon)}
-            NotificationType.FOOD_JOKE -> {UiDrawable(R.drawable.food_joke_icon)}
-        }
+            hasBeenRead = hasBeenRead, notificationType = notificationType)
     }
 }

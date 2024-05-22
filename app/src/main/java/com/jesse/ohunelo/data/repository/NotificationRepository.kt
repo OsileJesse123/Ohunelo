@@ -12,6 +12,4 @@ interface NotificationRepository {
 
     suspend fun updateNotification(notification: Notification)
 
-    fun enableBiDailyNotifications()
-
 }

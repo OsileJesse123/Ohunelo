@@ -8,3 +8,4 @@ const val HOME_SCREEN_RECIPES_AMOUNT = 20
 const val FIRST_NAME_MAX_LENGTH = 8
 const val LAST_NAME_MAX_LENGTH = 20
 const val SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE = " "
+const val NOTIFICATION_WORKER_TAG = "Notification Worker"
