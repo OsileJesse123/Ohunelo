@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.jesse.ohunelo.util.NotificationHelper
+import com.jesse.ohunelo.workmanager.initializer.Sync
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
@@ -20,6 +21,7 @@ class OhuneloApplication: Application(), Configuration.Provider{
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         notificationHelper.createNotificationChannel()
+        Sync.initialize(context = this)
     }
 
     override val workManagerConfiguration: Configuration

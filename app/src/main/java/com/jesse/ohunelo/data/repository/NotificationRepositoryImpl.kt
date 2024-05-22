@@ -1,10 +1,5 @@
 package com.jesse.ohunelo.data.repository
 
-import androidx.work.BackoffPolicy
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.local.database.NotificationDao
 import com.jesse.ohunelo.data.local.models.NotificationEntity
@@ -15,15 +10,12 @@ import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.NotificationType
 import com.jesse.ohunelo.util.UiText
-import com.jesse.ohunelo.workmanager.worker.NotificationWorker
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class NotificationRepositoryImpl @Inject constructor(
@@ -71,13 +63,4 @@ class NotificationRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun enableBiDailyNotifications() {
-        val constraints = Constraints.Builder()
-            .setRequiresStorageNotLow(true)
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-        val notificationWorker = PeriodicWorkRequestBuilder<NotificationWorker>(2, TimeUnit.DAYS)
-            .setConstraints(constraints)
-            .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS, TimeUnit.MILLISECONDS)
-    }
 }

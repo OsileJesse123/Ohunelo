@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jesse.ohunelo.data.model.Notification
@@ -29,6 +30,7 @@ class NotificationExpandedItemDialogFragment(
                 executePendingBindings()
             }
 
+
             val notificationDialog = MaterialAlertDialogBuilder(it)
                 .setView(binding.root)
                 .show()
@@ -47,7 +49,8 @@ class NotificationExpandedItemDialogFragment(
 
     override fun onDismiss(dialog: DialogInterface) {
         if(!notification.hasBeenRead){
-            onDismissNotification(notification.copy(hasBeenRead = true))
+            val updated = notification.copy(hasBeenRead = true)
+            onDismissNotification(updated)
         }
         super.onDismiss(dialog)
     }

@@ -3,16 +3,21 @@ package com.jesse.ohunelo.workmanager.initializer
 import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
+import androidx.startup.AppInitializer
 import androidx.startup.Initializer
 import androidx.work.Configuration
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
 import com.jesse.ohunelo.BuildConfig
+import com.jesse.ohunelo.util.NOTIFICATION_WORKER_TAG
+import com.jesse.ohunelo.workmanager.worker.NotificationWorker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import timber.log.Timber
 import javax.inject.Singleton
 
 @Module
@@ -33,7 +38,14 @@ object WorkManagerInitializer: Initializer<WorkManager> {
             .build()
         if(!WorkManager.isInitialized())
             WorkManager.initialize(context, configuration)
-        return WorkManager.getInstance(context)
+        Log.e("Worker", "Work enabled")
+        return WorkManager.getInstance(context).apply {
+            enqueueUniquePeriodicWork(
+                NOTIFICATION_WORKER_TAG,
+                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+                NotificationWorker.enableBiDailyNotifications()
+            )
+        }
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {
@@ -45,5 +57,15 @@ object WorkManagerInitializer: Initializer<WorkManager> {
     @EntryPoint
     interface WorkManagerInitializerEntryPoint {
         fun hiltWorkerFactory(): HiltWorkerFactory
+    }
+}
+
+object Sync {
+    // This method is a workaround to manually initialize the sync process instead of relying on
+    // automatic initialization with Androidx Startup. It is called from the app module's
+    // Application.onCreate() and should be only done once.
+    fun initialize(context: Context) {
+        AppInitializer.getInstance(context)
+            .initializeComponent(WorkManagerInitializer::class.java)
     }
 }

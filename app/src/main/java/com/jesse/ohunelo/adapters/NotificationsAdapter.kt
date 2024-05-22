@@ -18,12 +18,9 @@ class NotificationsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when(viewType){
-            VIEW_TYPE_HEADER -> {
-                NotificationsHeaderViewHolder.inflateFrom(parent)
-            }
-            else -> {
-                NotificationViewHolder.inflateFrom(parent)
-            }
+            VIEW_TYPE_HEADER -> NotificationsHeaderViewHolder.inflateFrom(parent)
+            VIEW_TYPE_NOTIFICATION-> NotificationViewHolder.inflateFrom(parent)
+            else -> throw IllegalStateException("Invalid new type")
         }
     }
 
@@ -47,11 +44,9 @@ class NotificationsAdapter(
     class NotificationsHeaderViewHolder(private val binding: NotificationsHeaderItemBinding):
         RecyclerView.ViewHolder(binding.root){
 
-            fun bind(header: UiText){
-                binding.apply {
-                    setHeader(header)
-                    executePendingBindings()
-                }
+            fun bind(headerUiText: UiText){
+                binding.header = headerUiText
+
             }
             companion object {
                 fun inflateFrom(parent: ViewGroup): NotificationsHeaderViewHolder{

@@ -3,18 +3,20 @@ package com.jesse.ohunelo.presentation.ui.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.NotificationHeaderAdapter
 import com.jesse.ohunelo.adapters.NotificationsAdapter
@@ -27,7 +29,6 @@ import com.jesse.ohunelo.util.PermissionStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -67,26 +68,33 @@ class NotificationsFragment : Fragment() {
 
         val notificationHeaderAdapter = NotificationHeaderAdapter { permissionRequest.launch() }
 
-        viewModel.notifications.observe(viewLifecycleOwner){
-                groupedItems ->
-            notificationsAdapter.submitList(groupedItems)
-            binding.noNotificationsText.isVisible = groupedItems.isNullOrEmpty()
-        }
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                permissionRequest.status.collectLatest{
-                    status ->
-                    when(status){
-                        is PermissionStatus.Granted -> binding.notificationsRecycler.adapter = notificationsAdapter
-                        is PermissionStatus.Denied -> {
-                            val concatAdapter = ConcatAdapter(notificationHeaderAdapter, notificationsAdapter)
-                            binding.notificationsRecycler.adapter = concatAdapter
-                            notificationHeaderAdapter.shouldShowRationale = status.shouldShowRationale
+                launch {
+                    permissionRequest.status.collectLatest{
+                            status ->
+                        when(status){
+                            is PermissionStatus.Granted -> binding.notificationsRecycler.adapter = notificationsAdapter
+                            is PermissionStatus.Denied -> {
+                                val concatAdapter = ConcatAdapter(notificationHeaderAdapter, notificationsAdapter)
+                                binding.notificationsRecycler.adapter = concatAdapter
+                                notificationHeaderAdapter.shouldShowRationale = status.shouldShowRationale
+                            }
+                            else -> {
+                                // Do Nothing
+                            }
                         }
-                        else -> {
-                            // Do Nothing
-                        }
+                    }
+                }
+                launch {
+                    viewModel.notificationss.collectLatest {
+                            groupedItems ->
+                        Log.e("Notifications", "Submitted List size: ${groupedItems.size}")
+                        /*if(groupedItems.isNotEmpty()){
+                            notificationsAdapter.submitList(groupedItems.subList(0, 7))
+                        }*/
+                        notificationsAdapter.submitList(groupedItems)
+                        binding.noNotificationsText.isVisible = groupedItems.isEmpty()
                     }
                 }
             }
@@ -99,6 +107,16 @@ class NotificationsFragment : Fragment() {
             adapter = notificationsAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,
                 false)
+            addOnScrollListener(
+                object : RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                        if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            viewModel.updateShouldFetch()
+                        }
+                    }
+                }
+            )
         }
     }
 
