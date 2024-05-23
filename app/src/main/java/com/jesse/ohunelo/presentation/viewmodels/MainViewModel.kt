@@ -13,10 +13,11 @@ class MainViewModel @Inject constructor(
     notificationRepository: NotificationRepository
 ): ViewModel() {
 
-    val unreadNotificationsCount: Flow<Int> = notificationRepository.getNotifications().flatMapLatest {
+    val unreadNotificationsCount: Flow<Int> = notificationRepository.groupedNotifications.flatMapLatest {
         notifications ->
         flow {
-            emit(notifications.filter { !it.hasBeenRead }.size)
+            emit(notifications.size)
+            //emit(notifications.filter { !it.hasBeenRead }.size)
         }
     }
 }

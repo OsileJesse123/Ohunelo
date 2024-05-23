@@ -27,8 +27,11 @@ import com.jesse.ohunelo.presentation.viewmodels.NotificationsViewModel
 import com.jesse.ohunelo.util.PermissionRequest
 import com.jesse.ohunelo.util.PermissionStatus
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -87,11 +90,10 @@ class NotificationsFragment : Fragment() {
                     }
                 }
                 launch {
-                    viewModel.notificationss.collectLatest {
+                    viewModel.notifications.collectLatest {
                             groupedItems ->
-                        Log.e("Notifications", "Submitted List size: ${groupedItems.size}")
                         /*if(groupedItems.isNotEmpty()){
-                            notificationsAdapter.submitList(groupedItems.subList(0, 7))
+                            notificationsAdapter.submitList(groupedItems.subList(0,7))
                         }*/
                         notificationsAdapter.submitList(groupedItems)
                         binding.noNotificationsText.isVisible = groupedItems.isEmpty()
@@ -107,17 +109,8 @@ class NotificationsFragment : Fragment() {
             adapter = notificationsAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,
                 false)
-            addOnScrollListener(
-                object : RecyclerView.OnScrollListener() {
-                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                        super.onScrollStateChanged(recyclerView, newState)
-                        if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            viewModel.updateShouldFetch()
-                        }
-                    }
-                }
-            )
         }
+        //notificationsAdapter.submitList(viewModel.notifs)
     }
 
     private fun showNotificationDetailsInDialog(selectedNotification: Notification){
