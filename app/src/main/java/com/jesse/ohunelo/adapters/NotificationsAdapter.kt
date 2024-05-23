@@ -13,8 +13,8 @@ import com.jesse.ohunelo.util.UiText
 
 class NotificationsAdapter(
     private val onNotificationItemClicked: (notification: Notification) -> Unit
-): ListAdapter<GroupedNotificationItem,
-        RecyclerView.ViewHolder>(NotificationsDiffUtil()) {
+): ListAdapter<GroupedNotificationItem, RecyclerView.ViewHolder>(NotificationsDiffUtil()) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when(viewType){

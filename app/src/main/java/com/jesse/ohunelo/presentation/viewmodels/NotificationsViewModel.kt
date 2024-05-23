@@ -3,15 +3,19 @@ package com.jesse.ohunelo.presentation.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.GroupedNotificationItem
 import com.jesse.ohunelo.data.model.Notification
 import com.jesse.ohunelo.data.repository.NotificationRepository
 import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.util.DateUtils
+import com.jesse.ohunelo.util.NotificationType
 import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,68 +24,176 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
-
-private const val FETCH_SIZE = 9
 @HiltViewModel
 class NotificationsViewModel @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     private val notificationsRepository: NotificationRepository
 ): ViewModel() {
 
-    private var cachedCount = 0
-
-    private val _shouldFetch: MutableStateFlow<Boolean> = MutableStateFlow(true)
-
-    private val _notifications : StateFlow<List<GroupedNotificationItem>> = notificationsRepository.getNotifications().map {
-            notifications ->
-        Log.e("Notifications", "Notifications Size: ${notifications.size}")
-        getGroupedNotificationItem(notifications)
-    }.flowOn(defaultDispatcher)
+    val notifications : StateFlow<List<GroupedNotificationItem>> = notificationsRepository.groupedNotifications
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), listOf())
 
-    val notificationss: StateFlow<List<GroupedNotificationItem>> = combine(_notifications, _shouldFetch){
-            notifications, shouldFetch ->
-        /*if (shouldFetch){*/
-            when{
-                notifications.size <= FETCH_SIZE -> {
-                    _shouldFetch.value = false
-                    Log.e("Notifications", "Notifications just submitted 1st : ${notifications.size}")
-                    notifications
-                }
-                notifications.size == cachedCount -> {
-                    _shouldFetch.value = false
-                    notifications
-                }
-                else -> {
-                    cachedCount = when{
-                        cachedCount == 0 -> FETCH_SIZE
-                        else -> {
-                            val sub = notifications.size - cachedCount
-                            if (sub > FETCH_SIZE){
-                                cachedCount + FETCH_SIZE
-                            } else {
-                                cachedCount + sub
-                            }
-                        }
-                    }
-                    Log.e("Notifications", "CachedCount: $cachedCount")
-                    _shouldFetch.value = false
-                    notifications.subList(0, cachedCount)
-                }
-            }
-        /*} else{
-            Log.e("Notifications", "Notifications just submitted: ${notifications.size}")
-            notifications
-        }*/
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), listOf())
+    val notificationss: StateFlow<PagingData<Notification>> =
+        notificationsRepository.getPagedNotifications()
+            .cachedIn(viewModelScope)
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PagingData.empty())
+    /*val notifications : StateFlow<List<GroupedNotificationItem>> = notificationsRepository.getNotifications().map {
+            notifications ->
+        getGroupedNotificationItem(notifications.subList(0, 5))
+    }.flowOn(defaultDispatcher)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), listOf())*/
 
-    fun updateShouldFetch(){
-        Log.e("Notifications", "Notifications Ran!!!!")
-        if(_notifications.value.size > cachedCount){
-            _shouldFetch.value = true
-        }
-    }
+    val notifs = listOf(
+        GroupedNotificationItem(
+            header = UiText.StringResource(R.string.today),
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            header = UiText.StringResource(R.string.today),
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            header = UiText.StringResource(R.string.today),
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+        GroupedNotificationItem(
+            notification = Notification(
+                id = 1,
+                notificationContent = "fjkdfjf",
+                addedOn = Date(384848444),
+                hasBeenRead = true,
+                notificationType = NotificationType.FOOD_TRIVIA
+            )
+        ),
+    )
 
     private fun getGroupedNotificationItem(notificationItems: List<Notification>): List<GroupedNotificationItem>{
 
