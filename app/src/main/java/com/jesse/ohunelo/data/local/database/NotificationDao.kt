@@ -1,7 +1,7 @@
 package com.jesse.ohunelo.data.local.database
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -24,7 +24,6 @@ interface NotificationDao {
     @Query("SELECT * FROM notification WHERE :notificationContent = notification_content")
     suspend fun getNotification(notificationContent: String): NotificationEntity
 
-    @Query("SELECT * FROM notification ORDER BY id DESC")
-    fun getPagedNotifications(): PagingSource<Int, NotificationEntity>
-
+    @Delete
+    suspend fun deleteNotifications(notifications: List<NotificationEntity>)
 }
