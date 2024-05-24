@@ -3,7 +3,6 @@ package com.jesse.ohunelo.presentation.ui.fragment
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.NotificationHeaderAdapter
 import com.jesse.ohunelo.adapters.NotificationsAdapter
@@ -27,11 +25,8 @@ import com.jesse.ohunelo.presentation.viewmodels.NotificationsViewModel
 import com.jesse.ohunelo.util.PermissionRequest
 import com.jesse.ohunelo.util.PermissionStatus
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -91,12 +86,8 @@ class NotificationsFragment : Fragment() {
                 }
                 launch {
                     viewModel.notifications.collectLatest {
-                            groupedItems ->
-                        /*if(groupedItems.isNotEmpty()){
-                            notificationsAdapter.submitList(groupedItems.subList(0,7))
-                        }*/
-                        notificationsAdapter.submitList(groupedItems)
-                        binding.noNotificationsText.isVisible = groupedItems.isEmpty()
+                        notificationsAdapter.submitList(it)
+                        binding.noNotificationsText.isVisible = it.isEmpty()
                     }
                 }
             }
@@ -110,7 +101,6 @@ class NotificationsFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,
                 false)
         }
-        //notificationsAdapter.submitList(viewModel.notifs)
     }
 
     private fun showNotificationDetailsInDialog(selectedNotification: Notification){

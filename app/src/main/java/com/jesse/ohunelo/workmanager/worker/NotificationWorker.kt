@@ -32,7 +32,6 @@ class NotificationWorker @AssistedInject constructor(
 
     private val notificationTypes = listOf(NotificationType.FOOD_JOKE, NotificationType.FOOD_TRIVIA)
     override suspend fun doWork(): Result {
-        Log.e("Worker", "Work started")
         return if(authenticationRepository.isUserLoggedIn()){
             when(val notificationsResult = notificationRepository.synchronizeNotifications(notificationTypes.random())){
                 is OhuneloResult.Success -> {
@@ -57,8 +56,9 @@ class NotificationWorker @AssistedInject constructor(
                 .setRequiresStorageNotLow(true)
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
-            val notificationWorkerRequest = PeriodicWorkRequestBuilder<NotificationWorker>(20, TimeUnit.SECONDS)
+            val notificationWorkerRequest = PeriodicWorkRequestBuilder<NotificationWorker>(2, TimeUnit.DAYS)
                 .setConstraints(constraints)
+                .setInitialDelay(2, TimeUnit.DAYS)
                 .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
                 .build()
             return notificationWorkerRequest

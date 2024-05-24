@@ -9,7 +9,9 @@ import androidx.work.Configuration
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
 import com.jesse.ohunelo.BuildConfig
+import com.jesse.ohunelo.util.DELETE_NOTIFICATIONS_WORKER_TAG
 import com.jesse.ohunelo.util.NOTIFICATION_WORKER_TAG
+import com.jesse.ohunelo.workmanager.worker.DeleteNotificationsWorker
 import com.jesse.ohunelo.workmanager.worker.NotificationWorker
 import dagger.Module
 import dagger.Provides
@@ -17,7 +19,6 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import timber.log.Timber
 import javax.inject.Singleton
 
 @Module
@@ -38,12 +39,16 @@ object WorkManagerInitializer: Initializer<WorkManager> {
             .build()
         if(!WorkManager.isInitialized())
             WorkManager.initialize(context, configuration)
-        Log.e("Worker", "Work enabled")
         return WorkManager.getInstance(context).apply {
             enqueueUniquePeriodicWork(
                 NOTIFICATION_WORKER_TAG,
-                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+                ExistingPeriodicWorkPolicy.KEEP,
                 NotificationWorker.enableBiDailyNotifications()
+            )
+            enqueueUniquePeriodicWork(
+                DELETE_NOTIFICATIONS_WORKER_TAG,
+                ExistingPeriodicWorkPolicy.KEEP,
+                DeleteNotificationsWorker.enableBiDailyDeletionOfNotifications()
             )
         }
     }

@@ -33,7 +33,6 @@
                 android:scaleType="centerInside"
                 android:theme="@style/ShapeAppearanceOverlay.Ohunelo.ImageView.Cubic"
                 app:uiDrawable="@{notification.notificationTypeIcon()}"
-                app:layout_constraintDimensionRatio="7:5"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
