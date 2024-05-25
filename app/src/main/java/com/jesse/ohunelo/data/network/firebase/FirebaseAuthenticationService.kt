@@ -18,11 +18,14 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.local.PrefStore
 import com.jesse.ohunelo.data.model.AuthUser
-import com.jesse.ohunelo.data.network.service.AuthenticationService
 import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.data.network.service.AuthenticationService
 import com.jesse.ohunelo.di.IODispatcher
+import com.jesse.ohunelo.util.AuthenticationException
+import com.jesse.ohunelo.util.NetworkErrorException
 import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.UnknownErrorException
 import com.jesse.ohunelo.util.UpdateStatus
 import com.jesse.ohunelo.util.UserType
 import kotlinx.coroutines.CoroutineDispatcher
@@ -83,19 +86,23 @@ class FirebaseAuthenticationService @Inject constructor(
                 _user.emit(authUser)
                OhuneloResult.Success(authUser)
             } else {
-                // If registration task is successful and user is null
-                OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_registered_but_user_null))
+                OhuneloResult.Error(error = AuthenticationException.NoUserException())
             }
         }
         catch (e: FirebaseAuthUserCollisionException){
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.email_already_in_use))
+            when(e.errorCode){
+                FirebaseErrorCode.ERROR_EMAIL_ALREADY_IN_USE.name -> OhuneloResult.Error(error = AuthenticationException.EmailAlreadyInUseException())
+                FirebaseErrorCode.ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL.name -> OhuneloResult.Error(error = AuthenticationException.AccountExistWithDifferentCredentialException())
+                FirebaseErrorCode.ERROR_CREDENTIAL_ALREADY_IN_USE.name -> OhuneloResult.Error(error = AuthenticationException.CredentialAlreadyInUseException())
+                else -> OhuneloResult.Error(Exception())
+            }
         }
         catch (e: FirebaseNetworkException){
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.network_error_occured))
+            OhuneloResult.Error(error = NetworkErrorException())
         }
         catch (e: Exception){
             Timber.e("Registration Failed, Exception: $e")
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.registration_failed))
+            OhuneloResult.Error(error = e)
         }
     }
 
