@@ -2,14 +2,18 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.domain.usecase.ValidateNameUseCase
 import com.jesse.ohunelo.presentation.uistates.RegisterUiState
+import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.FIRST_NAME_MAX_LENGTH
 import com.jesse.ohunelo.util.LAST_NAME_MAX_LENGTH
+import com.jesse.ohunelo.util.NetworkErrorException
+import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -161,10 +165,18 @@ class RegisterViewModel @Inject constructor(
                         }
                     }
                     is OhuneloResult.Error -> {
+                        val errorMessage = when(registerResult.error){
+                            is AuthenticationException.NoUserException -> UiText.StringResource(resId = R.string.user_registered_but_user_null)
+                            is AuthenticationException.EmailAlreadyInUseException -> UiText.StringResource(resId = R.string.email_already_in_use)
+                            is AuthenticationException.AccountExistWithDifferentCredentialException -> UiText.StringResource(resId = R.string.account_already_exist)
+                            is AuthenticationException.CredentialAlreadyInUseException -> UiText.StringResource(resId = R.string.credential_already_in_use)
+                            is NetworkErrorException -> UiText.StringResource(resId = R.string.network_error_occured)
+                            else -> UiText.StringResource(resId = R.string.registration_failed)
+                        }
                         _registerUiStateFlow.update {
                                 registerUiState ->
                             registerUiState.copy(
-                                showErrorMessage = Pair(true, registerResult.errorMessage),
+                                showErrorMessage = Pair(true, errorMessage),
                                 isEnabled = true
                             )
                         }

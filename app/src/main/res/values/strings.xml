@@ -172,6 +172,8 @@
     <string name="grant">Grant</string>
     <string name="channel_name">food trivia/food joke</string>
     <string name="channel_description">All food trivia and food jokes</string>
+    <string name="account_already_exist">Account already exists with different credential</string>
+    <string name="credential_already_in_use">Credential is already in use</string>
 
 
     <plurals name="number_of_items_available">
