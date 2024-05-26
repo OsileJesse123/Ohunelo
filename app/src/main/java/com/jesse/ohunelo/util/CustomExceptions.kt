@@ -6,6 +6,10 @@ sealed class AuthenticationException: Exception(){
     class EmailAlreadyInUseException: AuthenticationException()
     class AccountExistWithDifferentCredentialException: AuthenticationException()
     class CredentialAlreadyInUseException: AuthenticationException()
+    class InvalidCredentialsException: AuthenticationException()
+    class UserDisabledException: AuthenticationException()
+    class UserTokenExpired: AuthenticationException()
+    class InvalidUserToken: AuthenticationException()
 }
 
 // Network Error Exception

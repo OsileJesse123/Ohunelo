@@ -127,21 +127,32 @@ class FirebaseAuthenticationService @Inject constructor(
                 OhuneloResult.Success(authUser)
             } else {
                 // If login task is successful and user is null
-                OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
+                UiText.StringResource(resId = R.string.user_logged_in_but_user_null)
+                OhuneloResult.Error(error = AuthenticationException.NoUserException())
             }
         }
         catch (e: FirebaseAuthInvalidCredentialsException){
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.invalid_credentials))
+            UiText.StringResource(resId = R.string.invalid_credentials)
+            OhuneloResult.Error(error = AuthenticationException.InvalidCredentialsException())
         }
         catch (e: FirebaseAuthInvalidUserException){
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.invalid_user))
+            UiText.StringResource(resId = R.string.invalid_user)
+            when(e.errorCode){
+                FirebaseErrorCode.ERROR_USER_DISABLED.name -> OhuneloResult.Error(error = AuthenticationException.UserDisabledException())
+                FirebaseErrorCode.ERROR_USER_NOT_FOUND.name -> OhuneloResult.Error(error = AuthenticationException.NoUserException())
+                FirebaseErrorCode.ERROR_USER_TOKEN_EXPIRED.name -> OhuneloResult.Error(error = AuthenticationException.UserTokenExpired())
+                FirebaseErrorCode.ERROR_INVALID_USER_TOKEN.name -> OhuneloResult.Error(error = AuthenticationException.InvalidUserToken())
+                else -> OhuneloResult.Error(error = Exception())
+            }
         }
         catch (e: FirebaseNetworkException){
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.network_error_occured))
+            UiText.StringResource(resId = R.string.network_error_occured)
+            OhuneloResult.Error(error = NetworkErrorException())
         }
         catch (e: Exception){
+            UiText.StringResource(resId = R.string.login_failed)
             Timber.e("Login Failed, Exception: $e")
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.login_failed))
+            OhuneloResult.Error(error = e)
         }
     }
 

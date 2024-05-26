@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.network.signin_handlers.FacebookSignInHandler
@@ -13,6 +14,7 @@ import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.LoginUiState
+import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.HOME_FRAGMENT
 import com.jesse.ohunelo.util.UPDATE_USERNAME_FRAGMENT
 import com.jesse.ohunelo.util.UiText
@@ -112,6 +114,10 @@ class LoginViewModel @Inject constructor(
                         }
                     }
                     is OhuneloResult.Error -> {
+                        val errorMessage = when(loginResult.error){
+                            is AuthenticationException.NoUserException -> UiText.StringResource(resId = R.string.user_logged_in_but_user_null)
+                            is AuthenticationException.InvalidCredentialsException ->
+                        }
                         _loginUiStateFlow.update {
                                 loginUiState ->
                             loginUiState.copy(
