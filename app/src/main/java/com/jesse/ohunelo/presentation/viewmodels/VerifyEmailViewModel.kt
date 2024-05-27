@@ -4,9 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.presentation.uistates.VerifyEmailUiState
+import com.jesse.ohunelo.util.AuthenticationException
+import com.jesse.ohunelo.util.NetworkErrorException
+import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -51,9 +55,15 @@ class VerifyEmailViewModel @Inject constructor(
                             emit(VerifyEmailUiState(isEnabled = true))
                         }
                         is OhuneloResult.Error ->{
+                            val errorMessage = when(result.error){
+                                is NetworkErrorException -> UiText.StringResource(R.string.network_error_occured)
+                                is AuthenticationException.TooManyRequestsException -> UiText.StringResource(R.string.too_many_requests)
+                                is Exception ->  UiText.StringResource(R.string.send_email_link_failed)
+                                else -> null
+                            }
                             emit(VerifyEmailUiState(
                                 isEnabled = true,
-                                showErrorMessage = Pair(true, result.errorMessage)
+                                showErrorMessage = Pair(true, errorMessage)
                             ))
                         }
                     }

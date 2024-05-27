@@ -2,10 +2,14 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.presentation.uistates.ResetPasswordUiState
+import com.jesse.ohunelo.util.AuthenticationException
+import com.jesse.ohunelo.util.NetworkErrorException
+import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -73,16 +77,25 @@ class ResetPasswordViewModel @Inject constructor(
                                 resetPasswordUiState ->
                             resetPasswordUiState.copy(
                                 isEnabled = true,
-                                showConfirmationMessage = Pair(true, result.data)
+                                showConfirmationMessage = Pair(true, UiText.StringResource(R.string.reset_password_email))
                             )
                         }
                     }
                     is OhuneloResult.Error -> {
+                        val errorMessage = when(result.error){
+                            is AuthenticationException.NoUserException -> UiText.StringResource(R.string.reset_password_email_failed)
+                            is AuthenticationException.UserDisabledException -> UiText.StringResource(resId = R.string.user_disabled)
+                            is AuthenticationException.UserTokenExpiredException -> UiText.StringResource(resId = R.string.user_token_expired)
+                            is AuthenticationException.InvalidUserTokenException -> UiText.StringResource(resId = R.string.invalid_user_token)
+                            is NetworkErrorException -> UiText.StringResource(resId = R.string.network_error_occured)
+                            is Exception -> UiText.StringResource(resId = R.string.login_failed)
+                            else -> null
+                        }
                         _resetPasswordUiStateFlow.update {
                                 resetPasswordUiState ->
                             resetPasswordUiState.copy(
                                 isEnabled = true,
-                                showConfirmationMessage = Pair(true, result.errorMessage)
+                                showConfirmationMessage = Pair(true, errorMessage)
                             )
                         }
                     }

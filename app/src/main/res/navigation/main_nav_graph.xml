@@ -366,5 +366,22 @@
             app:popUpToInclusive="true"
             app:popUpTo="@id/main_nav_graph"/>
     </fragment>
+    <dialog
+        android:id="@+id/reauthenticateEmailDialogFragment"
+        android:name="com.jesse.ohunelo.presentation.ui.fragment.dialogs.ReauthenticateEmailDialogFragment"
+        android:label="ReauthenticateEmailDialogFragment"
+        tools:layout="@layout/reauthenticate_email_dialog_fragment"
+        >
+        <action
+            android:id="@+id/action_reauthenticateEmailDialogFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/main_nav_graph"
+            />
+    </dialog>
 
 </navigation>

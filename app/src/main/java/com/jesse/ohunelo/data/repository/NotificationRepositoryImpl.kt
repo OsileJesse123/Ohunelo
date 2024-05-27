@@ -42,7 +42,7 @@ class NotificationRepositoryImpl @Inject constructor(
                 OhuneloResult.Success(notificationDao.getNotification(notificationEntity.notificationContent).toNotification())
             } catch (e: Exception){
                 Timber.e("Failed to get food joke/trivia, Error: $e")
-                OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.failed_to_get_food_joke))
+                OhuneloResult.Error(error = e)
             }
         }
     }

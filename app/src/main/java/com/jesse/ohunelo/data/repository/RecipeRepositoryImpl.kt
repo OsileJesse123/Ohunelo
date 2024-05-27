@@ -12,11 +12,18 @@ import com.jesse.ohunelo.data.network.data_source.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.di.IODispatcher
+import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.HOME_SCREEN_RECIPES_AMOUNT
+import com.jesse.ohunelo.util.NetworkErrorException
+import com.jesse.ohunelo.util.NotFoundException
+import com.jesse.ohunelo.util.RateLimitExceededException
+import com.jesse.ohunelo.util.ServerErrorException
 import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.UnauthorizedException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import okio.IOException
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -55,21 +62,36 @@ class RecipeRepositoryImpl @Inject constructor(
                  Timber.e("Local Recipe from Repo: ${recipes.size}")
                  OhuneloResult.Success(recipes)
              }
+             catch (e: IOException){
+                 val recipes = withContext(defaultDispatcher){recipeDao.getRandomRecipes().map {
+                         recipeEntity ->  recipeEntity.toRecipe()
+                    }
+                 }
+                 Timber.e("IOException: $e")
+                 OhuneloResult.Error(error = NetworkErrorException(), data = recipes)
+             }
              catch (e: HttpException){
                  val recipes = withContext(defaultDispatcher){recipeDao.getRandomRecipes().map {
                          recipeEntity ->  recipeEntity.toRecipe()
                     }
                  }
-                 Timber.e("HTTPError: $e, ErrorMessage: ${e.message()}")
-                 OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
+                 Timber.e("ErrorMessage: ${e.message()}")
+                 when(e.code()){
+                    401 -> OhuneloResult.Error(error = UnauthorizedException(), data = recipes)
+                    402 -> OhuneloResult.Error(error = RateLimitExceededException(), data = recipes)
+                    404 -> OhuneloResult.Error(error = NotFoundException(), data = recipes)
+                    500 -> OhuneloResult.Error(error = ServerErrorException(), data = recipes)
+                    else -> OhuneloResult.Error(error = e, data = recipes)
+                 }
              }
              catch (e: Exception){
                  val recipes = withContext(defaultDispatcher){recipeDao.getRandomRecipes().map {
                          recipeEntity ->  recipeEntity.toRecipe()
-                 }
+                    }
                  }
                  Timber.e("GeneralError: $e, ErrorMessage: ${e.message}")
-                 OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
+                 UiText.StringResource(R.string.failed_to_get_recipes)
+                 OhuneloResult.Error(error = e, data = recipes)
              }
          }
     }
@@ -99,25 +121,43 @@ class RecipeRepositoryImpl @Inject constructor(
                 }
                 OhuneloResult.Success(recipes)
             }
+            catch (e: IOException){
+                val recipes = withContext(defaultDispatcher){recipeDao.getAllRecipes().filter {
+                    it.dishTypes.contains(mealType)
+                }.shuffled().take(HOME_SCREEN_RECIPES_AMOUNT).map {
+                        recipeEntity ->  recipeEntity.toRecipe()
+                    }
+                }
+                Timber.e("IOException: $e")
+                UiText.StringResource(R.string.network_error_occured)
+                OhuneloResult.Error(error = NetworkErrorException(), data = recipes)
+            }
             catch (e: HttpException){
                 val recipes = withContext(defaultDispatcher){recipeDao.getAllRecipes().filter {
                     it.dishTypes.contains(mealType)
                 }.shuffled().take(HOME_SCREEN_RECIPES_AMOUNT).map {
                         recipeEntity ->  recipeEntity.toRecipe()
+                    }
                 }
+                Timber.e("ErrorMessage: ${e.message()}")
+                when(e.code()){
+                    401 -> OhuneloResult.Error(error = UnauthorizedException(), data = recipes)
+                    402 -> OhuneloResult.Error(error = RateLimitExceededException(), data = recipes)
+                    404 -> OhuneloResult.Error(error = NotFoundException(), data = recipes)
+                    500 -> OhuneloResult.Error(error = ServerErrorException(), data = recipes)
+                    else -> OhuneloResult.Error(error = e, data = recipes)
                 }
-                Timber.e("HTTPError: $e, ErrorMessage: ${e.message()}")
-                OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
             }
             catch (e: Exception){
                 val recipes = withContext(defaultDispatcher){recipeDao.getAllRecipes().filter {
                     it.dishTypes.contains(mealType)
                 }.shuffled().take(HOME_SCREEN_RECIPES_AMOUNT).map {
                         recipeEntity ->  recipeEntity.toRecipe()
-                }
+                    }
                 }
                 Timber.e("GeneralError: $e, ErrorMessage: ${e.message}")
-                OhuneloResult.Error(UiText.StringResource(R.string.failed_to_get_recipes), data = recipes)
+                UiText.StringResource(R.string.failed_to_get_recipes)
+                OhuneloResult.Error(error = e, data = recipes)
             }
         }
     }

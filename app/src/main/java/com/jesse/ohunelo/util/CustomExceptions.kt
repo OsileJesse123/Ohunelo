@@ -8,10 +8,28 @@ sealed class AuthenticationException: Exception(){
     class CredentialAlreadyInUseException: AuthenticationException()
     class InvalidCredentialsException: AuthenticationException()
     class UserDisabledException: AuthenticationException()
-    class UserTokenExpired: AuthenticationException()
-    class InvalidUserToken: AuthenticationException()
+    class UserTokenExpiredException: AuthenticationException()
+    class InvalidUserTokenException: AuthenticationException()
+    class TooManyRequestsException: AuthenticationException()
+    class AuthUserCollisionException: AuthenticationException()
+    class AuthRecentLoginRequiredException: AuthenticationException()
+    class WeakPasswordException: AuthenticationException()
+    class InvalidUserException: AuthenticationException()
+    class SignInCancelledException: AuthenticationException()
 }
 
 // Network Error Exception
 class NetworkErrorException: Exception()
+
+// Unauthorized Exception
+class UnauthorizedException: AuthenticationException()
+
+// Not Found Exception
+class NotFoundException: AuthenticationException()
+
+// Rate Limit Exceeded Exception
+class RateLimitExceededException: AuthenticationException()
+
+// Server Error Exception
+class ServerErrorException: AuthenticationException()
 

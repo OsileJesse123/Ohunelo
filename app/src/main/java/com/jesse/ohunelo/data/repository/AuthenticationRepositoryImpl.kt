@@ -60,7 +60,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun sendPasswordResetEmail(email: String): OhuneloResult<UiText> {
+    override suspend fun sendPasswordResetEmail(email: String): OhuneloResult<Unit> {
         return withContext(ioDispatcher){
             authenticationService.sendPasswordResetEmail(email)
         }
@@ -117,19 +117,19 @@ class AuthenticationRepositoryImpl @Inject constructor(
     override suspend fun reauthenticateUserEmailPassword(
         email: String,
         password: String
-    ): OhuneloResult<UiText> {
+    ): OhuneloResult<Unit> {
         return withContext(ioDispatcher){
             authenticationService.reauthenticateUserEmailPassword(email, password)
         }
     }
 
-    override suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<UiText> {
+    override suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<Unit> {
         return withContext(ioDispatcher){
             authenticationService.reauthenticateGoogle(idToken)
         }
     }
 
-    override suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText> {
+    override suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<Unit> {
         return withContext(ioDispatcher){
             authenticationService.reauthenticateFacebook(accessToken)
         }
@@ -137,13 +137,13 @@ class AuthenticationRepositoryImpl @Inject constructor(
 
     override suspend fun reauthenticateTwitter(
         activity: Activity
-    ): OhuneloResult<UiText> {
+    ): OhuneloResult<Unit> {
         return withContext(ioDispatcher){
             authenticationService.reauthenticateTwitter(activity)
         }
     }
 
-    override suspend fun updateUserPassword(password: String): OhuneloResult<UpdateStatus> {
+    override suspend fun updateUserPassword(password: String): OhuneloResult<Unit> {
         return withContext(ioDispatcher){
             authenticationService.updateUserPassword(password)
         }
@@ -154,7 +154,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus> {
+    override suspend fun updateUserEmail(email: String): OhuneloResult<Unit> {
         return withContext(ioDispatcher){
             authenticationService.updateUserEmail(email)
         }
