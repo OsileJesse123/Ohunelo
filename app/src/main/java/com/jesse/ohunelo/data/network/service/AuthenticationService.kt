@@ -15,16 +15,16 @@ interface AuthenticationService {
     suspend fun logout()
     suspend fun verifyUserEmail(): OhuneloResult<Unit>
     suspend fun hasTheUserBeenVerified(): Boolean
-    suspend fun sendPasswordResetEmail(email: String): OhuneloResult<UiText>
+    suspend fun sendPasswordResetEmail(email: String): OhuneloResult<Unit>
     suspend fun signInWithGoogle(idToken: String): OhuneloResult<AuthUser>
     suspend fun signInWithFacebook(idToken: String): OhuneloResult<AuthUser>
     suspend fun signInWithTwitter(activity: Activity): OhuneloResult<AuthUser>
     suspend fun updateTheUserName(firstName: String, lastName: String): OhuneloResult<Unit>
-    suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus>
-    suspend fun updateUserPassword(password: String): OhuneloResult<UpdateStatus>
-    suspend fun reauthenticateUserEmailPassword(email: String, password: String): OhuneloResult<UiText>
-    suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<UiText>
-    suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText>
-    suspend fun reauthenticateTwitter(activity: Activity): OhuneloResult<UiText>
+    suspend fun updateUserEmail(email: String): OhuneloResult<Unit>
+    suspend fun updateUserPassword(password: String): OhuneloResult<Unit>
+    suspend fun reauthenticateUserEmailPassword(email: String, password: String): OhuneloResult<Unit>
+    suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<Unit>
+    suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<Unit>
+    suspend fun reauthenticateTwitter(activity: Activity): OhuneloResult<Unit>
 
 }

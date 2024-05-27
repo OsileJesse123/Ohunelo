@@ -171,7 +171,8 @@ class RegisterViewModel @Inject constructor(
                             is AuthenticationException.AccountExistWithDifferentCredentialException -> UiText.StringResource(resId = R.string.account_already_exist)
                             is AuthenticationException.CredentialAlreadyInUseException -> UiText.StringResource(resId = R.string.credential_already_in_use)
                             is NetworkErrorException -> UiText.StringResource(resId = R.string.network_error_occured)
-                            else -> UiText.StringResource(resId = R.string.registration_failed)
+                            is Exception -> UiText.StringResource(resId = R.string.registration_failed)
+                            else -> null
                         }
                         _registerUiStateFlow.update {
                                 registerUiState ->

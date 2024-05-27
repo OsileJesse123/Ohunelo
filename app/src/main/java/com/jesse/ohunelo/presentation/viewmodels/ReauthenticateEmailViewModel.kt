@@ -2,11 +2,14 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.ReauthenticateEmailUiState
+import com.jesse.ohunelo.util.AuthenticationException
+import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -93,17 +96,50 @@ class ReauthenticateEmailViewModel @Inject constructor(
                                 reauthenticateEmailUiState ->
                             reauthenticateEmailUiState.copy(
                                 dismiss = true,
-                                message = reauthenticateResult.data
+                                message = UiText.StringResource(R.string.reauthenticate_success)
                             )
                         }
                     }
                     is OhuneloResult.Error -> {
-                        _reauthenticateEmailUiState.update {
-                                reauthenticateEmailUiState ->
-                            reauthenticateEmailUiState.copy(
-                                message = reauthenticateResult.errorMessage,
-                                isEnabled = true,
-                            )
+                        when(reauthenticateResult.error){
+                            is AuthenticationException.NoUserException -> {
+                                _reauthenticateEmailUiState.update {
+                                        reauthenticateEmailUiState ->
+                                    reauthenticateEmailUiState.copy(
+                                        message = UiText.StringResource(R.string.reauthenticate_fail),
+                                        isEnabled = true,
+                                        logout = true
+                                    )
+                                }
+                            }
+                            is AuthenticationException.InvalidCredentialsException -> {
+                                _reauthenticateEmailUiState.update {
+                                        reauthenticateEmailUiState ->
+                                    reauthenticateEmailUiState.copy(
+                                        message = UiText.StringResource(R.string.invalid_credentials),
+                                        isEnabled = true,
+                                    )
+                                }
+                            }
+                            is AuthenticationException.InvalidUserException -> {
+                                _reauthenticateEmailUiState.update {
+                                        reauthenticateEmailUiState ->
+                                    reauthenticateEmailUiState.copy(
+                                        message = UiText.StringResource(R.string.no_user_record_corresponding),
+                                        isEnabled = true,
+                                        logout = true
+                                    )
+                                }
+                            }
+                            else -> {
+                                _reauthenticateEmailUiState.update {
+                                        reauthenticateEmailUiState ->
+                                    reauthenticateEmailUiState.copy(
+                                        message = UiText.StringResource(R.string.reauthenticate_fail),
+                                        isEnabled = true,
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -124,6 +160,18 @@ class ReauthenticateEmailViewModel @Inject constructor(
             reauthenticateEmailUiState.copy(
                 message = null
             )
+        }
+    }
+
+    fun onLogout(){
+        viewModelScope.launch {
+            authenticationRepository.logout()
+            _reauthenticateEmailUiState.update {
+                    reauthenticateEmailUiState ->
+                reauthenticateEmailUiState.copy(
+                    logout = false
+                )
+            }
         }
     }
 }

@@ -2,12 +2,15 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateNameUseCase
 import com.jesse.ohunelo.presentation.uistates.UpdateUsernameUiState
+import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.FIRST_NAME_MAX_LENGTH
 import com.jesse.ohunelo.util.LAST_NAME_MAX_LENGTH
+import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -114,10 +117,15 @@ class UpdateUsernameViewModel @Inject constructor(
                         }
                     }
                     is OhuneloResult.Error -> {
+                        val errorMessage = when(updateUserNameResult.error){
+                            is AuthenticationException.NoUserException -> UiText.StringResource(R.string.no_user_found)
+                            is Exception -> UiText.StringResource(resId = R.string.user_name_update_failed)
+                            else -> null
+                        }
                         _updateUsernameUiStateFlow.update {
                                 updateUsernameUiState ->
                             updateUsernameUiState.copy(
-                                showErrorMessage = Pair(true, updateUserNameResult.errorMessage),
+                                showErrorMessage = Pair(true, errorMessage),
                                 isEnabled = true
                             )
                         }

@@ -10,8 +10,13 @@ import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.data.repository.RecipeRepository
 import com.jesse.ohunelo.domain.usecase.FormatHomeScreenDataUseCase
 import com.jesse.ohunelo.presentation.uistates.HomeUiState
+import com.jesse.ohunelo.util.NetworkErrorException
+import com.jesse.ohunelo.util.NotFoundException
+import com.jesse.ohunelo.util.RateLimitExceededException
+import com.jesse.ohunelo.util.ServerErrorException
 import com.jesse.ohunelo.util.UiDrawable
 import com.jesse.ohunelo.util.UiText
+import com.jesse.ohunelo.util.UnauthorizedException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -100,23 +105,31 @@ class HomeViewModel @Inject constructor(
             }
             val homeScreenData = formatHomeScreenDataUseCase(selectedRecipeCategory)
 
-            Timber.e("Home screen data: ${homeScreenData.errorMessage}")
+            Timber.e("Home screen data: ${homeScreenData.error}")
 
             // If both the random recipes and recipes by category are not empty
             if (!homeScreenData.randomRecipes.isNullOrEmpty() && !homeScreenData.recipesByCategory.isNullOrEmpty()){
                 // If an error message is also available, display the stale data and show the error message
-                if(homeScreenData.errorMessage != null){
+                if(homeScreenData.error != null){
+                    val errorMessage = when(homeScreenData.error){
+                        is NetworkErrorException -> UiText.StringResource(R.string.network_error_occured)
+                        is UnauthorizedException -> UiText.StringResource(R.string.unauthorized_request)
+                        is RateLimitExceededException -> UiText.StringResource(R.string.rate_limit_exceeded)
+                        is NotFoundException -> UiText.StringResource(R.string.page_not_found)
+                        is ServerErrorException -> UiText.StringResource(R.string.internal_server_error)
+                        else -> UiText.StringResource(R.string.failed_to_get_recipes)
+                    }
                     _homeUiStateFlow.update {
                             homeUiState ->
                         homeUiState.copy(
                             randomRecipes = homeScreenData.randomRecipes,
                             recipesByCategory = homeScreenData.recipesByCategory,
-                            showErrorMessage = Pair(true, homeScreenData.errorMessage),
+                            showErrorMessage = Pair(true, errorMessage),
                             shouldKeepSplashScreenOn = false,
                             loading = false
                         )
                     }
-                    Timber.e("Home screen data first: ${homeScreenData.errorMessage}")
+                    Timber.e("Home screen data first: $errorMessage")
                 } else{
                     // Else, just display the random recipes and recipes by category to the user
                     _homeUiStateFlow.update {
@@ -133,17 +146,25 @@ class HomeViewModel @Inject constructor(
 
             // If either one of the recipes is null(empty), No recipe data should be displayed and the error message should be shown
             if (homeScreenData.randomRecipes.isNullOrEmpty() || homeScreenData.recipesByCategory.isNullOrEmpty()){
+                val errorMessage = when(homeScreenData.error){
+                    is NetworkErrorException -> UiText.StringResource(R.string.network_error_occured)
+                    is UnauthorizedException -> UiText.StringResource(R.string.unauthorized_request)
+                    is RateLimitExceededException -> UiText.StringResource(R.string.rate_limit_exceeded)
+                    is NotFoundException -> UiText.StringResource(R.string.page_not_found)
+                    is ServerErrorException -> UiText.StringResource(R.string.internal_server_error)
+                    else -> UiText.StringResource(R.string.failed_to_get_recipes)
+                }
                 _homeUiStateFlow.update {
                         homeUiState ->
                     homeUiState.copy(
                         randomRecipes = listOf(),
                         recipesByCategory = listOf(),
-                        showErrorMessage = Pair(true, homeScreenData.errorMessage),
+                        showErrorMessage = Pair(true, errorMessage),
                         shouldKeepSplashScreenOn = false,
                         loading = false
                     )
                 }
-                Timber.e("Home screen data second: ${homeScreenData.errorMessage}")
+                Timber.e("Home screen data second: $errorMessage")
             }
 
         }
@@ -171,11 +192,19 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is OhuneloResult.Error -> {
+                    val errorMessage = when(result.error){
+                        is NetworkErrorException -> UiText.StringResource(R.string.network_error_occured)
+                        is UnauthorizedException -> UiText.StringResource(R.string.unauthorized_request)
+                        is RateLimitExceededException -> UiText.StringResource(R.string.rate_limit_exceeded)
+                        is NotFoundException -> UiText.StringResource(R.string.page_not_found)
+                        is ServerErrorException -> UiText.StringResource(R.string.internal_server_error)
+                        else -> UiText.StringResource(R.string.failed_to_get_recipes)
+                    }
                     _homeUiStateFlow.update {
                             homeUiState ->
                         homeUiState.copy(
                             recipesByCategory = result.data ?: listOf(),
-                            showErrorMessage = Pair(true, result.errorMessage),
+                            showErrorMessage = Pair(true, errorMessage),
                             shouldKeepSplashScreenOn = false,
                             startShimmer = false
                         )

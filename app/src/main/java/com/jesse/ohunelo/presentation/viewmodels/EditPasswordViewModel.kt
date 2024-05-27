@@ -7,6 +7,7 @@ import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.EditPasswordUiState
+import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.UiText
 import com.jesse.ohunelo.util.UpdateStatus
 import com.jesse.ohunelo.util.UserType
@@ -57,11 +58,14 @@ class EditPasswordViewModel @Inject constructor(
     }
 
     fun onLogout(){
-        _editPasswordUiState.update {
-            editPasswordUiState ->
-            editPasswordUiState.copy(
-                logout = false
-            )
+        viewModelScope.launch {
+            authenticationRepository.logout()
+            _editPasswordUiState.update {
+                    editPasswordUiState ->
+                editPasswordUiState.copy(
+                    logout = false
+                )
+            }
         }
     }
 
@@ -76,43 +80,61 @@ class EditPasswordViewModel @Inject constructor(
                 }
                 when(val result = authenticationRepository.updateUserPassword(_editPasswordUiState.value.password)){
                     is OhuneloResult.Success -> {
-                        if (result.data == UpdateStatus.SUCCESS){
-                            _editPasswordUiState.update {
-                                    editPasswordUiState ->
-                                editPasswordUiState.copy(
-                                    message = UiText.StringResource(R.string.edit_was_successful),
-                                    logout = true
-                                )
-                            }
-                        }
-                    }
-                    is OhuneloResult.Error -> {
-                        if (result.data == UpdateStatus.REAUTHENTICATE){
-                            _editPasswordUiState.update {
-                                    editPasswordUiState ->
-                                editPasswordUiState.copy(
-                                    message = result.errorMessage,
-                                    reauthenticate = true
-                                )
-                            }
-                            return@launch
-                        }
-                        if(result.data == UpdateStatus.LOG_OUT){
-                            _editPasswordUiState.update {
-                                    editPasswordUiState ->
-                                editPasswordUiState.copy(
-                                    message = result.errorMessage,
-                                    logout = true
-                                )
-                            }
-                        }
                         _editPasswordUiState.update {
                                 editPasswordUiState ->
                             editPasswordUiState.copy(
-                                isLoading = false,
-                                message = result.errorMessage,
-                                logout = false
+                                message = UiText.StringResource(R.string.edit_was_successful),
+                                logout = true
                             )
+                        }
+
+                    }
+                    is OhuneloResult.Error -> {
+                        when(result.error){
+                            // This means the password is weak
+                            is AuthenticationException.WeakPasswordException -> {
+                                _editPasswordUiState.update {
+                                        editPasswordUiState ->
+                                    editPasswordUiState.copy(
+                                        isLoading = false,
+                                        message = UiText.StringResource(R.string.weak_password),
+                                        logout = false
+                                    )
+                                }
+                            }
+                            // This means user hasn't logged in for a while and needs to be reauthenticated
+                            is AuthenticationException.AuthRecentLoginRequiredException -> {
+                                _editPasswordUiState.update {
+                                        editPasswordUiState ->
+                                    editPasswordUiState.copy(
+                                        message = UiText.StringResource(R.string.reauthenticate_message),
+                                        reauthenticate = true
+                                    )
+                                }
+                            }
+                            // // These errors means the user has to be logged out
+                            is AuthenticationException.UserTokenExpiredException,
+                            is AuthenticationException.UserDisabledException,
+                            is AuthenticationException.NoUserException,
+                            is AuthenticationException.InvalidUserTokenException -> {
+                                _editPasswordUiState.update {
+                                        editPasswordUiState ->
+                                    editPasswordUiState.copy(
+                                        message = UiText.StringResource(R.string.user_credential_no_longer_valid),
+                                        logout = true
+                                    )
+                                }
+                            }
+                            else -> {
+                                _editPasswordUiState.update {
+                                        editPasswordUiState ->
+                                    editPasswordUiState.copy(
+                                        isLoading = false,
+                                        message = UiText.StringResource(R.string.edit_password_failed),
+                                        logout = false
+                                    )
+                                }
+                            }
                         }
                     }
                 }

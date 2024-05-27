@@ -13,6 +13,7 @@ data class ReauthenticateEmailUiState(
      * This determines whether or not views in the Fragment should be enabled or not
      * **/
     val isEnabled: Boolean = true,
+    val logout: Boolean = false
 ){
     fun isFormValid(): Boolean =
     // So long as email and password are not empty and emailError and passwordError are null then,

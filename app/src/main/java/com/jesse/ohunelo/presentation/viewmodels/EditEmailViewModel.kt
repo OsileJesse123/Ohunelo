@@ -11,6 +11,7 @@ import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.presentation.uistates.EditEmailUiState
+import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.UiText
 import com.jesse.ohunelo.util.UpdateStatus
 import com.jesse.ohunelo.util.UserType
@@ -62,18 +63,42 @@ class EditEmailViewModel @Inject constructor(
                     _editEmailUiState.update {
                             editEmailUiState ->
                         editEmailUiState.copy(
-                            message = reauthenticateResult.data,
+                            message = UiText.StringResource(R.string.reauthenticate_success),
                             isLoading = false
                         )
                     }
                 }
                 is OhuneloResult.Error -> {
-                    _editEmailUiState.update {
-                            editEmailUiState ->
-                        editEmailUiState.copy(
-                            isLoading = false,
-                            message = reauthenticateResult.errorMessage
-                        )
+                    when(reauthenticateResult.error){
+                        is AuthenticationException.NoUserException,
+                        is AuthenticationException.InvalidUserException -> {
+                            _editEmailUiState.update {
+                                    editEmailUiState ->
+                                editEmailUiState.copy(
+                                    isLoading = false,
+                                    message = UiText.StringResource(R.string.reauthenticate_fail),
+                                    logout = true
+                                )
+                            }
+                        }
+                        is AuthenticationException.InvalidCredentialsException -> {
+                            _editEmailUiState.update {
+                                    editEmailUiState ->
+                                editEmailUiState.copy(
+                                    isLoading = false,
+                                    message = UiText.StringResource(R.string.invalid_credentials)
+                                )
+                            }
+                        }
+                        else -> {
+                            _editEmailUiState.update {
+                                    editEmailUiState ->
+                                editEmailUiState.copy(
+                                    isLoading = false,
+                                    message = UiText.StringResource(R.string.reauthenticate_fail)
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -102,22 +127,45 @@ class EditEmailViewModel @Inject constructor(
                 is OhuneloResult.Success -> {
                     when (val signInResult = authenticationRepository.reauthenticateGoogle(idTokenResult.data!!)){
                         is OhuneloResult.Success ->{
-                            Timber.e("ViewModel SignIn with google Successful, user: ${signInResult.data}")
                             _editEmailUiState.update {
                                     editEmailUiState ->
                                 editEmailUiState.copy(
-                                    message = signInResult.data,
+                                    message = UiText.StringResource(R.string.reauthenticate_success),
                                     isLoading = false
                                 )
                             }
                         }
                         is OhuneloResult.Error -> {
-                            _editEmailUiState.update {
-                                    editEmailUiState ->
-                                editEmailUiState.copy(
-                                    message = signInResult.errorMessage,
-                                    isLoading = false
-                                )
+                            when(signInResult.error){
+                                is AuthenticationException.NoUserException,
+                                is AuthenticationException.InvalidUserException -> {
+                                    _editEmailUiState.update {
+                                            editEmailUiState ->
+                                        editEmailUiState.copy(
+                                            message = UiText.StringResource(R.string.reauthenticate_fail),
+                                            isLoading = false,
+                                            logout = true
+                                        )
+                                    }
+                                }
+                                is AuthenticationException.InvalidCredentialsException -> {
+                                    _editEmailUiState.update {
+                                            editEmailUiState ->
+                                        editEmailUiState.copy(
+                                            message = UiText.StringResource(R.string.invalid_credentials),
+                                            isLoading = false
+                                        )
+                                    }
+                                }
+                                else -> {
+                                    _editEmailUiState.update {
+                                            editEmailUiState ->
+                                        editEmailUiState.copy(
+                                            message = UiText.StringResource(R.string.reauthenticate_fail),
+                                            isLoading = false
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -146,44 +194,59 @@ class EditEmailViewModel @Inject constructor(
                     }
                 when(val result = authenticationRepository.updateUserEmail(_editEmailUiState.value.email)){
                     is OhuneloResult.Success ->{
-                        if (result.data == UpdateStatus.SUCCESS){
-                          _editEmailUiState.update {
-                                  editEmailUiState ->
-                              editEmailUiState.copy(
-                                  message = UiText.StringResource(R.string.edit_was_successful),
-                                  navigateBack = true
-                              )
-                          }
-                          return@launch
-                        }
+                      _editEmailUiState.update {
+                              editEmailUiState ->
+                          editEmailUiState.copy(
+                              message = UiText.StringResource(R.string.edit_was_successful),
+                              navigateBack = true
+                          )
+                      }
                     }
                     is OhuneloResult.Error -> {
-                        if (result.data == UpdateStatus.REAUTHENTICATE){
-                            _editEmailUiState.update {
-                                    editEmailUiState ->
-                                editEmailUiState.copy(
-                                    message = result.errorMessage,
-                                    reauthenticate = Pair(true, UserType.getUserType(authenticationRepository.getUserType()))
-                                )
+                        when(result.error){
+                            // This mean the email is already in use
+                            is AuthenticationException.AuthUserCollisionException -> {
+                                _editEmailUiState.update {
+                                        editEmailUiState ->
+                                    editEmailUiState.copy(
+                                        message = UiText.StringResource(R.string.email_already_in_use),
+                                        isLoading = false
+                                    )
+                                }
                             }
-                            return@launch
-                        }
-                        if(result.data == UpdateStatus.LOG_OUT){
-                            _editEmailUiState.update {
-                                    editEmailUiState ->
-                                editEmailUiState.copy(
-                                    message = result.errorMessage,
-                                    logout = true
-                                )
+                            // This means that the user should be reauthenticated
+                            is AuthenticationException.AuthRecentLoginRequiredException -> {
+                                _editEmailUiState.update {
+                                        editEmailUiState ->
+                                    editEmailUiState.copy(
+                                        message = UiText.StringResource(R.string.reauthenticate_message),
+                                        reauthenticate = Pair(true, UserType.getUserType(authenticationRepository.getUserType()))
+                                    )
+                                }
                             }
-                            return@launch
-                        }
-                        _editEmailUiState.update {
-                                editEmailUiState ->
-                            editEmailUiState.copy(
-                                message = result.errorMessage,
-                                isLoading = false
-                            )
+                            // These errors means the user has to be logged out
+                            is AuthenticationException.UserTokenExpiredException,
+                            is AuthenticationException.UserDisabledException,
+                            is AuthenticationException.NoUserException,
+                            is AuthenticationException.InvalidUserTokenException -> {
+                                _editEmailUiState.update {
+                                        editEmailUiState ->
+                                    editEmailUiState.copy(
+                                        message = UiText.StringResource(R.string.user_credential_no_longer_valid),
+                                        logout = true
+                                    )
+                                }
+                            }
+                            // This means there was an unknown failure
+                            else -> {
+                                _editEmailUiState.update {
+                                        editEmailUiState ->
+                                    editEmailUiState.copy(
+                                        message = UiText.StringResource(R.string.edit_email_failed),
+                                        isLoading = false
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -192,11 +255,14 @@ class EditEmailViewModel @Inject constructor(
     }
 
     fun onLogout(){
-        _editEmailUiState.update {
-                editEmailUiState ->
-            editEmailUiState.copy(
-                logout = false
-            )
+        viewModelScope.launch {
+            authenticationRepository.logout()
+            _editEmailUiState.update {
+                    editEmailUiState ->
+                editEmailUiState.copy(
+                    logout = false
+                )
+            }
         }
     }
 
@@ -244,18 +310,42 @@ class EditEmailViewModel @Inject constructor(
                     _editEmailUiState.update {
                             editEmailUiState ->
                         editEmailUiState.copy(
-                            message = signInResult.data,
+                            message = UiText.StringResource(R.string.reauthenticate_success),
                             isLoading = false
                         )
                     }
                 }
                 is OhuneloResult.Error -> {
-                    _editEmailUiState.update {
-                            editEmailUiState ->
-                        editEmailUiState.copy(
-                            message = signInResult.errorMessage,
-                            isLoading = false
-                        )
+                    when(signInResult.error){
+                        is AuthenticationException.NoUserException,
+                        is AuthenticationException.InvalidUserException -> {
+                            _editEmailUiState.update {
+                                    editEmailUiState ->
+                                editEmailUiState.copy(
+                                    message = UiText.StringResource(R.string.reauthenticate_fail),
+                                    isLoading = false,
+                                    logout = true
+                                )
+                            }
+                        }
+                        is AuthenticationException.InvalidCredentialsException -> {
+                            _editEmailUiState.update {
+                                    editEmailUiState ->
+                                editEmailUiState.copy(
+                                    message = UiText.StringResource(R.string.invalid_credentials),
+                                    isLoading = false
+                                )
+                            }
+                        }
+                        else -> {
+                            _editEmailUiState.update {
+                                    editEmailUiState ->
+                                editEmailUiState.copy(
+                                    message = UiText.StringResource(R.string.reauthenticate_fail),
+                                    isLoading = false
+                                )
+                            }
+                        }
                     }
                 }
             }

@@ -27,7 +27,7 @@ class FormatHomeScreenDataUseCase @Inject constructor(
             }
 
             is OhuneloResult.Error -> {
-                homeScreenData.copy(randomRecipes = randomRecipes.data, errorMessage = randomRecipes.errorMessage)
+                homeScreenData.copy(randomRecipes = randomRecipes.data, error = randomRecipes.error)
             }
         }
 
@@ -37,7 +37,7 @@ class FormatHomeScreenDataUseCase @Inject constructor(
             }
 
             is OhuneloResult.Error -> {
-                homeScreenData.copy(recipesByCategory = recipesByCategory.data, errorMessage = recipesByCategory.errorMessage)
+                homeScreenData.copy(recipesByCategory = recipesByCategory.data, error = recipesByCategory.error)
             }
         }
 

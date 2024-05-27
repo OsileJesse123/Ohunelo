@@ -11,6 +11,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.util.AuthenticationException
+import com.jesse.ohunelo.util.NetworkErrorException
 import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
@@ -73,23 +75,24 @@ class GoogleSignInHandler @Inject constructor(
                 OhuneloResult.Success(data = idToken)
             } else {
                 Timber.e("IdToken is null")
-                OhuneloResult.Error(UiText.StringResource(R.string.sign_in_failed, "Google"))
+                UiText.StringResource(R.string.sign_in_failed, "Google")
+                OhuneloResult.Error(error = Exception())
             }
         } catch (e: ApiException){
             when (e.statusCode) {
                 CommonStatusCodes.CANCELED -> {
                     Timber.e("One-tap dialog was closed.")
-                    OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.sign_in_cancelled, "Google"))
+                    OhuneloResult.Error(error = AuthenticationException.SignInCancelledException())
                 }
                 CommonStatusCodes.NETWORK_ERROR -> {
                     Timber.e("One-tap encountered a network error.")
                     // Try again or just ignore.
-                    OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.network_error_occured))
+                    OhuneloResult.Error(error = NetworkErrorException())
                 }
                 else -> {
                     Timber.e("Couldn't get credential from result." +
                             " (${e.localizedMessage})")
-                    OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.sign_in_failed, "Google"))
+                    OhuneloResult.Error(error = e)
                 }
             }
         }

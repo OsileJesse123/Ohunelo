@@ -8,7 +8,6 @@ import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
-import com.jesse.ohunelo.data.network.signin_handlers.FacebookSignInHandler
 import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
@@ -16,6 +15,7 @@ import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.LoginUiState
 import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.HOME_FRAGMENT
+import com.jesse.ohunelo.util.NetworkErrorException
 import com.jesse.ohunelo.util.UPDATE_USERNAME_FRAGMENT
 import com.jesse.ohunelo.util.UiText
 import com.jesse.ohunelo.util.VERIFY_EMAIL_FRAGMENT
@@ -25,7 +25,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -116,12 +115,18 @@ class LoginViewModel @Inject constructor(
                     is OhuneloResult.Error -> {
                         val errorMessage = when(loginResult.error){
                             is AuthenticationException.NoUserException -> UiText.StringResource(resId = R.string.user_logged_in_but_user_null)
-                            is AuthenticationException.InvalidCredentialsException ->
+                            is AuthenticationException.InvalidCredentialsException -> UiText.StringResource(resId = R.string.invalid_credentials)
+                            is AuthenticationException.UserDisabledException -> UiText.StringResource(resId = R.string.user_disabled)
+                            is AuthenticationException.UserTokenExpiredException -> UiText.StringResource(resId = R.string.user_token_expired)
+                            is AuthenticationException.InvalidUserTokenException -> UiText.StringResource(resId = R.string.invalid_user_token)
+                            is NetworkErrorException -> UiText.StringResource(resId = R.string.network_error_occured)
+                            is Exception -> UiText.StringResource(resId = R.string.login_failed)
+                            else -> null
                         }
                         _loginUiStateFlow.update {
                                 loginUiState ->
                             loginUiState.copy(
-                                showErrorMessage = Pair(true, loginResult.errorMessage),
+                                showErrorMessage = Pair(true, errorMessage),
                                 isEnabled = true
                             )
                         }
@@ -170,10 +175,20 @@ class LoginViewModel @Inject constructor(
                             }
                         }
                         is OhuneloResult.Error -> {
+                            val errorMessage = when(signInResult.error){
+                                is AuthenticationException.NoUserException -> UiText.StringResource(resId = R.string.user_logged_in_but_user_null)
+                                is AuthenticationException.InvalidCredentialsException -> UiText.StringResource(resId = R.string.invalid_credentials)
+                                is AuthenticationException.UserDisabledException -> UiText.StringResource(resId = R.string.user_disabled)
+                                is AuthenticationException.UserTokenExpiredException -> UiText.StringResource(resId = R.string.user_token_expired)
+                                is AuthenticationException.InvalidUserTokenException -> UiText.StringResource(resId = R.string.invalid_user_token)
+                                is AuthenticationException.AuthUserCollisionException -> UiText.StringResource(resId = R.string.account_already_exist)
+                                is Exception -> UiText.StringResource(resId = R.string.sign_in_failed, "Google")
+                                else -> null
+                            }
                             _loginUiStateFlow.update {
                                     loginUiState ->
                                 loginUiState.copy(
-                                    showErrorMessage = Pair(true, signInResult.errorMessage),
+                                    showErrorMessage = Pair(true, errorMessage),
                                     isEnabled = true
                                 )
                             }
@@ -181,10 +196,15 @@ class LoginViewModel @Inject constructor(
                     }
                 }
                 is OhuneloResult.Error -> {
+                    val errorMessage = when(idTokenResult.error){
+                        is AuthenticationException.SignInCancelledException -> UiText.StringResource(R.string.sign_in_cancelled, "Google")
+                        is NetworkErrorException -> UiText.StringResource(R.string.network_error_occured)
+                        else -> UiText.StringResource(R.string.sign_in_failed, "Google")
+                    }
                     _loginUiStateFlow.update {
                             loginUiState ->
                         loginUiState.copy(
-                            showErrorMessage = Pair(true, idTokenResult.errorMessage),
+                            showErrorMessage = Pair(true, errorMessage),
                             isEnabled = true
                         )
                     }
@@ -215,10 +235,16 @@ class LoginViewModel @Inject constructor(
                     }
                 }
                 is OhuneloResult.Error -> {
+                    val errorMessage = when(signInResult.error){
+                        is AuthenticationException.NoUserException -> UiText.StringResource(resId = R.string.user_logged_in_but_user_null)
+                        is AuthenticationException.AuthUserCollisionException -> UiText.StringResource(resId = R.string.email_already_in_use)
+                        is Exception -> UiText.StringResource(resId = R.string.sign_in_failed, "Twitter")
+                        else -> null
+                    }
                     _loginUiStateFlow.update {
                             loginUiState ->
                         loginUiState.copy(
-                            showErrorMessage = Pair(true, signInResult.errorMessage),
+                            showErrorMessage = Pair(true, errorMessage),
                             isEnabled = true
                         )
                     }
@@ -241,10 +267,20 @@ class LoginViewModel @Inject constructor(
                     }
                 }
                 is OhuneloResult.Error -> {
+                    val errorMessage = when(signInResult.error){
+                        is AuthenticationException.NoUserException -> UiText.StringResource(resId = R.string.user_logged_in_but_user_null)
+                        is AuthenticationException.InvalidCredentialsException -> UiText.StringResource(resId = R.string.invalid_credentials)
+                        is AuthenticationException.UserDisabledException -> UiText.StringResource(resId = R.string.user_disabled)
+                        is AuthenticationException.UserTokenExpiredException -> UiText.StringResource(resId = R.string.user_token_expired)
+                        is AuthenticationException.InvalidUserTokenException -> UiText.StringResource(resId = R.string.invalid_user_token)
+                        is AuthenticationException.AuthUserCollisionException -> UiText.StringResource(resId = R.string.account_already_exist)
+                        is Exception -> UiText.StringResource(resId = R.string.sign_in_failed, "Facebook")
+                        else -> null
+                    }
                     _loginUiStateFlow.update {
                             loginUiState ->
                         loginUiState.copy(
-                            showErrorMessage = Pair(true, signInResult.errorMessage),
+                            showErrorMessage = Pair(true, errorMessage),
                             isEnabled = true
                         )
                     }

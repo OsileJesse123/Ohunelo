@@ -9,6 +9,7 @@ import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateNameUseCase
 import com.jesse.ohunelo.presentation.uistates.UpdateProfileUiState
+import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.FIRST_NAME_MAX_LENGTH
 import com.jesse.ohunelo.util.LAST_NAME_MAX_LENGTH
 import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
@@ -102,7 +103,6 @@ class UpdateProfileViewModel @Inject constructor(
                     is OhuneloResult.Success -> {
                         _updateProfileUiState.update {
                                 updateProfileUiState ->
-                            //authenticationRepository.updateUser()
                             updateProfileUiState.copy(
                                 exitUpdateProfile = true,
                                 isEnabled = true,
@@ -111,10 +111,15 @@ class UpdateProfileViewModel @Inject constructor(
                         }
                     }
                     is OhuneloResult.Error -> {
+                        val errorMessage = when(updateUserNameResult.error){
+                            is AuthenticationException.NoUserException -> UiText.StringResource(R.string.no_user_found)
+                            is Exception -> UiText.StringResource(resId = R.string.user_name_update_failed)
+                            else -> null
+                        }
                         _updateProfileUiState.update {
                                 updateProfileUiState ->
                             updateProfileUiState.copy(
-                                showErrorMessage = Pair(true, updateUserNameResult.errorMessage),
+                                showErrorMessage = Pair(true, errorMessage),
                                 isEnabled = true
                             )
                         }

@@ -25,7 +25,6 @@ import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.NetworkErrorException
 import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiText
-import com.jesse.ohunelo.util.UnknownErrorException
 import com.jesse.ohunelo.util.UpdateStatus
 import com.jesse.ohunelo.util.UserType
 import kotlinx.coroutines.CoroutineDispatcher
@@ -127,30 +126,25 @@ class FirebaseAuthenticationService @Inject constructor(
                 OhuneloResult.Success(authUser)
             } else {
                 // If login task is successful and user is null
-                UiText.StringResource(resId = R.string.user_logged_in_but_user_null)
                 OhuneloResult.Error(error = AuthenticationException.NoUserException())
             }
         }
         catch (e: FirebaseAuthInvalidCredentialsException){
-            UiText.StringResource(resId = R.string.invalid_credentials)
             OhuneloResult.Error(error = AuthenticationException.InvalidCredentialsException())
         }
         catch (e: FirebaseAuthInvalidUserException){
-            UiText.StringResource(resId = R.string.invalid_user)
             when(e.errorCode){
                 FirebaseErrorCode.ERROR_USER_DISABLED.name -> OhuneloResult.Error(error = AuthenticationException.UserDisabledException())
                 FirebaseErrorCode.ERROR_USER_NOT_FOUND.name -> OhuneloResult.Error(error = AuthenticationException.NoUserException())
-                FirebaseErrorCode.ERROR_USER_TOKEN_EXPIRED.name -> OhuneloResult.Error(error = AuthenticationException.UserTokenExpired())
-                FirebaseErrorCode.ERROR_INVALID_USER_TOKEN.name -> OhuneloResult.Error(error = AuthenticationException.InvalidUserToken())
+                FirebaseErrorCode.ERROR_USER_TOKEN_EXPIRED.name -> OhuneloResult.Error(error = AuthenticationException.UserTokenExpiredException())
+                FirebaseErrorCode.ERROR_INVALID_USER_TOKEN.name -> OhuneloResult.Error(error = AuthenticationException.InvalidUserTokenException())
                 else -> OhuneloResult.Error(error = Exception())
             }
         }
         catch (e: FirebaseNetworkException){
-            UiText.StringResource(resId = R.string.network_error_occured)
             OhuneloResult.Error(error = NetworkErrorException())
         }
         catch (e: Exception){
-            UiText.StringResource(resId = R.string.login_failed)
             Timber.e("Login Failed, Exception: $e")
             OhuneloResult.Error(error = e)
         }
@@ -172,18 +166,18 @@ class FirebaseAuthenticationService @Inject constructor(
                 user.sendEmailVerification().await()
                 OhuneloResult.Success(Unit)
             } else{
-                OhuneloResult.Error(UiText.StringResource(R.string.send_email_link_failed))
+                OhuneloResult.Error(error = Exception())
             }
         }
         catch (e: FirebaseNetworkException){
-            OhuneloResult.Error(UiText.StringResource(R.string.network_error_occured))
+            OhuneloResult.Error(error = NetworkErrorException())
         }
         catch (e: FirebaseTooManyRequestsException){
-            OhuneloResult.Error(UiText.StringResource(R.string.too_many_requests))
+            OhuneloResult.Error(error = AuthenticationException.TooManyRequestsException())
         }
         catch (e: Exception){
             Timber.e("Send email verification failed, Exception: $e")
-            OhuneloResult.Error(UiText.StringResource(R.string.send_email_link_failed))
+            OhuneloResult.Error(error = e)
         }
     }
 
@@ -205,20 +199,29 @@ class FirebaseAuthenticationService @Inject constructor(
         }
     }
 
-    override suspend fun sendPasswordResetEmail(email: String): OhuneloResult<UiText> {
+    override suspend fun sendPasswordResetEmail(email: String): OhuneloResult<Unit> {
         return try {
             firebaseAuth.sendPasswordResetEmail(email).await()
-            OhuneloResult.Success(UiText.StringResource(R.string.reset_password_email))
+            OhuneloResult.Success(Unit)
         }
         catch (e: FirebaseAuthInvalidUserException){
-            OhuneloResult.Error(UiText.StringResource(R.string.no_user_record_corresponding))
+
+            when(e.errorCode){
+                FirebaseErrorCode.ERROR_USER_DISABLED.name -> OhuneloResult.Error(error = AuthenticationException.UserDisabledException())
+                FirebaseErrorCode.ERROR_USER_NOT_FOUND.name -> OhuneloResult.Error(error = AuthenticationException.NoUserException())
+                FirebaseErrorCode.ERROR_USER_TOKEN_EXPIRED.name -> OhuneloResult.Error(error = AuthenticationException.UserTokenExpiredException())
+                FirebaseErrorCode.ERROR_INVALID_USER_TOKEN.name -> OhuneloResult.Error(error = AuthenticationException.InvalidUserTokenException())
+                else -> OhuneloResult.Error(error = Exception())
+            }
         }
         catch (e: FirebaseNetworkException){
-            OhuneloResult.Error(UiText.StringResource(R.string.network_error_occured))
+            UiText.StringResource(R.string.network_error_occured)
+            OhuneloResult.Error(error = NetworkErrorException())
         }
         catch (e: Exception){
+            UiText.StringResource(R.string.reset_password_email_failed)
             Timber.e("Has user been verified failed, Exception: $e")
-            OhuneloResult.Error(UiText.StringResource(R.string.reset_password_email_failed))
+            OhuneloResult.Error(error = e)
         }
     }
 
@@ -241,11 +244,23 @@ class FirebaseAuthenticationService @Inject constructor(
                 OhuneloResult.Success(authUser)
             } else {
                 // If login task is successful and user is null
-                OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
+                OhuneloResult.Error(error = AuthenticationException.NoUserException())
             }
-        } catch (e: Exception){
+        } catch (e: FirebaseAuthInvalidUserException){
+            when(e.errorCode){
+                FirebaseErrorCode.ERROR_USER_DISABLED.name -> OhuneloResult.Error(error = AuthenticationException.UserDisabledException())
+                FirebaseErrorCode.ERROR_USER_NOT_FOUND.name -> OhuneloResult.Error(error = AuthenticationException.NoUserException())
+                FirebaseErrorCode.ERROR_USER_TOKEN_EXPIRED.name -> OhuneloResult.Error(error = AuthenticationException.UserTokenExpiredException())
+                FirebaseErrorCode.ERROR_INVALID_USER_TOKEN.name -> OhuneloResult.Error(error = AuthenticationException.InvalidUserTokenException())
+                else -> OhuneloResult.Error(error = Exception())
+            }
+        } catch (e: FirebaseAuthInvalidCredentialsException){
+            OhuneloResult.Error(error = AuthenticationException.InvalidCredentialsException())
+        } catch (e: FirebaseAuthUserCollisionException){
+            OhuneloResult.Error(error = AuthenticationException.AuthUserCollisionException())
+        }catch (e: Exception){
             Timber.e("Sign in with google failed, Exception: $e")
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.sign_in_failed, "Google"))
+            OhuneloResult.Error(error = e)
         }
     }
 
@@ -268,13 +283,23 @@ class FirebaseAuthenticationService @Inject constructor(
                 OhuneloResult.Success(authUser)
             } else {
                 // If login task is successful and user is null
-                OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
+                OhuneloResult.Error(error = AuthenticationException.NoUserException())
             }
+        } catch (e: FirebaseAuthInvalidUserException){
+            when(e.errorCode){
+                FirebaseErrorCode.ERROR_USER_DISABLED.name -> OhuneloResult.Error(error = AuthenticationException.UserDisabledException())
+                FirebaseErrorCode.ERROR_USER_NOT_FOUND.name -> OhuneloResult.Error(error = AuthenticationException.NoUserException())
+                FirebaseErrorCode.ERROR_USER_TOKEN_EXPIRED.name -> OhuneloResult.Error(error = AuthenticationException.UserTokenExpiredException())
+                FirebaseErrorCode.ERROR_INVALID_USER_TOKEN.name -> OhuneloResult.Error(error = AuthenticationException.InvalidUserTokenException())
+                else -> OhuneloResult.Error(error = Exception())
+            }
+        } catch (e: FirebaseAuthInvalidCredentialsException){
+            OhuneloResult.Error(error = AuthenticationException.InvalidCredentialsException())
         } catch (e: FirebaseAuthUserCollisionException){
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.email_already_in_use))
+            OhuneloResult.Error(error = AuthenticationException.AuthUserCollisionException())
         } catch (e: Exception){
             Timber.e("Sign in with facebook failed, Exception: $e")
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.sign_in_failed, "Facebook"))
+            OhuneloResult.Error(error = e)
         }
     }
 
@@ -301,7 +326,8 @@ class FirebaseAuthenticationService @Inject constructor(
                     OhuneloResult.Success(authUser)
                 } else {
                     // If login task is successful and user is null
-                    OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
+                    UiText.StringResource(resId = R.string.user_logged_in_but_user_null)
+                    OhuneloResult.Error(error = AuthenticationException.NoUserException())
                 }
             } else {
                 // There's no pending result so you need to start the sign-in flow.
@@ -322,14 +348,14 @@ class FirebaseAuthenticationService @Inject constructor(
                     OhuneloResult.Success(authUser)
                 } else {
                     // If login task is successful and user is null
-                    OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_logged_in_but_user_null))
+                    OhuneloResult.Error(error = AuthenticationException.NoUserException())
                 }
             }
         } catch (e: FirebaseAuthUserCollisionException){
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.email_already_in_use))
+            OhuneloResult.Error(error = AuthenticationException.AuthUserCollisionException())
         } catch (e: Exception){
             Timber.e("Sign in with twitter failed, Exception: $e")
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.sign_in_failed, "Twitter"))
+            OhuneloResult.Error(error = e)
         }
     }
 
@@ -349,78 +375,78 @@ class FirebaseAuthenticationService @Inject constructor(
                 OhuneloResult.Success(Unit)
             } else{
                 // If user is null, no user was found so no update
-                OhuneloResult.Error(UiText.StringResource(R.string.no_user_found))
+                OhuneloResult.Error(error = AuthenticationException.NoUserException())
             }
         } catch (e: Exception){
             Timber.e("Username update failed, Exception: $e")
-            OhuneloResult.Error(errorMessage = UiText.StringResource(resId = R.string.user_name_update_failed))
+            OhuneloResult.Error(error = e)
         }
     }
 
-    override suspend fun updateUserEmail(email: String): OhuneloResult<UpdateStatus> {
+    override suspend fun updateUserEmail(email: String): OhuneloResult<Unit> {
         return try{
             firebaseAuth.currentUser?.let {
                     user ->
                 user.updateEmail(email).await()
                 _user.emit(getUser())
-                (OhuneloResult.Success(data = UpdateStatus.SUCCESS))
-            } ?: OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.edit_email_failed))
+                (OhuneloResult.Success(Unit))
+            } ?: OhuneloResult.Error(error = AuthenticationException.NoUserException())
         } catch (e: FirebaseAuthUserCollisionException){
-            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.email_already_in_use))
+            OhuneloResult.Error(error = AuthenticationException.AuthUserCollisionException())
         } catch (e: FirebaseAuthRecentLoginRequiredException){
-            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.reauthenticate_message), data = UpdateStatus.REAUTHENTICATE)
+            OhuneloResult.Error(error = AuthenticationException.AuthRecentLoginRequiredException())
         } catch (e: FirebaseAuthInvalidUserException){
             Timber.e("Update email failed, Exception: $e, Cause: ${e.cause}, ErrorCode: ${e.errorCode}")
             when(e.errorCode){
-                FirebaseErrorCode.ERROR_USER_TOKEN_EXPIRED.name -> {
-                    OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.user_credential_no_longer_valid), data = UpdateStatus.LOG_OUT)
-                }
-                else -> {
-                    OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.no_user_record_corresponding), data = UpdateStatus.LOG_OUT)
-                }
+                FirebaseErrorCode.ERROR_USER_TOKEN_EXPIRED.name -> OhuneloResult.Error(error = AuthenticationException.UserTokenExpiredException())
+                FirebaseErrorCode.ERROR_USER_DISABLED.name -> OhuneloResult.Error(error = AuthenticationException.UserDisabledException())
+                FirebaseErrorCode.ERROR_USER_NOT_FOUND.name -> OhuneloResult.Error(error = AuthenticationException.NoUserException())
+                FirebaseErrorCode.ERROR_INVALID_USER_TOKEN.name -> OhuneloResult.Error(error = AuthenticationException.InvalidUserTokenException())
+                else -> OhuneloResult.Error(error = Exception())
             }
         }
         catch (e: Exception){
             Timber.e("Update email failed, Exception: $e")
-            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.edit_email_failed))
+            OhuneloResult.Error(error = e)
         }
     }
 
-    override suspend fun updateUserPassword(password: String): OhuneloResult<UpdateStatus> {
+    override suspend fun updateUserPassword(password: String): OhuneloResult<Unit> {
         return try {
             firebaseAuth.currentUser?.let {
                 user ->
                 user.updatePassword(password).await()
-                (OhuneloResult.Success(data = UpdateStatus.SUCCESS))
-            } ?: OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.edit_password_failed))
+                OhuneloResult.Success(Unit)
+            } ?: OhuneloResult.Error(error = AuthenticationException.NoUserException())
         }
         catch (e: FirebaseAuthWeakPasswordException){
-            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.weak_password))
+            OhuneloResult.Error(error = AuthenticationException.WeakPasswordException())
         }
         catch (e: FirebaseAuthRecentLoginRequiredException){
-            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.reauthenticate_message), data = UpdateStatus.REAUTHENTICATE)
+
+            OhuneloResult.Error(error = AuthenticationException.AuthRecentLoginRequiredException())
         }
         catch (e: FirebaseAuthInvalidUserException){
             Timber.e("Update password failed, Exception: $e, Cause: ${e.cause}, ErrorCode: ${e.errorCode}")
             when(e.errorCode){
-                FirebaseErrorCode.ERROR_USER_TOKEN_EXPIRED.name -> {
-                    OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.user_credential_no_longer_valid), data = UpdateStatus.LOG_OUT)
-                }
-                else -> {
-                    OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.no_user_record_corresponding), data = UpdateStatus.LOG_OUT)
-                }
+                FirebaseErrorCode.ERROR_USER_TOKEN_EXPIRED.name -> OhuneloResult.Error(error = AuthenticationException.UserTokenExpiredException())
+                FirebaseErrorCode.ERROR_USER_DISABLED.name -> OhuneloResult.Error(error = AuthenticationException.UserDisabledException())
+                FirebaseErrorCode.ERROR_USER_NOT_FOUND.name -> OhuneloResult.Error(error = AuthenticationException.NoUserException())
+                FirebaseErrorCode.ERROR_INVALID_USER_TOKEN.name -> OhuneloResult.Error(error = AuthenticationException.InvalidUserTokenException())
+                else -> OhuneloResult.Error(error = Exception())
             }
         }
         catch (e: Exception){
+
             Timber.e("Update password failed, Exception: $e")
-            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.edit_password_failed))
+            OhuneloResult.Error(error = e)
         }
     }
 
     override suspend fun reauthenticateUserEmailPassword(
         email: String,
         password: String
-    ): OhuneloResult<UiText> {
+    ): OhuneloResult<Unit> {
         return try {
             firebaseAuth.currentUser?.let {
                 user ->
@@ -428,52 +454,59 @@ class FirebaseAuthenticationService @Inject constructor(
                     email, password
                 )
                 user.reauthenticate(credential).await()
-                OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success))
-            } ?: OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
-
+                OhuneloResult.Success(Unit)
+            } ?: OhuneloResult.Error(error = AuthenticationException.NoUserException())
         }
         catch (e: FirebaseAuthInvalidCredentialsException){
             Timber.e("Re-authenticate with email/password failed 1, Exception: $e")
-            OhuneloResult.Error(errorMessage = UiText.StringResource(R.string.invalid_credentials))
+            OhuneloResult.Error(error = AuthenticationException.InvalidCredentialsException())
         }
         catch (e: FirebaseAuthInvalidUserException){
-            OhuneloResult.Error(UiText.StringResource(R.string.no_user_record_corresponding))
+            OhuneloResult.Error(error = AuthenticationException.InvalidUserException())
         }
         catch (e: Exception){
             Timber.e("Re-authenticate with email/password failed, Exception: $e")
-            OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+            OhuneloResult.Error(error = Exception())
         }
     }
 
-    override suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<UiText> {
+    override suspend fun reauthenticateGoogle(idToken: String): OhuneloResult<Unit> {
         return try {
             firebaseAuth.currentUser?.let {
                     user ->
                 val credential = GoogleAuthProvider.getCredential(idToken, null)
                 user.reauthenticate(credential).await()
-                OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success))
-            } ?:OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+                OhuneloResult.Success(Unit)
+            } ?:OhuneloResult.Error(error = AuthenticationException.NoUserException())
+        } catch (e: FirebaseAuthInvalidUserException){
+            OhuneloResult.Error(error = AuthenticationException.InvalidUserException())
+        } catch (e: FirebaseAuthInvalidCredentialsException){
+            OhuneloResult.Error(error = AuthenticationException.InvalidCredentialsException())
         } catch (e: Exception){
             Timber.e("Re-authenticate with google failed, Exception: $e")
-            OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+            OhuneloResult.Error(error = e)
         }
     }
 
-    override suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<UiText> {
+    override suspend fun reauthenticateFacebook(accessToken: String): OhuneloResult<Unit> {
         return try {
             firebaseAuth.currentUser?.let {
                     user ->
                 val credential = FacebookAuthProvider.getCredential(accessToken)
                 user.reauthenticate(credential).await()
-                OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success))
-            } ?: OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+                OhuneloResult.Success(Unit)
+            } ?: OhuneloResult.Error(error = AuthenticationException.NoUserException())
+        } catch (e: FirebaseAuthInvalidUserException){
+            OhuneloResult.Error(error = AuthenticationException.InvalidUserException())
+        } catch (e: FirebaseAuthInvalidCredentialsException){
+            OhuneloResult.Error(error = AuthenticationException.InvalidCredentialsException())
         } catch (e: Exception){
             Timber.e("Re-authenticate with facebook failed, Exception: $e")
-            OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+            OhuneloResult.Error(error = e)
         }
     }
 
-    override suspend fun reauthenticateTwitter(activity: Activity): OhuneloResult<UiText> {
+    override suspend fun reauthenticateTwitter(activity: Activity): OhuneloResult<Unit> {
         return try {
             val provider = OAuthProvider.newBuilder("twitter.com")
             val pendingResultTask = firebaseAuth.pendingAuthResult
@@ -487,14 +520,18 @@ class FirebaseAuthenticationService @Inject constructor(
                     user ->
                 if (credential != null) {
                     user.reauthenticate(credential).await()
-                    OhuneloResult.Success(UiText.StringResource(R.string.reauthenticate_success))
+                    OhuneloResult.Success(Unit)
                 } else {
-                    OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+                    OhuneloResult.Error(error = Exception())
                 }
-            } ?: OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+            } ?: OhuneloResult.Error(error = AuthenticationException.NoUserException())
+        } catch (e: FirebaseAuthInvalidUserException){
+            OhuneloResult.Error(error = AuthenticationException.InvalidUserException())
+        } catch (e: FirebaseAuthInvalidCredentialsException){
+            OhuneloResult.Error(error = AuthenticationException.InvalidCredentialsException())
         } catch (e: Exception){
             Timber.e("Re-authenticate with twitter failed, Exception: $e")
-            OhuneloResult.Error(UiText.StringResource(R.string.reauthenticate_fail))
+            OhuneloResult.Error(error = e)
         }
     }
 
