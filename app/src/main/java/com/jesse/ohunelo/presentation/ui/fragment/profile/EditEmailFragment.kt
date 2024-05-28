@@ -2,7 +2,6 @@ package com.jesse.ohunelo.presentation.ui.fragment.profile
 
 import android.os.Bundle
 import android.text.Editable
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,7 +20,6 @@ import androidx.navigation.fragment.findNavController
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.signin_handlers.FacebookSignInHandler
 import com.jesse.ohunelo.databinding.FragmentEditEmailBinding
-import com.jesse.ohunelo.presentation.ui.fragment.dialogs.LoaderDialogFragment
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.ReauthenticateEmailDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.EditEmailViewModel
 import com.jesse.ohunelo.util.UiText
@@ -77,10 +76,6 @@ class EditEmailFragment : Fragment() {
                         showMessage(message)
                         viewModel.onMessageShown()
                     }
-                    if (editEmailUiState.navigateBack){
-                        findNavController().navigateUp()
-                        viewModel.onNavigateBack()
-                    }
                     // If user should be re-authenticated
                     if (editEmailUiState.reauthenticate.first){
                         // Find out what method was used to login then initiate re-authentication
@@ -132,8 +127,8 @@ class EditEmailFragment : Fragment() {
 
                     // If user should be forcefully logged out
                     if(editEmailUiState.logout){
-                        findNavController().navigate(EditPasswordFragmentDirections.actionEditPasswordFragmentToLoginFragment())
                         viewModel.onLogout()
+                        findNavController().navigate(EditEmailFragmentDirections.actionEditEmailFragmentToLoginFragment())
                     }
                 }
             }

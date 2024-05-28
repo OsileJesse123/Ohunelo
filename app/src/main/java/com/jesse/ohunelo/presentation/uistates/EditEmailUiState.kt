@@ -8,7 +8,6 @@ data class EditEmailUiState(
     val emailError: UiText? = null,
     val isLoading: Boolean = false,
     val message: UiText? = null,
-    val navigateBack: Boolean = false,
     val reauthenticate: Pair<Boolean, UserType?> = Pair(false, null),
     val logout: Boolean = false
 ){

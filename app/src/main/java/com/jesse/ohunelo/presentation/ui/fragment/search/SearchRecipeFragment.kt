@@ -18,7 +18,10 @@ import com.jesse.ohunelo.adapters.SearchRecipeAdapter
 import com.jesse.ohunelo.adapters.SeeAllRecipesLoadStateAdapter
 import com.jesse.ohunelo.databinding.FragmentSearchRecipeBinding
 import com.jesse.ohunelo.presentation.viewmodels.SearchRecipeViewModel
-import com.jesse.ohunelo.util.UiTextThrowable
+import com.jesse.ohunelo.util.NotFoundException
+import com.jesse.ohunelo.util.RateLimitExceededException
+import com.jesse.ohunelo.util.ServerErrorException
+import com.jesse.ohunelo.util.UnauthorizedException
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpaceItemDecorator
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpanSize
 import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpannedGridLayoutManager
@@ -77,7 +80,13 @@ class SearchRecipeFragment : Fragment() {
                     val loadStateRefresh = combinedLoadStates.refresh
 
                     if (loadStateRefresh is LoadState.Error){
-                        val errorMessage = if(loadStateRefresh.error is UiTextThrowable) (loadStateRefresh.error as UiTextThrowable).errorMessage.asString(requireContext()) else loadStateRefresh.error.localizedMessage
+                        val errorMessage = when(loadStateRefresh.error){
+                            is UnauthorizedException -> getString(R.string.unauthorized_request)
+                            is RateLimitExceededException -> getString(R.string.rate_limit_exceeded)
+                            is NotFoundException -> getString(R.string.page_not_found)
+                            is ServerErrorException -> getString(R.string.internal_server_error)
+                            else -> getString(R.string.failed_to_get_recipes)
+                        }
                         binding.errorMessageText.text = errorMessage
                     }
                     binding.errorLayout.isVisible = loadStateRefresh is LoadState.Error

@@ -1,12 +1,10 @@
 package com.jesse.ohunelo.presentation.ui.fragment.search
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -17,20 +15,21 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.adapters.SearchRecipeDisplayAdapter
 import com.jesse.ohunelo.adapters.SeeAllRecipesLoadStateAdapter
 import com.jesse.ohunelo.databinding.FragmentSearchRecipeDisplayBinding
 import com.jesse.ohunelo.presentation.viewmodels.SearchRecipeDisplayViewModel
 import com.jesse.ohunelo.util.GridSpacingItemDecoration
-import com.jesse.ohunelo.util.UiTextThrowable
+import com.jesse.ohunelo.util.NotFoundException
+import com.jesse.ohunelo.util.RateLimitExceededException
+import com.jesse.ohunelo.util.ServerErrorException
+import com.jesse.ohunelo.util.UnauthorizedException
 import com.jesse.ohunelo.util.hideSoftKeyboard
 import com.jesse.ohunelo.util.showSoftKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -71,7 +70,6 @@ class SearchRecipeDisplayFragment : Fragment() {
         // Show the soft keyboard
         showSoftKeyboard(binding.searchDisplayEditText)
 
-
         setupRecycler()
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -91,9 +89,16 @@ class SearchRecipeDisplayFragment : Fragment() {
                     val loadStateRefresh = combinedLoadStates.refresh
 
                     if (loadStateRefresh is LoadState.Error){
-                        val errorMessage = if(loadStateRefresh.error is UiTextThrowable) (loadStateRefresh.error as UiTextThrowable).errorMessage.asString(requireContext()) else loadStateRefresh.error.localizedMessage
+                        val errorMessage = when(loadStateRefresh.error){
+                            is UnauthorizedException -> getString(R.string.unauthorized_request)
+                            is RateLimitExceededException -> getString(R.string.rate_limit_exceeded)
+                            is NotFoundException -> getString(R.string.page_not_found)
+                            is ServerErrorException -> getString(R.string.internal_server_error)
+                            else -> getString(R.string.failed_to_get_recipes)
+                        }
                         binding.errorMessageText.text = errorMessage
                     }
+
                     binding.errorLayout.isVisible = loadStateRefresh is LoadState.Error
 
                     binding.searchRecipeDisplayShimmer.isVisible = loadStateRefresh is LoadState.Loading

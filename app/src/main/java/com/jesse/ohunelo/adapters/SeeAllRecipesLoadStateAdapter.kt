@@ -6,9 +6,12 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.SeeAllRecipesLoadStateFooterItemBinding
-import com.jesse.ohunelo.util.UiTextThrowable
-import timber.log.Timber
+import com.jesse.ohunelo.util.NotFoundException
+import com.jesse.ohunelo.util.RateLimitExceededException
+import com.jesse.ohunelo.util.ServerErrorException
+import com.jesse.ohunelo.util.UnauthorizedException
 
 class SeeAllRecipesLoadStateAdapter(private val retry: () -> Unit):  LoadStateAdapter<SeeAllRecipesLoadStateAdapter
 .SeeAllRecipesLoadStateViewHolder>(){
@@ -30,8 +33,15 @@ class SeeAllRecipesLoadStateAdapter(private val retry: () -> Unit):  LoadStateAd
 
             fun bind(loadState: LoadState, retry: () -> Unit){
                 binding.apply {
+                    val resources = this.root.resources
                     if (loadState is LoadState.Error) {
-                        val loadStateError = if(loadState.error is UiTextThrowable) (loadState.error as UiTextThrowable).errorMessage.asString(retryButton.context) else loadState.error.localizedMessage
+                        val loadStateError = when(loadState.error){
+                            is UnauthorizedException -> resources.getString(R.string.unauthorized_request)
+                            is RateLimitExceededException -> resources.getString(R.string.rate_limit_exceeded)
+                            is NotFoundException -> resources.getString(R.string.page_not_found)
+                            is ServerErrorException -> resources.getString(R.string.internal_server_error)
+                            else -> resources.getString(R.string.failed_to_get_recipes)
+                        }
                         binding.errorMsg.text = loadStateError
                     }
                     loadingProgressBar.isVisible = loadState is LoadState.Loading

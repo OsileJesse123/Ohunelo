@@ -52,7 +52,8 @@ class EditPasswordViewModel @Inject constructor(
         _editPasswordUiState.update {
             editPasswordUiState ->
             editPasswordUiState.copy(
-                message = null
+                message = null,
+                logout = false
             )
         }
     }
