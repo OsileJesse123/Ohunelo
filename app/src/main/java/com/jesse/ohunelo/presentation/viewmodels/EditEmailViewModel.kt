@@ -12,6 +12,7 @@ import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.presentation.uistates.EditEmailUiState
 import com.jesse.ohunelo.util.AuthenticationException
+import com.jesse.ohunelo.util.NetworkErrorException
 import com.jesse.ohunelo.util.UiText
 import com.jesse.ohunelo.util.UpdateStatus
 import com.jesse.ohunelo.util.UserType
@@ -171,10 +172,15 @@ class EditEmailViewModel @Inject constructor(
                     }
                 }
                 is OhuneloResult.Error -> {
+                    val errorMessage = when(idTokenResult.error){
+                        is AuthenticationException.SignInCancelledException -> UiText.StringResource(R.string.sign_in_cancelled, "Google")
+                        is NetworkErrorException -> UiText.StringResource(R.string.network_error_occured)
+                        else -> UiText.StringResource(R.string.sign_in_failed, "Google")
+                    }
                     _editEmailUiState.update {
                             editEmailUiState ->
                         editEmailUiState.copy(
-                            message = idTokenResult.errorMessage,
+                            message = errorMessage,
                             isLoading = false
                         )
                     }
@@ -198,7 +204,7 @@ class EditEmailViewModel @Inject constructor(
                               editEmailUiState ->
                           editEmailUiState.copy(
                               message = UiText.StringResource(R.string.edit_was_successful),
-                              navigateBack = true
+                              logout = true
                           )
                       }
                     }
@@ -279,7 +285,8 @@ class EditEmailViewModel @Inject constructor(
         _editEmailUiState.update {
                 editEmailUiState ->
             editEmailUiState.copy(
-                message = null
+                message = null,
+                logout = false
             )
         }
     }
@@ -349,15 +356,6 @@ class EditEmailViewModel @Inject constructor(
                     }
                 }
             }
-        }
-    }
-
-    fun onNavigateBack(){
-        _editEmailUiState.update {
-                editEmailUiState ->
-            editEmailUiState.copy(
-                navigateBack = false
-            )
         }
     }
 }

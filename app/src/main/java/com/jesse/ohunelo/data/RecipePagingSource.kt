@@ -2,11 +2,12 @@ package com.jesse.ohunelo.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.network.data_source.RecipeNetworkDataSource
-import com.jesse.ohunelo.util.UiText
-import com.jesse.ohunelo.util.UiTextThrowable
+import com.jesse.ohunelo.util.NotFoundException
+import com.jesse.ohunelo.util.RateLimitExceededException
+import com.jesse.ohunelo.util.ServerErrorException
+import com.jesse.ohunelo.util.UnauthorizedException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -50,18 +51,17 @@ class RecipePagingSource(
                 nextKey = nextKey
             )
         } catch (e: HttpException){
-            Timber.e("Error: $e")
+            Timber.e("ErrorMessage: ${e.message}")
             when(e.code()){
-                402 -> {
-                    LoadResult.Error(UiTextThrowable(UiText.StringResource(R.string.rate_limit_exceeded)))
-                }
-                else -> {
-                    LoadResult.Error(UiTextThrowable(UiText.StringResource(R.string.failed_to_get_recipes)))
-                }
+                401 -> LoadResult.Error(UnauthorizedException())
+                402 -> LoadResult.Error(RateLimitExceededException())
+                404 -> LoadResult.Error(NotFoundException())
+                500 -> LoadResult.Error(ServerErrorException())
+                else -> LoadResult.Error(e)
             }
         } catch (e: Exception){
             Timber.e("Error: $e")
-            LoadResult.Error(UiTextThrowable(UiText.StringResource(R.string.failed_to_get_recipes)))
+            LoadResult.Error(e)
         }
     }
 }

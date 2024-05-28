@@ -1,12 +1,12 @@
 package com.jesse.ohunelo.presentation.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,10 +23,10 @@ import com.jesse.ohunelo.databinding.FragmentSeeAllRecipesBinding
 import com.jesse.ohunelo.presentation.ui.fragment.dialogs.RecipeExpandedItemDialogFragment
 import com.jesse.ohunelo.presentation.viewmodels.SeeAllRecipesViewModel
 import com.jesse.ohunelo.util.GridSpacingItemDecoration
-import com.jesse.ohunelo.util.UiTextThrowable
-import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpaceItemDecorator
-import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpanSize
-import com.jesse.ohunelo.util.spanned_grid_layout_manager.SpannedGridLayoutManager
+import com.jesse.ohunelo.util.NotFoundException
+import com.jesse.ohunelo.util.RateLimitExceededException
+import com.jesse.ohunelo.util.ServerErrorException
+import com.jesse.ohunelo.util.UnauthorizedException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -88,7 +88,13 @@ class SeeAllRecipesFragment : Fragment() {
                     val loadStateRefresh = combinedLoadStates.refresh
 
                     if (loadStateRefresh is LoadState.Error){
-                        val errorMessage = if(loadStateRefresh.error is UiTextThrowable) (loadStateRefresh.error as UiTextThrowable).errorMessage.asString(requireContext()) else loadStateRefresh.error.localizedMessage
+                        val errorMessage = when(loadStateRefresh.error){
+                            is UnauthorizedException -> getString(R.string.unauthorized_request)
+                            is RateLimitExceededException -> getString(R.string.rate_limit_exceeded)
+                            is NotFoundException -> getString(R.string.page_not_found)
+                            is ServerErrorException -> getString(R.string.internal_server_error)
+                            else -> getString(R.string.failed_to_get_recipes)
+                        }
                         binding.errorMessageText.text = errorMessage
                     }
                     binding.errorLayout.isVisible = loadStateRefresh is LoadState.Error

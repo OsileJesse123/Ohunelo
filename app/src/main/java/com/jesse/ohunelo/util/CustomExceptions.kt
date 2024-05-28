@@ -22,14 +22,14 @@ sealed class AuthenticationException: Exception(){
 class NetworkErrorException: Exception()
 
 // Unauthorized Exception
-class UnauthorizedException: AuthenticationException()
+class UnauthorizedException: Exception()
 
 // Not Found Exception
-class NotFoundException: AuthenticationException()
+class NotFoundException: Exception()
 
 // Rate Limit Exceeded Exception
-class RateLimitExceededException: AuthenticationException()
+class RateLimitExceededException: Exception()
 
 // Server Error Exception
-class ServerErrorException: AuthenticationException()
+class ServerErrorException: Exception()
 
