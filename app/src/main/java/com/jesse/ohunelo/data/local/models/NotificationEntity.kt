@@ -3,11 +3,8 @@ package com.jesse.ohunelo.data.local.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.Notification
 import com.jesse.ohunelo.util.NotificationType
-import com.jesse.ohunelo.util.UiDrawable
-import com.jesse.ohunelo.util.UiText
 import java.util.Date
 
 @Entity(tableName = "notification")

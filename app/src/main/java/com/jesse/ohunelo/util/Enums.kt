@@ -48,8 +48,3 @@ enum class UserType(val userType: String){
     }
 }
 
-enum class UpdateStatus{
-    SUCCESS,
-    REAUTHENTICATE,
-    LOG_OUT
-}

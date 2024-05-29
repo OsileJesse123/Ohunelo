@@ -1,6 +1,5 @@
 package com.jesse.ohunelo.data.model
 
-import android.content.Context
 import android.os.Parcelable
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.util.UiText

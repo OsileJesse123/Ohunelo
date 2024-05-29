@@ -24,7 +24,6 @@
                 android:id="@+id/recipe_image"
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
-                tools:src="@drawable/pasta_image"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/recipe_image"
                 app:loadImage="@{recipe.image}"

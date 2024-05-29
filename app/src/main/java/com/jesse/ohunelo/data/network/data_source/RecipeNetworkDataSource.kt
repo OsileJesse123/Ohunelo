@@ -4,10 +4,7 @@ import com.jesse.ohunelo.data.network.models.RandomFoodJokeResponse
 import com.jesse.ohunelo.data.network.models.RandomFoodTriviaResponse
 import com.jesse.ohunelo.data.network.models.RecipesByMealTypeResponse
 import com.jesse.ohunelo.data.network.service.SpoonacularService
-import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.HOME_SCREEN_RECIPES_AMOUNT
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 

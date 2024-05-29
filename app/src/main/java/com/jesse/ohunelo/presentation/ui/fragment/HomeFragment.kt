@@ -26,7 +26,6 @@ import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-// todo: Make sure to delete ohunelo_branding.webp and pasta_image after you are done with app
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 

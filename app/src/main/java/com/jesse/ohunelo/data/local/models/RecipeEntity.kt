@@ -5,9 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.network.models.AnalyzedInstructions
-import com.jesse.ohunelo.data.network.models.CaloricBreakdown
 import com.jesse.ohunelo.data.network.models.ExtendedIngredient
-import com.jesse.ohunelo.data.network.models.WinePairing
 
 @Entity(tableName = "recipe")
 data class RecipeEntity(

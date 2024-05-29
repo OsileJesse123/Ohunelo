@@ -1,10 +1,13 @@
 package com.jesse.ohunelo.util
 
 import android.content.Context
-import android.text.*
+import android.text.Layout
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.StaticLayout
 import android.text.method.LinkMovementMethod
 import android.view.View
-import android.view.WindowInsetsController
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.core.text.HtmlCompat

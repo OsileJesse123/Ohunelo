@@ -1,8 +1,6 @@
 package com.jesse.ohunelo.presentation.uistates
 
-import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.Recipe
-import com.jesse.ohunelo.util.UiDrawable
 import com.jesse.ohunelo.util.UiText
 
 data class HomeUiState(

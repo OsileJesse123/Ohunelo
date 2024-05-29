@@ -14,7 +14,6 @@ import com.jesse.ohunelo.presentation.uistates.EditEmailUiState
 import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.NetworkErrorException
 import com.jesse.ohunelo.util.UiText
-import com.jesse.ohunelo.util.UpdateStatus
 import com.jesse.ohunelo.util.UserType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -23,7 +22,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel

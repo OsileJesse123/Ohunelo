@@ -3,11 +3,9 @@ package com.jesse.ohunelo.data.repository
 import android.app.Activity
 import com.jesse.ohunelo.data.local.PrefStore
 import com.jesse.ohunelo.data.model.AuthUser
-import com.jesse.ohunelo.data.network.service.AuthenticationService
 import com.jesse.ohunelo.data.network.models.OhuneloResult
+import com.jesse.ohunelo.data.network.service.AuthenticationService
 import com.jesse.ohunelo.di.IODispatcher
-import com.jesse.ohunelo.util.UiText
-import com.jesse.ohunelo.util.UpdateStatus
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

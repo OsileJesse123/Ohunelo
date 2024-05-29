@@ -25,7 +25,6 @@ import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.NetworkErrorException
 import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiText
-import com.jesse.ohunelo.util.UpdateStatus
 import com.jesse.ohunelo.util.UserType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
