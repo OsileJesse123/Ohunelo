@@ -1,6 +1,7 @@
 package com.jesse.ohunelo.presentation.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,13 +92,13 @@ class HomeFragment : Fragment() {
                         sharedViewModel.stopShowingSplashScreen()
                     }
                     // If random recipes and recipes by category are not empty, it means there is data to be displayed so display it
-                    binding.homeScreenLayout.isVisible = (homeUiState.randomRecipes.isNotEmpty() && homeUiState.recipesByCategory.isNotEmpty())
+                    binding.homeScreenLayout.isVisible = (homeUiState.randomRecipes.isNotEmpty())
 
                     // If random recipes and recipes by category are empty and screen is no longer loading show the error view
                     binding.foodErrorLayout.isVisible = (homeUiState.randomRecipes.isEmpty() && homeUiState.recipesByCategory.isEmpty() && !homeUiState.loading)
 
                     // If random recipes is not empty but recipes by category is empty, then show the recipes by category error
-                    binding.recipesByCategoryError.isVisible = (homeUiState.randomRecipes.isNotEmpty() && homeUiState.recipesByCategory.isEmpty())
+                    binding.recipesByCategoryError.isVisible = (homeUiState.randomRecipes.isNotEmpty() && homeUiState.recipesByCategory.isEmpty() && !homeUiState.startShimmer)
 
                     // If random recipes, recipes by category is empty and state is loading then show shimmer view.
                     binding.homeShimmer.isVisible = (homeUiState.randomRecipes.isEmpty() && homeUiState.recipesByCategory.isEmpty() && homeUiState.loading)
@@ -105,6 +106,8 @@ class HomeFragment : Fragment() {
                     binding.swipeToRefreshLayout.isRefreshing =  (homeUiState.randomRecipes.isNotEmpty() && homeUiState.loading)
                     binding.recipesByCategoryRecycler.isVisible = !homeUiState.startShimmer
                     binding.recipesByCategoryShimmer.isVisible = homeUiState.startShimmer
+
+                    Log.e("HomeState", "Random: ${homeUiState.randomRecipes.size}, Category: ${homeUiState.recipesByCategory.size}}")
                 }
             }
         }
