@@ -18,7 +18,7 @@
             android:contentDescription="@string/recipe_image"
             app:loadImage="@{imageUrl}"
             android:scaleType="fitXY"
-            tools:src="@drawable/pasta_image"/>
+            />
 
         <ImageView
             android:id="@+id/close_dialog_image_view"

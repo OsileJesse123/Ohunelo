@@ -1,8 +1,6 @@
 package com.jesse.ohunelo.data.local.database
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKeys
 import java.io.File

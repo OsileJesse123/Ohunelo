@@ -1,7 +1,5 @@
 package com.jesse.ohunelo.data.network.models
 
-import com.jesse.ohunelo.util.UiText
-
 
 sealed class OhuneloResult<T>(
     val data: T? = null,

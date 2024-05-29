@@ -9,8 +9,6 @@ import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.EditPasswordUiState
 import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.UiText
-import com.jesse.ohunelo.util.UpdateStatus
-import com.jesse.ohunelo.util.UserType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

@@ -19,3 +19,11 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+# Keep Recipe class
+-keep class com.jesse.ohunelo.data.model.Recipe
+# Keep net.sqlcipher package and subpackages
+-keep class net.sqlcipher.**{ *; }
+# Keep the database entity classes
+-keep, allowshrinking class com.jesse.ohunelo.data.local.models.** { *; }

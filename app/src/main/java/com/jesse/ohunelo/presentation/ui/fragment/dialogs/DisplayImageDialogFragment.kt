@@ -8,7 +8,6 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jesse.ohunelo.databinding.DisplayImageDialogFragmentBinding
-import com.jesse.ohunelo.databinding.LoaderDialogFragmentBinding
 
 class DisplayImageDialogFragment(
     private val imageUrl: String,

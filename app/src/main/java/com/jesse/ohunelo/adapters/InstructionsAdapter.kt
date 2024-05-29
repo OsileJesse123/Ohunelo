@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.jesse.ohunelo.data.network.models.AnalyzedInstructions
-import com.jesse.ohunelo.data.network.models.Step
 import com.jesse.ohunelo.databinding.InstructionsItemBinding
 
 class InstructionsAdapter(private val onAnalyzedInstructionClicked: ((analyzedInstructions:

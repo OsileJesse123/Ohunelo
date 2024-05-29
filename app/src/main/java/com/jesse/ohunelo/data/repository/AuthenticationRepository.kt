@@ -3,10 +3,7 @@ package com.jesse.ohunelo.data.repository
 import android.app.Activity
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
-import com.jesse.ohunelo.util.UiText
-import com.jesse.ohunelo.util.UpdateStatus
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 
 interface AuthenticationRepository {
 

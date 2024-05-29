@@ -1,12 +1,10 @@
 package com.jesse.ohunelo.workmanager.worker
 
 import android.content.Context
-import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
-import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
@@ -14,7 +12,6 @@ import androidx.work.WorkerParameters
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.repository.AuthenticationRepository
 import com.jesse.ohunelo.data.repository.NotificationRepository
-import com.jesse.ohunelo.util.NOTIFICATION_WORKER_TAG
 import com.jesse.ohunelo.util.NotificationHelper
 import com.jesse.ohunelo.util.NotificationType
 import dagger.assisted.Assisted

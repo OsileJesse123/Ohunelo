@@ -6,13 +6,11 @@ import androidx.paging.PagingData
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.RecipePagingSource
 import com.jesse.ohunelo.data.local.database.RecipeDao
-import com.jesse.ohunelo.data.model.Notification
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.data.network.data_source.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.di.IODispatcher
-import com.jesse.ohunelo.util.AuthenticationException
 import com.jesse.ohunelo.util.HOME_SCREEN_RECIPES_AMOUNT
 import com.jesse.ohunelo.util.NetworkErrorException
 import com.jesse.ohunelo.util.NotFoundException
@@ -44,21 +42,28 @@ class RecipeRepositoryImpl @Inject constructor(
                  val result = recipeNetworkDataSource.getRecipes(sort = "random");
                  // Convert recipes response to recipe entities
                  Timber.e("Recipe from Repo: ${result.results.size}")
-                 Timber.e("Recipe from Repo instructions: ${result.results[0].analyzedInstructions}, instructions: ${result.results[0].analyzedInstructions.size}")
+                 for (recipeResp in result.results){
+                     Timber.e("Recipe Calories: ${recipeResp?.nutrition?.nutrients?.find { nutrients -> nutrients.name == "Calories" }?.amount}")
+                 }
                  val recipeEntities = withContext(defaultDispatcher){
                      result.results.map {
                              recipeResponse ->
-
-                         recipeResponse.toRecipeEntity()
+                         val recipeEnt = recipeResponse.toRecipeEntity()
+                         Timber.e("Recipe Calories2: ${recipeEnt.nutritionEntity?.calories}")
+                         recipeEnt
                      }
                  }
+
                  // Insert recipe entities into database
                  recipeDao.insertRecipes(recipeEntities)
                  // Get the recipe entities from the database and convert to recipes
                  val recipes = withContext(defaultDispatcher){recipeDao.getRandomRecipes().map {
-                         recipeEntity ->  recipeEntity.toRecipe()
+                         recipeEntity ->
+                     Timber.e("Recipe Calories2.1: ${recipeEntity.nutritionEntity?.calories}")
+                     recipeEntity.toRecipe()
                     }
                  }
+                 Timber.e("Recipe Calories3: ${recipes[0].nutrition?.calories}")
                  Timber.e("Local Recipe from Repo: ${recipes.size}")
                  OhuneloResult.Success(recipes)
              }

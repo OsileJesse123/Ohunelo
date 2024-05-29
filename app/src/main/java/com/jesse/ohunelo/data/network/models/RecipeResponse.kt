@@ -1,6 +1,5 @@
 package com.jesse.ohunelo.data.network.models
 
-import com.jesse.ohunelo.data.local.models.NutritionEntity
 import com.jesse.ohunelo.data.local.models.RecipeEntity
 import com.jesse.ohunelo.data.model.Recipe
 import com.jesse.ohunelo.util.RecipeImageSize

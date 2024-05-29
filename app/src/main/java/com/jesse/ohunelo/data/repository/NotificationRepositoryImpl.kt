@@ -1,6 +1,5 @@
 package com.jesse.ohunelo.data.repository
 
-import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.local.database.NotificationDao
 import com.jesse.ohunelo.data.local.models.NotificationEntity
 import com.jesse.ohunelo.data.model.Notification
@@ -9,7 +8,6 @@ import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.di.IODispatcher
 import com.jesse.ohunelo.util.NotificationType
-import com.jesse.ohunelo.util.UiText
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

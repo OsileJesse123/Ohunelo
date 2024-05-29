@@ -1,7 +1,6 @@
 package com.jesse.ohunelo.presentation.uistates
 
 import com.jesse.ohunelo.util.UiText
-import com.jesse.ohunelo.util.UserType
 
 data class EditPasswordUiState(
     val password: String = "",
