@@ -41,10 +41,6 @@ class RecipeRepositoryImpl @Inject constructor(
                  // Get the recipes from api
                  val result = recipeNetworkDataSource.getRecipes(sort = "random");
                  // Convert recipes response to recipe entities
-                 Timber.e("Recipe from Repo: ${result.results.size}")
-                 for (recipeResp in result.results){
-                     Timber.e("Recipe Calories: ${recipeResp?.nutrition?.nutrients?.find { nutrients -> nutrients.name == "Calories" }?.amount}")
-                 }
                  val recipeEntities = withContext(defaultDispatcher){
                      result.results.map {
                              recipeResponse ->
