@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.NotificationHeaderItemBinding
 
-class NotificationHeaderAdapter(private val onClick: () -> Unit): RecyclerView.Adapter<NotificationHeaderAdapter.NotificationHeaderViewHolder>() {
+class NotificationHeaderAdapter(
+    private var onClick: () -> Unit
+): RecyclerView.Adapter<NotificationHeaderAdapter.NotificationHeaderViewHolder>() {
 
     private var cachedHolder: NotificationHeaderViewHolder? = null
 
@@ -18,7 +20,10 @@ class NotificationHeaderAdapter(private val onClick: () -> Unit): RecyclerView.A
                 onBindViewHolder(holder, 0)
             }
         }
-
+    var shouldGuideUserToAppSettings = false
+    fun updateOnClick(onClick: () -> Unit){
+        this.onClick = onClick
+    }
     override fun getItemCount() = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationHeaderViewHolder {
@@ -31,6 +36,12 @@ class NotificationHeaderAdapter(private val onClick: () -> Unit): RecyclerView.A
     override fun onBindViewHolder(holder: NotificationHeaderViewHolder, position: Int) {
         holder.binding.permsissionRationale.visibility =
             if (shouldShowRationale) View.VISIBLE else View.GONE
+        holder.binding.permissionRequired.visibility = if(shouldGuideUserToAppSettings) View.VISIBLE else View.GONE
+        if (shouldGuideUserToAppSettings){
+            holder.binding.grantPermission.apply {
+                text = this.resources.getString(R.string.grant_permission)
+            }
+        }
     }
 
     class NotificationHeaderViewHolder(
