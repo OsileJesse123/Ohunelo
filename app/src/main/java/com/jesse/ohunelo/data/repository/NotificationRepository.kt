@@ -15,4 +15,10 @@ interface NotificationRepository {
 
     suspend fun deleteNotifications(notifications: List<Notification>)
 
+    fun getDenialCount(): Int
+
+    fun updateDenialCount()
+
+    fun resetDenialCount()
+
 }

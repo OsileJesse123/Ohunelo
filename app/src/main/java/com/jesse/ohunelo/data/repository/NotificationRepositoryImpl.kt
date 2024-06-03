@@ -1,5 +1,6 @@
 package com.jesse.ohunelo.data.repository
 
+import com.jesse.ohunelo.data.local.PrefStore
 import com.jesse.ohunelo.data.local.database.NotificationDao
 import com.jesse.ohunelo.data.local.models.NotificationEntity
 import com.jesse.ohunelo.data.model.Notification
@@ -20,7 +21,8 @@ class NotificationRepositoryImpl @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
     private val recipeNetworkDataSource: RecipeNetworkDataSource,
-    private val notificationDao: NotificationDao
+    private val notificationDao: NotificationDao,
+    private val prefStore: PrefStore
 ): NotificationRepository {
 
     override suspend fun synchronizeNotifications(notificationType: NotificationType): OhuneloResult<Notification> {
@@ -75,5 +77,17 @@ class NotificationRepositoryImpl @Inject constructor(
                 Timber.e("Delete Notifications failed, Error: $e")
             }
         }
+    }
+
+    override fun getDenialCount(): Int {
+        return prefStore.denialCount
+    }
+
+    override fun updateDenialCount() {
+        prefStore.denialCount++
+    }
+
+    override fun resetDenialCount() {
+        prefStore.denialCount = 0
     }
 }

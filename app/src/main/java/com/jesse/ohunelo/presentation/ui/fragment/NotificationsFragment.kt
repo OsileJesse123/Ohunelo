@@ -2,7 +2,10 @@ package com.jesse.ohunelo.presentation.ui.fragment
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +45,19 @@ class NotificationsFragment : Fragment() {
 
     @SuppressLint("InlinedApi")
     // POST_NOTIFICATIONS is automatically granted on API<33.
-    val permissionRequest = PermissionRequest(this, Manifest.permission.POST_NOTIFICATIONS)
+    val permissionRequest = PermissionRequest(
+            fragment = this,
+            permission = Manifest.permission.POST_NOTIFICATIONS,
+            shouldGuideUserToAppSettings = {
+                viewModel.shouldGuideUserToAppSettings()
+            },
+            updateDenialCount = {
+                viewModel.updateDenialCount()
+            },
+            resetDenialCount = {
+                viewModel.resetDenialCount()
+            }
+        )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,6 +92,12 @@ class NotificationsFragment : Fragment() {
                                 val concatAdapter = ConcatAdapter(notificationHeaderAdapter, notificationsAdapter)
                                 binding.notificationsRecycler.adapter = concatAdapter
                                 notificationHeaderAdapter.shouldShowRationale = status.shouldShowRationale
+                                notificationHeaderAdapter.shouldGuideUserToAppSettings = status.shouldGuideUserToAppSettings
+                                if (status.shouldGuideUserToAppSettings){
+                                    notificationHeaderAdapter.updateOnClick {
+                                        openAppSettings()
+                                    }
+                                }
                             }
                             else -> {
                                 // Do Nothing
@@ -93,6 +114,14 @@ class NotificationsFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun openAppSettings(){
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            val uri = Uri.fromParts("package", requireActivity().packageName, null)
+            data = uri
+        }
+        startActivity(intent)
     }
 
     private fun setupRecycler(){

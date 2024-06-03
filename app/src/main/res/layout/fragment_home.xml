@@ -343,6 +343,12 @@
                             <include layout="@layout/recipes_by_category_item"/>
                             <include layout="@layout/recipes_by_category_item"/>
                             <include layout="@layout/recipes_by_category_item"/>
+                            <include layout="@layout/recipes_by_category_item"/>
+                            <include layout="@layout/recipes_by_category_item"/>
+                            <include layout="@layout/recipes_by_category_item"/>
+                            <include layout="@layout/recipes_by_category_item"/>
+                            <include layout="@layout/recipes_by_category_item"/>
+                            <include layout="@layout/recipes_by_category_item"/>
                         </LinearLayout>
                     </com.facebook.shimmer.ShimmerFrameLayout>
 

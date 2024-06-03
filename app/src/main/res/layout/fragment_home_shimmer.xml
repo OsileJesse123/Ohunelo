@@ -83,8 +83,13 @@
                         app:layout_constraintTop_toBottomOf="@+id/random_text_view_shimmer">
                         <include
                             layout="@layout/randoms_item" />
-                        <include
-                            layout="@layout/randoms_item" />
+                        <include layout="@layout/randoms_item" />
+                        <include layout="@layout/randoms_item" />
+                        <include layout="@layout/randoms_item" />
+                        <include layout="@layout/randoms_item" />
+                        <include layout="@layout/randoms_item" />
+                        <include layout="@layout/randoms_item" />
+                        <include layout="@layout/randoms_item" />
                     </LinearLayout>
 
                     <TextView
@@ -259,8 +264,12 @@
                             layout="@layout/recipes_by_category_item"/>
                         <include
                             layout="@layout/recipes_by_category_item"/>
-                        <include
-                            layout="@layout/recipes_by_category_item"/>
+                        <include layout="@layout/recipes_by_category_item"/>
+                        <include layout="@layout/recipes_by_category_item"/>
+                        <include layout="@layout/recipes_by_category_item"/>
+                        <include layout="@layout/recipes_by_category_item"/>
+                        <include layout="@layout/recipes_by_category_item"/>
+                        <include layout="@layout/recipes_by_category_item"/>
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

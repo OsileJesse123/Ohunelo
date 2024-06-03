@@ -64,9 +64,21 @@ class NotificationsViewModel @Inject constructor(
 
     }
 
+    fun shouldGuideUserToAppSettings(): Boolean = notificationsRepository.getDenialCount() == 2
+
+    fun updateDenialCount(){
+        notificationsRepository.updateDenialCount()
+    }
+
     fun updateNotification(notification: Notification){
         viewModelScope.launch {
             notificationsRepository.updateNotification(notification)
+        }
+    }
+
+    fun resetDenialCount(){
+        if (notificationsRepository.getDenialCount() > 0){
+            notificationsRepository.resetDenialCount()
         }
     }
 }
