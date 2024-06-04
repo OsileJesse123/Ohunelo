@@ -52,7 +52,7 @@ class GoogleSignInHandler @Inject constructor(
                 is ApiException -> {
                     if (e.statusCode == 16){
                         Timber.e("Sign in with google failed,Exception: $e, Error Message: ${e.localizedMessage}")
-                        onSignInFailed(UiText.StringResource(R.string.caller_temporarily_blocked))
+                        onSignInFailed(UiText.StringResource(R.string.sign_in_failed, "Google"))
                     } else{
                         Timber.e("Sign in with google failed,Exception: $e, Error Message: ${e.localizedMessage}")
                         onSignInFailed(UiText.StringResource(R.string.sign_in_failed, "Google"))

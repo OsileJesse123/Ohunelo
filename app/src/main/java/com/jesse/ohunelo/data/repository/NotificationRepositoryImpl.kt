@@ -87,7 +87,20 @@ class NotificationRepositoryImpl @Inject constructor(
         prefStore.denialCount++
     }
 
+    /**
+     * Denial count is reset to 1 to cater for situations where the use manually disables notifications
+     * from app settings after initially allowing the notification permission.
+     *
+     * In this situation, when the user clicks on grant button from the NotificationFragment Screen,
+     * the request permission dialog is shown, when the user clicks "Don't Allow", permission is
+     * permanently denied, meaning the user has to manual grant permission from the app settings
+     * screen.
+     *
+     * Hence, denial count is then updated to 2 (The logic used handle permission requests then
+     * handles the situation as though the user denied permission twice.
+     * )
+     * */
     override fun resetDenialCount() {
-        prefStore.denialCount = 0
+        prefStore.denialCount = 1
     }
 }

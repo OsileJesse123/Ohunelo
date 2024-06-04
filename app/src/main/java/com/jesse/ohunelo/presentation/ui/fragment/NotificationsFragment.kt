@@ -79,7 +79,9 @@ class NotificationsFragment : Fragment() {
 
         setupRecycler()
 
-        val notificationHeaderAdapter = NotificationHeaderAdapter { permissionRequest.launch() }
+        val notificationHeaderAdapter = NotificationHeaderAdapter(onClick = { permissionRequest.launch() },
+            permissionRationaleMessage = getString(R.string.permission_rationale)
+        )
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -93,7 +95,7 @@ class NotificationsFragment : Fragment() {
                                 binding.notificationsRecycler.adapter = concatAdapter
                                 notificationHeaderAdapter.shouldShowRationale = status.shouldShowRationale
                                 notificationHeaderAdapter.shouldGuideUserToAppSettings = status.shouldGuideUserToAppSettings
-                                if (status.shouldGuideUserToAppSettings){
+                                if (status.shouldGuideUserToAppSettings && !status.shouldShowRationale){
                                     notificationHeaderAdapter.updateOnClick {
                                         openAppSettings()
                                     }
