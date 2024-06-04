@@ -82,7 +82,7 @@ class HomeViewModel @Inject constructor(
             user?.let {
                 val (_, _, _, username) = it
 
-                emit(username ?: "")
+                emit(username?.split(" ")?.get(0) ?: "")
             } ?: emit("")
         }
     }.asLiveData()

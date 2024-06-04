@@ -27,8 +27,8 @@ class ValidateNameUseCase @Inject constructor(){
         /*
         * ^ and $: These symbols indicate the start and end of the string, respectively, ensuring that the regex matches the entire string.
           [a-zA-Z]: This part allows only letters, both uppercase and lowercase. No numbers or symbols are allowed.
-          {3,8}: This specifies that the username should be between 3 and 8 characters long.
-          So, this regex pattern enforces your criteria for a username: it's no longer than 8
+          {3,nameMaxLength}: This specifies that the username should be between 3 and nameMaxLength characters long.
+          So, this regex pattern enforces your criteria for a username: it's no longer than nameMaxLength
           characters, doesn't allow blank spaces, and only allows letters (no numbers or symbols).
         * */
         val regexPattern = Regex("^[a-zA-Z]{3,$nameMaxLength}\$")
