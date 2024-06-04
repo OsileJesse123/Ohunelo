@@ -1,6 +1,11 @@
 package com.jesse.ohunelo.workmanager.worker
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.content.ContextCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
@@ -28,7 +33,17 @@ class NotificationWorker @AssistedInject constructor(
 ): CoroutineWorker(ctx, params) {
 
     private val notificationTypes = listOf(NotificationType.FOOD_JOKE, NotificationType.FOOD_TRIVIA)
+    @SuppressLint("InlinedApi")
+    // POST_NOTIFICATIONS is automatically granted on API<33.
     override suspend fun doWork(): Result {
+        val permissionDenied = ContextCompat.checkSelfPermission(
+            applicationContext,
+            Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED
+        // If the device uses API 33 or greater and notification permission is not granted, then
+        // don't bother fetching notification.
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && permissionDenied){
+            return Result.failure()
+        }
         return if(authenticationRepository.isUserLoggedIn()){
             when(val notificationsResult = notificationRepository.synchronizeNotifications(notificationTypes.random())){
                 is OhuneloResult.Success -> {

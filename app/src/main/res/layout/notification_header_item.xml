@@ -12,7 +12,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingHorizontal="@dimen/grid_2"
-            android:paddingVertical="@dimen/grid_4">
+            android:paddingTop="@dimen/grid_4"
+            android:paddingBottom="@dimen/grid_2"
+            >
 
             <TextView
                 android:id="@+id/permission_request"
@@ -30,7 +32,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/grid_0_5"
-                android:text="@string/permission_rationale"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -46,6 +47,7 @@
                 android:text="@string/permission_required"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textSize="@dimen/_14sp"
+                android:visibility="gone"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -58,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/grid_0_5"
                 android:text="@string/grant"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/guideline" />
 
@@ -66,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent=".65"
+                app:layout_constraintGuide_percent=".6"
                  />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

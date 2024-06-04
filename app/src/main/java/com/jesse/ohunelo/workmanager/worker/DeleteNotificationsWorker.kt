@@ -22,13 +22,13 @@ class DeleteNotificationsWorker @AssistedInject constructor(
 ): CoroutineWorker(ctx, params){
 
     override suspend fun doWork(): Result {
-         return if(authenticationRepository.isUserLoggedIn()){
-            val notifications = notificationRepository.getNotifications().first()
+        val notifications = notificationRepository.getNotifications().first()
+         return if(authenticationRepository.isUserLoggedIn() && notifications.isNotEmpty()){
             val notificationsSize = notifications.size
             val isDivisibleBy2 = notificationsSize % 2 == 0
             if (notificationsSize >= 20 && isDivisibleBy2){
                 // Only half the notifications will be deleted from device. These deleted notifications
-                // will older ones.
+                // will be older ones.
                 val halfTheNotifications = notifications
                     .subList(notificationsSize/2, notificationsSize)
                 notificationRepository.deleteNotifications(halfTheNotifications)

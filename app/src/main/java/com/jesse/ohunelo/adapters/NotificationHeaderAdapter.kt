@@ -8,7 +8,8 @@ import com.jesse.ohunelo.R
 import com.jesse.ohunelo.databinding.NotificationHeaderItemBinding
 
 class NotificationHeaderAdapter(
-    private var onClick: () -> Unit
+    private var onClick: () -> Unit,
+    private val permissionRationaleMessage: String
 ): RecyclerView.Adapter<NotificationHeaderAdapter.NotificationHeaderViewHolder>() {
 
     private var cachedHolder: NotificationHeaderViewHolder? = null
@@ -34,10 +35,12 @@ class NotificationHeaderAdapter(
     }
 
     override fun onBindViewHolder(holder: NotificationHeaderViewHolder, position: Int) {
-        holder.binding.permsissionRationale.visibility =
-            if (shouldShowRationale) View.VISIBLE else View.GONE
-        holder.binding.permissionRequired.visibility = if(shouldGuideUserToAppSettings) View.VISIBLE else View.GONE
-        if (shouldGuideUserToAppSettings){
+        holder.binding.permsissionRationale.apply {
+            text = permissionRationaleMessage
+            visibility = if (shouldShowRationale) View.VISIBLE else View.GONE
+        }
+        holder.binding.permissionRequired.visibility = if(shouldGuideUserToAppSettings && !shouldShowRationale) View.VISIBLE else View.GONE
+        if (shouldGuideUserToAppSettings && !shouldShowRationale){
             holder.binding.grantPermission.apply {
                 text = this.resources.getString(R.string.grant_permission)
             }

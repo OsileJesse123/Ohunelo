@@ -64,7 +64,7 @@ class NotificationsViewModel @Inject constructor(
 
     }
 
-    fun shouldGuideUserToAppSettings(): Boolean = notificationsRepository.getDenialCount() == 2
+    fun shouldGuideUserToAppSettings(): Boolean = notificationsRepository.getDenialCount() > 0
 
     fun updateDenialCount(){
         notificationsRepository.updateDenialCount()
@@ -77,8 +77,9 @@ class NotificationsViewModel @Inject constructor(
     }
 
     fun resetDenialCount(){
-        if (notificationsRepository.getDenialCount() > 0){
+        // If the denial count is greater than 0, this means user at some point denied permission
+        // permanently and had to grant permission from the app settings.
+        if (notificationsRepository.getDenialCount() > 1)
             notificationsRepository.resetDenialCount()
-        }
     }
 }
