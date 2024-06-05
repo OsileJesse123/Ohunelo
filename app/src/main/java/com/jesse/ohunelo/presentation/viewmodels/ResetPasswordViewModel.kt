@@ -42,7 +42,10 @@ class ResetPasswordViewModel @Inject constructor(
             _resetPasswordUiStateFlow.update {
                     resetPasswordUiState ->
                 val emailValidation = validateEmailUseCase(emailText)
-                resetPasswordUiState.copy(emailError = emailValidation.errorMessage)
+                resetPasswordUiState.copy(
+                    emailError = emailValidation.errorMessage,
+                    isEnabled = resetPasswordUiState.email.isNotEmpty()
+                )
             }
         }
     }
@@ -63,7 +66,8 @@ class ResetPasswordViewModel @Inject constructor(
             _resetPasswordUiStateFlow.update {
                     resetPasswordUiState ->
                 resetPasswordUiState.copy(
-                    isEnabled = false
+                    isEnabled = false,
+                    isLoading = true
                 )
             }
             // A short delay to ensure that state is up to date before validating
@@ -77,6 +81,7 @@ class ResetPasswordViewModel @Inject constructor(
                                 resetPasswordUiState ->
                             resetPasswordUiState.copy(
                                 isEnabled = true,
+                                isLoading = false,
                                 showConfirmationMessage = Pair(true, UiText.StringResource(R.string.reset_password_email))
                             )
                         }
@@ -95,6 +100,7 @@ class ResetPasswordViewModel @Inject constructor(
                                 resetPasswordUiState ->
                             resetPasswordUiState.copy(
                                 isEnabled = true,
+                                isLoading = false,
                                 showConfirmationMessage = Pair(true, errorMessage)
                             )
                         }
@@ -104,7 +110,8 @@ class ResetPasswordViewModel @Inject constructor(
                 _resetPasswordUiStateFlow.update {
                         resetPasswordUiState ->
                     resetPasswordUiState.copy(
-                        isEnabled = true
+                        isEnabled = true,
+                        isLoading = false,
                     )
                 }
             }

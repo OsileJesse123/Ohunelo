@@ -65,11 +65,9 @@ class UpdateUsernameFragment : Fragment() {
                     if (updateUsernameUiState.showErrorMessage.first){
                         showErrorMessage(updateUsernameUiState.showErrorMessage.second)
                     }
-                    // If all other views are not enabled, then the loader should be shown
-                    if (!updateUsernameUiState.isEnabled){
+                    if (updateUsernameUiState.isLoading){
                         showLoader()
                     }
-                    // If all other views are enabled, then the loader should be hidden
                     else{
                         hideLoader()
                     }

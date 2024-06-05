@@ -74,7 +74,6 @@
                     android:textColorHint="@color/orange_100"
                     app:errorMessageText="@{viewModel.loginUiStateFlow.emailError}"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -127,7 +126,6 @@
                     app:errorIconDrawable="@null"
                     app:errorMessageText="@{viewModel.loginUiStateFlow.passwordError}"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -163,7 +161,7 @@
                     android:text="@string/login"
                     android:layout_marginTop="@dimen/grid_4"
                     app:cornerRadius="@dimen/_15dp"
-                    android:enabled="@{viewModel.loginUiStateFlow.enabled}"
+                    android:enabled="@{viewModel.loginUiStateFlow.loginButtonEnabled}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/forgot_password_text" />

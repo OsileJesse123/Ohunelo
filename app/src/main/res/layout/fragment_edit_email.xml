@@ -94,10 +94,10 @@
             android:layout_marginHorizontal="@dimen/grid_2"
             android:layout_marginTop="@dimen/grid_4"
             android:backgroundTint="?attr/colorSecondary"
-            android:text="@string/update"
             app:cornerRadius="@dimen/_15dp"
-            app:buttonTextTransparency="@{!viewModel.editEmailUiState.loading}"
-            android:enabled="@{!viewModel.editEmailUiState.loading}"
+            app:isLoading="@{viewModel.editEmailUiState.loading}"
+            app:buttonText="@{@string/update}"
+            android:enabled="@{viewModel.editEmailUiState.enabled}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/enter_email_address_input_layout" />

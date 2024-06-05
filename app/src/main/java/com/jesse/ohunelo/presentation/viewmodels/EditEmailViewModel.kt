@@ -50,7 +50,10 @@ class EditEmailViewModel @Inject constructor(
             _editEmailUiState.update {
                     editEmailUiState ->
                 val emailValidation = validateEmailUseCase(emailText)
-                editEmailUiState.copy(emailError = emailValidation.errorMessage)
+                editEmailUiState.copy(
+                    emailError = emailValidation.errorMessage,
+                    isEnabled = editEmailUiState.email.isNotEmpty()
+                )
             }
         }
     }
@@ -63,7 +66,8 @@ class EditEmailViewModel @Inject constructor(
                             editEmailUiState ->
                         editEmailUiState.copy(
                             message = UiText.StringResource(R.string.reauthenticate_success),
-                            isLoading = false
+                            isLoading = false,
+                            isEnabled = true
                         )
                     }
                 }
@@ -85,7 +89,8 @@ class EditEmailViewModel @Inject constructor(
                                     editEmailUiState ->
                                 editEmailUiState.copy(
                                     isLoading = false,
-                                    message = UiText.StringResource(R.string.invalid_credentials)
+                                    message = UiText.StringResource(R.string.invalid_credentials),
+                                    isEnabled = true
                                 )
                             }
                         }
@@ -94,7 +99,8 @@ class EditEmailViewModel @Inject constructor(
                                     editEmailUiState ->
                                 editEmailUiState.copy(
                                     isLoading = false,
-                                    message = UiText.StringResource(R.string.reauthenticate_fail)
+                                    message = UiText.StringResource(R.string.reauthenticate_fail),
+                                    isEnabled = true
                                 )
                             }
                         }
@@ -130,7 +136,8 @@ class EditEmailViewModel @Inject constructor(
                                     editEmailUiState ->
                                 editEmailUiState.copy(
                                     message = UiText.StringResource(R.string.reauthenticate_success),
-                                    isLoading = false
+                                    isLoading = false,
+                                    isEnabled = true
                                 )
                             }
                         }
@@ -152,7 +159,8 @@ class EditEmailViewModel @Inject constructor(
                                             editEmailUiState ->
                                         editEmailUiState.copy(
                                             message = UiText.StringResource(R.string.invalid_credentials),
-                                            isLoading = false
+                                            isLoading = false,
+                                            isEnabled = true
                                         )
                                     }
                                 }
@@ -161,7 +169,8 @@ class EditEmailViewModel @Inject constructor(
                                             editEmailUiState ->
                                         editEmailUiState.copy(
                                             message = UiText.StringResource(R.string.reauthenticate_fail),
-                                            isLoading = false
+                                            isLoading = false,
+                                            isEnabled = true
                                         )
                                     }
                                 }
@@ -179,7 +188,8 @@ class EditEmailViewModel @Inject constructor(
                             editEmailUiState ->
                         editEmailUiState.copy(
                             message = errorMessage,
-                            isLoading = false
+                            isLoading = false,
+                            isEnabled = true
                         )
                     }
                 }
@@ -193,7 +203,8 @@ class EditEmailViewModel @Inject constructor(
                     _editEmailUiState.update {
                             editEmailUiState ->
                         editEmailUiState.copy(
-                            isLoading = true
+                            isLoading = true,
+                            isEnabled = false
                         )
                     }
                 when(val result = authenticationRepository.updateUserEmail(_editEmailUiState.value.email)){
@@ -214,7 +225,8 @@ class EditEmailViewModel @Inject constructor(
                                         editEmailUiState ->
                                     editEmailUiState.copy(
                                         message = UiText.StringResource(R.string.email_already_in_use),
-                                        isLoading = false
+                                        isLoading = false,
+                                        isEnabled = true
                                     )
                                 }
                             }
@@ -224,7 +236,7 @@ class EditEmailViewModel @Inject constructor(
                                         editEmailUiState ->
                                     editEmailUiState.copy(
                                         message = UiText.StringResource(R.string.reauthenticate_message),
-                                        reauthenticate = Pair(true, UserType.getUserType(authenticationRepository.getUserType()))
+                                        reauthenticate = Pair(true, UserType.getUserType(authenticationRepository.getUserType())),
                                     )
                                 }
                             }
@@ -237,7 +249,7 @@ class EditEmailViewModel @Inject constructor(
                                         editEmailUiState ->
                                     editEmailUiState.copy(
                                         message = UiText.StringResource(R.string.user_credential_no_longer_valid),
-                                        logout = true
+                                        logout = true,
                                     )
                                 }
                             }
@@ -247,7 +259,8 @@ class EditEmailViewModel @Inject constructor(
                                         editEmailUiState ->
                                     editEmailUiState.copy(
                                         message = UiText.StringResource(R.string.edit_email_failed),
-                                        isLoading = false
+                                        isLoading = false,
+                                        isEnabled = true
                                     )
                                 }
                             }
@@ -274,7 +287,8 @@ class EditEmailViewModel @Inject constructor(
         _editEmailUiState.update {
                 editEmailUiState ->
             editEmailUiState.copy(
-                isLoading = false
+                isLoading = false,
+                isEnabled = true
             )
         }
     }
@@ -293,7 +307,7 @@ class EditEmailViewModel @Inject constructor(
         _editEmailUiState.update {
                 editEmailUiState ->
             editEmailUiState.copy(
-                reauthenticate = Pair(false, null)
+                reauthenticate = Pair(false, null),
             )
         }
     }
@@ -303,7 +317,8 @@ class EditEmailViewModel @Inject constructor(
                 editEmailUiState ->
             editEmailUiState.copy(
                 isLoading = false,
-                message = errorMessage
+                message = errorMessage,
+                isEnabled = true
             )
         }
     }
@@ -316,7 +331,8 @@ class EditEmailViewModel @Inject constructor(
                             editEmailUiState ->
                         editEmailUiState.copy(
                             message = UiText.StringResource(R.string.reauthenticate_success),
-                            isLoading = false
+                            isLoading = false,
+                            isEnabled = true
                         )
                     }
                 }
@@ -338,7 +354,8 @@ class EditEmailViewModel @Inject constructor(
                                     editEmailUiState ->
                                 editEmailUiState.copy(
                                     message = UiText.StringResource(R.string.invalid_credentials),
-                                    isLoading = false
+                                    isLoading = false,
+                                    isEnabled = true
                                 )
                             }
                         }
@@ -347,7 +364,8 @@ class EditEmailViewModel @Inject constructor(
                                     editEmailUiState ->
                                 editEmailUiState.copy(
                                     message = UiText.StringResource(R.string.reauthenticate_fail),
-                                    isLoading = false
+                                    isLoading = false,
+                                    isEnabled = true
                                 )
                             }
                         }

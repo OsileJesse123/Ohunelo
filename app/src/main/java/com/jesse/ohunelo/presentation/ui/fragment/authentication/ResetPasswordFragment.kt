@@ -66,11 +66,9 @@ class ResetPasswordFragment : Fragment() {
                     if (resetPasswordUiState.showErrorMessage.first){
                         showMessage(resetPasswordUiState.showErrorMessage.second?.asString(requireContext()))
                     }
-                    // If all other views are not enabled, then the loader should be shown
-                    if (!resetPasswordUiState.isEnabled){
+                    if (resetPasswordUiState.isLoading){
                         showLoader()
                     }
-                    // If all other views are enabled, then the loader should be hidden
                     else{
                         hideLoader()
                     }

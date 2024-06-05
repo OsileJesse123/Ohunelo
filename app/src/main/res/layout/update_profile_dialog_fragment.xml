@@ -164,6 +164,7 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- app:buttonTextTransparency="@{viewModel.updateProfileUiState.enabled}" -->d
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/update_button"
                         android:layout_width="@dimen/_0dp"
@@ -173,7 +174,7 @@
                         android:layout_marginVertical="@dimen/grid_4"
                         app:cornerRadius="@dimen/_15dp"
                         android:enabled="@{viewModel.updateProfileUiState.enabled}"
-                        app:buttonTextTransparency="@{viewModel.updateProfileUiState.enabled}"
+
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

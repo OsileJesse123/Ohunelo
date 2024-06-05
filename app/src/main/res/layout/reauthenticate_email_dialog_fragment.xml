@@ -133,6 +133,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- app:buttonTextTransparency="@{viewModel.reauthenticateEmailUiState.enabled}" -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/reauthenticate_button"
                 android:layout_width="@dimen/_0dp"
@@ -142,7 +143,6 @@
                 android:layout_marginTop="@dimen/grid_4"
                 app:cornerRadius="@dimen/_15dp"
                 android:enabled="@{viewModel.reauthenticateEmailUiState.enabled}"
-                app:buttonTextTransparency="@{viewModel.reauthenticateEmailUiState.enabled}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/enter_password_input_layout" />

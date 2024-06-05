@@ -60,7 +60,10 @@ class LoginViewModel @Inject constructor(
             _loginUiStateFlow.update {
                     loginUiState ->
                 val emailValidation = validateEmailUseCase(emailText)
-                loginUiState.copy(emailError = emailValidation.errorMessage)
+                loginUiState.copy(
+                    emailError = emailValidation.errorMessage,
+                    loginButtonEnabled = loginUiState.email.isNotEmpty() && loginUiState.password.isNotEmpty()
+                )
             }
         }
     }
@@ -78,8 +81,8 @@ class LoginViewModel @Inject constructor(
                 val passwordValidation = validatePasswordUseCase(password = passwordText,
                     shouldValidatePasswordPattern = false)
                 loginUiState.copy(
-                    password = passwordText,
-                    passwordError = passwordValidation.errorMessage
+                    passwordError = passwordValidation.errorMessage,
+                    loginButtonEnabled = loginUiState.email.isNotEmpty() && loginUiState.password.isNotEmpty()
                 )
             }
         }
@@ -91,7 +94,8 @@ class LoginViewModel @Inject constructor(
             _loginUiStateFlow.update {
                     loginUiState ->
                 loginUiState.copy(
-                    isEnabled = false
+                    isEnabled = false,
+                    loginButtonEnabled = false
                 )
             }
             // A short delay to ensure that state is up to date before validating
@@ -230,7 +234,8 @@ class LoginViewModel @Inject constructor(
                             loginUiState ->
                         loginUiState.copy(
                             navigateToNextScreen = determineNavigationDestination(signInResult.data),
-                            isEnabled = true
+                            isEnabled = true,
+                            loginButtonEnabled = true
                         )
                     }
                 }
@@ -245,7 +250,8 @@ class LoginViewModel @Inject constructor(
                             loginUiState ->
                         loginUiState.copy(
                             showErrorMessage = Pair(true, errorMessage),
-                            isEnabled = true
+                            isEnabled = true,
+                            loginButtonEnabled = true
                         )
                     }
                 }
