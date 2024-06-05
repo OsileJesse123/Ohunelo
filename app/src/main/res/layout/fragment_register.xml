@@ -76,7 +76,6 @@
                         app:errorMessageText="@{viewModel.registerUiStateFlow.firstNameError}"
                         android:textColorHint="@color/orange_100"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -124,7 +123,6 @@
                         app:errorMessageText="@{viewModel.registerUiStateFlow.lastNameError}"
                         android:textColorHint="@color/orange_100"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -172,7 +170,6 @@
                         app:errorMessageText="@{viewModel.registerUiStateFlow.emailError}"
                         android:textColorHint="@color/orange_100"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -224,7 +221,6 @@
                         app:errorMessageText="@{viewModel.registerUiStateFlow.passwordError}"
                         android:textColorHint="@color/orange_100"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:enabled="@{viewModel.registerUiStateFlow.enabled}"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText

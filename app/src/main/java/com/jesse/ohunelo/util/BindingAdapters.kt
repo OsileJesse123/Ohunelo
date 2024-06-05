@@ -143,10 +143,12 @@ fun setProgressBarVisibility(view: ProgressBar, isEnabled: Boolean?){
     }
 }
 
-@BindingAdapter("app:buttonTextTransparency")
-fun setButtonTextTransparency(view: MaterialButton, isEnabled: Boolean?){
-    isEnabled?.let {
-        val textColor = if (isEnabled) {
+@BindingAdapter("app:isLoading", "app:buttonText")
+fun setButtonTextTransparency(view: MaterialButton, isLoading: Boolean?, buttonText: String?){
+    isLoading?.let {
+        isLoading ->
+        view.text = if(isLoading) "" else buttonText
+        /*val textColor = if (isLoading) {
             val theme = view.context.theme
             val typedArray: TypedArray = theme.obtainStyledAttributes(intArrayOf(com.google.android.material.R.attr.colorOnSecondary))
             val color = typedArray.getColor(0, 0)
@@ -155,7 +157,7 @@ fun setButtonTextTransparency(view: MaterialButton, isEnabled: Boolean?){
         } else {
             Color.TRANSPARENT
         }
-        view.setTextColor(textColor)
+        view.setTextColor(textColor)*/
     }
 }
 

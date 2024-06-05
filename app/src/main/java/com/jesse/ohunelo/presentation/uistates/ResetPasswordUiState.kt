@@ -15,7 +15,8 @@ data class ResetPasswordUiState(
      *  second is a nullable UiText, this is the error message to be displayed.
      * **/
     val showErrorMessage: Pair<Boolean, UiText?> = Pair(false, null),
-    val isEnabled: Boolean = true
+    val isEnabled: Boolean = false,
+    val isLoading: Boolean = false
 ){
     fun isFormValid(): Boolean =
         // So long as email is not empty and emailError is null then form is valid.

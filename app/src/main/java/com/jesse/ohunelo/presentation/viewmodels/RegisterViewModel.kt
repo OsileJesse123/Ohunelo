@@ -57,7 +57,10 @@ class RegisterViewModel @Inject constructor(
             _registerUiStateFlow.update {
                     registerUiState ->
                 val userNameValidation = validateNameUseCase(usernameText, FIRST_NAME_MAX_LENGTH)
-                registerUiState.copy(firstNameError = userNameValidation.errorMessage)
+                registerUiState.copy(
+                    firstNameError = userNameValidation.errorMessage,
+                    isEnabled = areInputFieldsFilled()
+                )
             }
         }
     }
@@ -74,7 +77,8 @@ class RegisterViewModel @Inject constructor(
                     registerUiState ->
                 val userNameValidation = validateNameUseCase(usernameText, LAST_NAME_MAX_LENGTH)
                 registerUiState.copy(
-                    lastNameError = userNameValidation.errorMessage
+                    lastNameError = userNameValidation.errorMessage,
+                    isEnabled = areInputFieldsFilled()
                 )
             }
         }
@@ -91,7 +95,10 @@ class RegisterViewModel @Inject constructor(
             _registerUiStateFlow.update {
                     registerUiState ->
                 val emailValidation = validateEmailUseCase(emailText)
-                registerUiState.copy(emailError = emailValidation.errorMessage)
+                registerUiState.copy(
+                    emailError = emailValidation.errorMessage,
+                    isEnabled = areInputFieldsFilled()
+                )
             }
         }
     }
@@ -109,7 +116,8 @@ class RegisterViewModel @Inject constructor(
                 val passwordValidation = validatePasswordUseCase(password = passwordText,
                     shouldValidatePasswordPattern = true)
                 registerUiState.copy(
-                    passwordError = passwordValidation.errorMessage
+                    passwordError = passwordValidation.errorMessage,
+                    isEnabled = areInputFieldsFilled()
                 )
             }
         }
@@ -121,7 +129,8 @@ class RegisterViewModel @Inject constructor(
             _registerUiStateFlow.update {
                     registerUiState ->
                 registerUiState.copy(
-                    isEnabled = false
+                    isEnabled = false,
+                    isLoading = true
                 )
             }
             // A short delay to ensure that state is up to date before validating
@@ -160,7 +169,8 @@ class RegisterViewModel @Inject constructor(
                                 registerUiState ->
                             registerUiState.copy(
                                 navigateToNextScreen = true,
-                                isEnabled = true
+                                isEnabled = true,
+                                isLoading = false
                             )
                         }
                     }
@@ -178,7 +188,8 @@ class RegisterViewModel @Inject constructor(
                                 registerUiState ->
                             registerUiState.copy(
                                 showErrorMessage = Pair(true, errorMessage),
-                                isEnabled = true
+                                isEnabled = true,
+                                isLoading = false
                             )
                         }
                     }
@@ -187,7 +198,8 @@ class RegisterViewModel @Inject constructor(
                 _registerUiStateFlow.update {
                         registerUiState ->
                     registerUiState.copy(
-                        isEnabled = true
+                        isEnabled = true,
+                        isLoading = false
                     )
                 }
             }
@@ -210,6 +222,13 @@ class RegisterViewModel @Inject constructor(
                 navigateToNextScreen = false,
             )
         }
+    }
+
+    private fun areInputFieldsFilled(): Boolean{
+        return _registerUiStateFlow.value.firstName.isNotEmpty() &&
+                _registerUiStateFlow.value.lastName.isNotEmpty() &&
+                _registerUiStateFlow.value.email.isNotEmpty() &&
+                _registerUiStateFlow.value.password.isNotEmpty()
     }
 
 }

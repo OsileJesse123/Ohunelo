@@ -14,9 +14,10 @@ data class UpdateUsernameUiState(
      * **/
     val showErrorMessage: Pair<Boolean, UiText?> = Pair(false, null),
     /**
-     * This determines whether or not views in the Fragment should be enabled or not
+     * This determines whether or not the button in the Fragment should be enabled
      * **/
-    val isEnabled: Boolean = true,
+    val isEnabled: Boolean = false,
+    val isLoading: Boolean = false
 ){
     fun isFormValid(): Boolean =
     // So long as firstName, lastName are not empty and firstNameError, lastNameError are null then, form is valid.

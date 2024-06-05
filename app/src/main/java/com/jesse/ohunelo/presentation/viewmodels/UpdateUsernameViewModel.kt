@@ -50,7 +50,10 @@ class UpdateUsernameViewModel @Inject constructor(
             _updateUsernameUiStateFlow.update {
                     updateUsernameUiState ->
                 val userNameValidation = validateNameUseCase(usernameText, FIRST_NAME_MAX_LENGTH)
-                updateUsernameUiState.copy(firstNameError = userNameValidation.errorMessage)
+                updateUsernameUiState.copy(
+                    firstNameError = userNameValidation.errorMessage,
+                    isEnabled = updateUsernameUiState.firstName.isNotEmpty() && updateUsernameUiState.lastName.isNotEmpty()
+                )
             }
         }
     }
@@ -66,7 +69,10 @@ class UpdateUsernameViewModel @Inject constructor(
             _updateUsernameUiStateFlow.update {
                     updateUsernameUiState ->
                 val userNameValidation = validateNameUseCase(usernameText, LAST_NAME_MAX_LENGTH)
-                updateUsernameUiState.copy(lastNameError = userNameValidation.errorMessage)
+                updateUsernameUiState.copy(
+                    lastNameError = userNameValidation.errorMessage,
+                    isEnabled = updateUsernameUiState.firstName.isNotEmpty() && updateUsernameUiState.lastName.isNotEmpty()
+                )
             }
         }
     }
@@ -77,7 +83,8 @@ class UpdateUsernameViewModel @Inject constructor(
             _updateUsernameUiStateFlow.update {
                     updateUsernameUiState ->
                 updateUsernameUiState.copy(
-                    isEnabled = false
+                    isEnabled = false,
+                    isLoading = true
                 )
             }
             // A short delay to ensure that state is up to date before validating
@@ -112,7 +119,8 @@ class UpdateUsernameViewModel @Inject constructor(
                                 updateUsernameUiState ->
                             updateUsernameUiState.copy(
                                 navigateToNextScreen = true,
-                                isEnabled = true
+                                isEnabled = true,
+                                isLoading = false
                             )
                         }
                     }
@@ -126,7 +134,8 @@ class UpdateUsernameViewModel @Inject constructor(
                                 updateUsernameUiState ->
                             updateUsernameUiState.copy(
                                 showErrorMessage = Pair(true, errorMessage),
-                                isEnabled = true
+                                isEnabled = true,
+                                isLoading = false
                             )
                         }
                     }
@@ -135,7 +144,8 @@ class UpdateUsernameViewModel @Inject constructor(
                 _updateUsernameUiStateFlow.update {
                         updateUsernameUiState ->
                     updateUsernameUiState.copy(
-                        isEnabled = true
+                        isEnabled = true,
+                        isLoading = false
                     )
                 }
             }

@@ -67,11 +67,9 @@ class RegisterFragment : Fragment() {
                     if (registerUiState.showErrorMessage.first){
                         showErrorMessage(registerUiState.showErrorMessage.second)
                     }
-                    // If all other views are not enabled, then the loader should be shown
-                    if (!registerUiState.isEnabled){
+                    if (registerUiState.isLoading){
                         showLoader()
                     }
-                    // If all other views are enabled, then the loader should be hidden
                     else{
                         hideLoader()
                     }

@@ -84,7 +84,6 @@
             app:errorMessageText="@{viewModel.updateUsernameUiStateFlow.firstNameError}"
             android:textColorHint="@color/orange_100"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:enabled="@{viewModel.updateUsernameUiStateFlow.enabled}"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -132,7 +131,6 @@
             app:errorMessageText="@{viewModel.updateUsernameUiStateFlow.lastNameError}"
             android:textColorHint="@color/orange_100"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:enabled="@{viewModel.updateUsernameUiStateFlow.enabled}"
             >
 
             <com.google.android.material.textfield.TextInputEditText
