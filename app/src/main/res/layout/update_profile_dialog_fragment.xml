@@ -164,7 +164,7 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- app:buttonTextTransparency="@{viewModel.updateProfileUiState.enabled}" -->d
+                    <!-- app:buttonTextTransparency="@{viewModel.updateProfileUiState.enabled}d" -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/update_button"
                         android:layout_width="@dimen/_0dp"
