@@ -41,7 +41,10 @@ class EditPasswordViewModel @Inject constructor(
             _editPasswordUiState.update {
                 editPasswordUiState ->
                 val passwordValidation = validatePasswordUseCase(passwordText, true)
-                editPasswordUiState.copy(passwordError = passwordValidation.errorMessage)
+                editPasswordUiState.copy(
+                    passwordError = passwordValidation.errorMessage,
+                    isEnabled = editPasswordUiState.password.isNotEmpty()
+               )
             }
         }
     }
@@ -74,7 +77,8 @@ class EditPasswordViewModel @Inject constructor(
                 _editPasswordUiState.update {
                         editPasswordUiState ->
                     editPasswordUiState.copy(
-                        isLoading = true
+                        isLoading = true,
+                        isEnabled = false
                     )
                 }
                 when(val result = authenticationRepository.updateUserPassword(_editPasswordUiState.value.password)){
@@ -97,7 +101,8 @@ class EditPasswordViewModel @Inject constructor(
                                     editPasswordUiState.copy(
                                         isLoading = false,
                                         message = UiText.StringResource(R.string.weak_password),
-                                        logout = false
+                                        logout = false,
+                                        isEnabled = true
                                     )
                                 }
                             }
@@ -130,7 +135,8 @@ class EditPasswordViewModel @Inject constructor(
                                     editPasswordUiState.copy(
                                         isLoading = false,
                                         message = UiText.StringResource(R.string.edit_password_failed),
-                                        logout = false
+                                        logout = false,
+                                        isEnabled = true
                                     )
                                 }
                             }
@@ -145,7 +151,8 @@ class EditPasswordViewModel @Inject constructor(
         _editPasswordUiState.update {
                 editPasswordUiState ->
             editPasswordUiState.copy(
-                isLoading = false
+                isLoading = false,
+                isEnabled = true
             )
         }
     }
