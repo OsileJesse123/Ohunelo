@@ -8,7 +8,8 @@ data class EditPasswordUiState(
     val isLoading: Boolean = false,
     val message: UiText? = null,
     val logout: Boolean = false,
-    val reauthenticate: Boolean = false
+    val reauthenticate: Boolean = false,
+    val isEnabled: Boolean = false
 ){
     // password is valid if it is not empty and passwordError is null
     fun isPasswordValid() = (password.isNotEmpty() && passwordError == null)
