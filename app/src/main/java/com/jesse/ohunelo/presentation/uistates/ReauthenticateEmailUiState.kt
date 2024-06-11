@@ -10,9 +10,10 @@ data class ReauthenticateEmailUiState(
     val dismiss: Boolean = false,
     val message: UiText? = null,
     /**
-     * This determines whether or not views in the Fragment should be enabled or not
+     * This determines whether or not button in the Fragment should be enabled
      * **/
-    val isEnabled: Boolean = true,
+    val isEnabled: Boolean = false,
+    val isLoading: Boolean = false,
     val logout: Boolean = false
 ){
     fun isFormValid(): Boolean =

@@ -135,11 +135,10 @@ fun setUserInitial(view: TextView, userName: String?){
 }
 
 @BindingAdapter("app:progressBarVisibility")
-fun setProgressBarVisibility(view: ProgressBar, isEnabled: Boolean?){
-    isEnabled?.let {
-        isEnabled ->
-        // If other views on the screen are enabled then it should be invisible and vice versa.
-        view.isVisible = !isEnabled
+fun setProgressBarVisibility(view: ProgressBar, isLoading: Boolean?){
+    isLoading?.let {
+        isLoading ->
+        view.isVisible = isLoading
     }
 }
 
@@ -148,16 +147,6 @@ fun setButtonTextTransparency(view: MaterialButton, isLoading: Boolean?, buttonT
     isLoading?.let {
         isLoading ->
         view.text = if(isLoading) "" else buttonText
-        /*val textColor = if (isLoading) {
-            val theme = view.context.theme
-            val typedArray: TypedArray = theme.obtainStyledAttributes(intArrayOf(com.google.android.material.R.attr.colorOnSecondary))
-            val color = typedArray.getColor(0, 0)
-            typedArray.recycle()
-            color
-        } else {
-            Color.TRANSPARENT
-        }
-        view.setTextColor(textColor)*/
     }
 }
 
