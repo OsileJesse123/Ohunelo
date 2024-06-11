@@ -49,7 +49,10 @@ class ReauthenticateEmailViewModel @Inject constructor(
             _reauthenticateEmailUiState.update {
                     reauthenticateEmailUiState ->
                 val emailValidation = validateEmailUseCase(emailText)
-                reauthenticateEmailUiState.copy(emailError = emailValidation.errorMessage)
+                reauthenticateEmailUiState.copy(
+                    emailError = emailValidation.errorMessage,
+                    isEnabled = reauthenticateEmailUiState.email.isNotEmpty() && reauthenticateEmailUiState.password.isNotEmpty()
+                )
             }
         }
     }
@@ -67,8 +70,8 @@ class ReauthenticateEmailViewModel @Inject constructor(
                 val passwordValidation = validatePasswordUseCase(password = passwordText,
                     shouldValidatePasswordPattern = false)
                 reauthenticateEmailUiState.copy(
-                    password = passwordText,
-                    passwordError = passwordValidation.errorMessage
+                    passwordError = passwordValidation.errorMessage,
+                    isEnabled = reauthenticateEmailUiState.email.isNotEmpty() && reauthenticateEmailUiState.password.isNotEmpty()
                 )
             }
         }
@@ -82,7 +85,8 @@ class ReauthenticateEmailViewModel @Inject constructor(
                 _reauthenticateEmailUiState.update {
                         reauthenticateEmailUiState ->
                     reauthenticateEmailUiState.copy(
-                        isEnabled = false
+                        isEnabled = false,
+                        isLoading = true
                     )
                 }
                 val reauthenticateResult = authenticationRepository
@@ -107,7 +111,6 @@ class ReauthenticateEmailViewModel @Inject constructor(
                                         reauthenticateEmailUiState ->
                                     reauthenticateEmailUiState.copy(
                                         message = UiText.StringResource(R.string.reauthenticate_fail),
-                                        isEnabled = true,
                                         logout = true
                                     )
                                 }
@@ -118,6 +121,7 @@ class ReauthenticateEmailViewModel @Inject constructor(
                                     reauthenticateEmailUiState.copy(
                                         message = UiText.StringResource(R.string.invalid_credentials),
                                         isEnabled = true,
+                                        isLoading = false
                                     )
                                 }
                             }
@@ -126,7 +130,6 @@ class ReauthenticateEmailViewModel @Inject constructor(
                                         reauthenticateEmailUiState ->
                                     reauthenticateEmailUiState.copy(
                                         message = UiText.StringResource(R.string.no_user_record_corresponding),
-                                        isEnabled = true,
                                         logout = true
                                     )
                                 }
@@ -137,6 +140,7 @@ class ReauthenticateEmailViewModel @Inject constructor(
                                     reauthenticateEmailUiState.copy(
                                         message = UiText.StringResource(R.string.reauthenticate_fail),
                                         isEnabled = true,
+                                        isLoading = false
                                     )
                                 }
                             }
@@ -147,7 +151,8 @@ class ReauthenticateEmailViewModel @Inject constructor(
                 _reauthenticateEmailUiState.update {
                         reauthenticateEmailUiState ->
                     reauthenticateEmailUiState.copy(
-                        isEnabled = true
+                        isEnabled = true,
+                        isLoading = false
                     )
                 }
             }

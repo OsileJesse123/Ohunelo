@@ -15,9 +15,10 @@ data class UpdateProfileUiState(
     val showErrorMessage: Pair<Boolean, UiText?> = Pair(false, null),
     val showSuccessMessage: Pair<Boolean, UiText?> = Pair(false, null),
     /**
-     * This determines whether or not views in the Fragment should be enabled or not
+     * This determines whether or not the button in the Fragment should be enabled
      * **/
-    val isEnabled: Boolean = true,
+    val isEnabled: Boolean = false,
+    val isLoading: Boolean = false,
 ){
     fun isFormValid(): Boolean =
     // So long as firstName, lastName, and password are not empty and firstNameError, lastNameError, and passwordError are null then,

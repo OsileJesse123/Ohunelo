@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:elevation="@dimen/grid_1"
                 android:indeterminateTint="?attr/colorOnSecondary"
-                app:progressBarVisibility="@{viewModel.reauthenticateEmailUiState.enabled}"
+                app:progressBarVisibility="@{viewModel.reauthenticateEmailUiState.loading}"
                 app:layout_constraintBottom_toBottomOf="@+id/reauthenticate_button"
                 app:layout_constraintEnd_toEndOf="@+id/reauthenticate_button"
                 app:layout_constraintStart_toStartOf="@+id/reauthenticate_button"
@@ -63,7 +63,6 @@
                 android:textColorHint="@color/orange_100"
                 app:errorMessageText="@{viewModel.reauthenticateEmailUiState.emailError}"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:enabled="@{viewModel.reauthenticateEmailUiState.enabled}"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -116,7 +115,6 @@
                 app:errorIconDrawable="@null"
                 app:errorMessageText="@{viewModel.reauthenticateEmailUiState.passwordError}"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:enabled="@{viewModel.reauthenticateEmailUiState.enabled}"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -130,18 +128,17 @@
                     android:longClickable="false"
                     android:importantForAutofill="no"
                     />
-
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- app:buttonTextTransparency="@{viewModel.reauthenticateEmailUiState.enabled}" -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/reauthenticate_button"
                 android:layout_width="@dimen/_0dp"
                 android:layout_height="@dimen/grid_8"
                 android:backgroundTint="?attr/colorSecondary"
-                android:text="@string/re_authenticate"
                 android:layout_marginTop="@dimen/grid_4"
                 app:cornerRadius="@dimen/_15dp"
+                app:isLoading="@{viewModel.reauthenticateEmailUiState.loading}"
+                app:buttonText="@{@string/re_authenticate}"
                 android:enabled="@{viewModel.reauthenticateEmailUiState.enabled}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

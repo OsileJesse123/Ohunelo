@@ -66,7 +66,8 @@ class UpdateProfileViewModel @Inject constructor(
             _updateProfileUiState.update {
                     updateProfileUiState ->
                 updateProfileUiState.copy(
-                    isEnabled = false
+                    isEnabled = false,
+                    isLoading = true
                 )
             }
             // A short delay to ensure that state is up to date before validating
@@ -101,6 +102,7 @@ class UpdateProfileViewModel @Inject constructor(
                             updateProfileUiState.copy(
                                 exitUpdateProfile = true,
                                 isEnabled = true,
+                                isLoading = false,
                                 showSuccessMessage = Pair(true, UiText.StringResource(R.string.edit_was_successful))
                             )
                         }
@@ -115,7 +117,8 @@ class UpdateProfileViewModel @Inject constructor(
                                 updateProfileUiState ->
                             updateProfileUiState.copy(
                                 showErrorMessage = Pair(true, errorMessage),
-                                isEnabled = true
+                                isEnabled = true,
+                                isLoading = false
                             )
                         }
                     }
@@ -124,7 +127,8 @@ class UpdateProfileViewModel @Inject constructor(
                 _updateProfileUiState.update {
                         updateProfileUiState ->
                     updateProfileUiState.copy(
-                        isEnabled = true
+                        isEnabled = true,
+                        isLoading = false
                     )
                 }
             }
@@ -161,7 +165,8 @@ class UpdateProfileViewModel @Inject constructor(
                     updateProfileUiState ->
                 val userNameValidation = validateNameUseCase(firstNameText, FIRST_NAME_MAX_LENGTH)
                 updateProfileUiState.copy(
-                    firstNameError = userNameValidation.errorMessage
+                    firstNameError = userNameValidation.errorMessage,
+                    isEnabled = updateProfileUiState.firstName.isNotEmpty() && updateProfileUiState.lastName.isNotEmpty()
                 )
             }
         }
@@ -178,7 +183,10 @@ class UpdateProfileViewModel @Inject constructor(
             _updateProfileUiState.update {
                     updateProfileUiState ->
                 val userNameValidation = validateNameUseCase(lastNameText, LAST_NAME_MAX_LENGTH)
-                updateProfileUiState.copy(lastNameError = userNameValidation.errorMessage)
+                updateProfileUiState.copy(
+                    lastNameError = userNameValidation.errorMessage,
+                    isEnabled = updateProfileUiState.firstName.isNotEmpty() && updateProfileUiState.lastName.isNotEmpty()
+                )
             }
         }
     }
