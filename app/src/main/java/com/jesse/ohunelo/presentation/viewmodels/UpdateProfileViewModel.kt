@@ -15,6 +15,7 @@ import com.jesse.ohunelo.util.LAST_NAME_MAX_LENGTH
 import com.jesse.ohunelo.util.SPLIT_FIRST_AND_LAST_NAME_WITH_WHITESPACE
 import com.jesse.ohunelo.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,6 +43,7 @@ class UpdateProfileViewModel @Inject constructor(
     private var validationJob: Job? = null
 
     // The first value in the pair represents first name and the second value represents the last name
+    @OptIn(ExperimentalCoroutinesApi::class)
     val userName: LiveData<Pair<String, String>> = authenticationRepository.user.flatMapLatest {
             user ->
         flow {
