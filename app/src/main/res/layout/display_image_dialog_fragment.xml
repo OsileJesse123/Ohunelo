@@ -1,36 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="imageUrl"
             type="String" />
     </data>
-    <com.google.android.material.card.MaterialCardView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        >
 
         <ImageView
             android:id="@+id/recipe_image"
-            android:layout_width="400dp"
-            android:layout_height="350dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:contentDescription="@string/recipe_image"
-            app:loadImage="@{imageUrl}"
-            android:scaleType="fitXY"
-            />
-
-        <ImageView
-            android:id="@+id/close_dialog_image_view"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/cancel_icon"
-            android:layout_marginTop="@dimen/grid_2"
-            android:layout_marginEnd="@dimen/grid_2"
-            android:layout_gravity="end"
-            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="fitCenter"
+            app:layout_constraintDimensionRatio="9:5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@color/gray_100_alpha_80" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:loadImage="@{imageUrl}" />
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

@@ -136,6 +136,16 @@
                         layout="@layout/search_recipe_display_item"/>
                     <include
                         layout="@layout/search_recipe_display_item"/>
+                    <include
+                        layout="@layout/search_recipe_display_item"/>
+                    <include
+                        layout="@layout/search_recipe_display_item"/>
+                    <include
+                        layout="@layout/search_recipe_display_item"/>
+                    <include
+                        layout="@layout/search_recipe_display_item"/>
+                    <include
+                        layout="@layout/search_recipe_display_item"/>
                 </LinearLayout>
             </com.facebook.shimmer.ShimmerFrameLayout>
 
