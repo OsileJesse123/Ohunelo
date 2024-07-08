@@ -41,4 +41,10 @@
     <dimen name="bottom_sheet_peek_height_medium">550dp</dimen>
     <dimen name="screen_height_medium_offset">700dp</dimen>
 
+    <!-- This is used to set the margin of each view inside the gridlayout. This was done for
+            a more cleaner and maintainable way of setting the margin end and top of the
+            individual views inside the see_all_recipes_shimmer.
+        -->
+    <dimen name="see_all_recipes_shimmer_margin">16dp</dimen>
+
 </resources>
