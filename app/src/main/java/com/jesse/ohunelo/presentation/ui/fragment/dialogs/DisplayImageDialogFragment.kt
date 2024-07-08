@@ -34,6 +34,10 @@ class DisplayImageDialogFragment(
             loaderDialog.apply {
                 window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+                // Set dialog size according to screen size
+                /*val mDisplayWidth = resources.displayMetrics.widthPixels
+                val mDisplayHeight = resources.displayMetrics.heightPixels
+                window?.setLayout((mDisplayWidth * 0.75f).toInt(), (mDisplayHeight * 1f).toInt())*/
             }
         } ?: throw IllegalStateException("Activity can't be null")
     }
