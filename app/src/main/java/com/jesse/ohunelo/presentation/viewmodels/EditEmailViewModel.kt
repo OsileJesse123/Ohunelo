@@ -8,7 +8,7 @@ import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
-import com.jesse.ohunelo.data.repository.AuthenticationRepository
+import com.jesse.ohunelo.domain.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.presentation.uistates.EditEmailUiState
 import com.jesse.ohunelo.util.AuthenticationException

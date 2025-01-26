@@ -2,7 +2,7 @@ package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jesse.ohunelo.data.repository.AuthenticationRepository
+import com.jesse.ohunelo.domain.repository.AuthenticationRepository
 import com.jesse.ohunelo.presentation.uistates.OnboardingUiState
 import com.jesse.ohunelo.util.HOME_FRAGMENT
 import com.jesse.ohunelo.util.LOGIN_FRAGMENT

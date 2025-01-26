@@ -1,4 +1,4 @@
-package com.jesse.ohunelo.data.repository
+package com.jesse.ohunelo.domain.repository
 
 import androidx.paging.PagingData
 import com.jesse.ohunelo.data.model.Recipe

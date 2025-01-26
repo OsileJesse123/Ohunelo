@@ -87,6 +87,7 @@ dependencies {
 
     // MOSHI
     implementation "com.squareup.moshi:moshi:1.15.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:1.15.0"
 
     // Retrofit
@@ -96,6 +97,7 @@ dependencies {
     // OkHttp
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:4.9.0"
 
     // Splash Screen
     implementation "androidx.core:core-splashscreen:$splash_screen_version"
@@ -120,20 +122,6 @@ dependencies {
 
     // Facebook SDK
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
-
-    //MOSHI
-    implementation("com.squareup.moshi:moshi:1.13.0")
-    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
-    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.13.0"
-
-    //Retrofit
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-
-    //okhttp
-    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
-    implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
-    implementation "com.squareup.okhttp3:okhttp-urlconnection:4.9.0"
 
     // Hilt + Navigation
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'

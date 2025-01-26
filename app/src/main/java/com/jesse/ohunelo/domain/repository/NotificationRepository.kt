@@ -1,4 +1,4 @@
-package com.jesse.ohunelo.data.repository
+package com.jesse.ohunelo.domain.repository
 
 import com.jesse.ohunelo.data.model.Notification
 import com.jesse.ohunelo.data.network.models.OhuneloResult

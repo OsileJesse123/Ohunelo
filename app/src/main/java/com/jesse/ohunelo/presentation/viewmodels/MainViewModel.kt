@@ -1,7 +1,7 @@
 package com.jesse.ohunelo.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.jesse.ohunelo.data.repository.NotificationRepository
+import com.jesse.ohunelo.domain.repository.NotificationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest

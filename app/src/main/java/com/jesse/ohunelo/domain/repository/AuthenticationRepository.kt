@@ -1,4 +1,4 @@
-package com.jesse.ohunelo.data.repository
+package com.jesse.ohunelo.domain.repository
 
 import android.app.Activity
 import com.jesse.ohunelo.data.model.AuthUser

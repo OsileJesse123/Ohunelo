@@ -6,8 +6,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
-import com.jesse.ohunelo.data.repository.AuthenticationRepository
-import com.jesse.ohunelo.data.repository.NotificationRepository
+import com.jesse.ohunelo.domain.repository.AuthenticationRepository
+import com.jesse.ohunelo.domain.repository.NotificationRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
