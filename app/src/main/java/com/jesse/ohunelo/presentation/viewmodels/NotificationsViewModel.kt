@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.Notification
 import com.jesse.ohunelo.data.model.NotificationUIItem
-import com.jesse.ohunelo.data.repository.NotificationRepository
+import com.jesse.ohunelo.domain.repository.NotificationRepository
 import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.util.DateUtils
 import com.jesse.ohunelo.util.UiText

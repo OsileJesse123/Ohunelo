@@ -15,8 +15,8 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.jesse.ohunelo.data.network.models.OhuneloResult
-import com.jesse.ohunelo.data.repository.AuthenticationRepository
-import com.jesse.ohunelo.data.repository.NotificationRepository
+import com.jesse.ohunelo.domain.repository.AuthenticationRepository
+import com.jesse.ohunelo.domain.repository.NotificationRepository
 import com.jesse.ohunelo.util.NotificationHelper
 import com.jesse.ohunelo.util.NotificationType
 import dagger.assisted.Assisted

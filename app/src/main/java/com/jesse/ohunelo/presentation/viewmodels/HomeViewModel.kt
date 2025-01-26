@@ -6,8 +6,8 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
-import com.jesse.ohunelo.data.repository.AuthenticationRepository
-import com.jesse.ohunelo.data.repository.RecipeRepository
+import com.jesse.ohunelo.domain.repository.AuthenticationRepository
+import com.jesse.ohunelo.domain.repository.RecipeRepository
 import com.jesse.ohunelo.domain.usecase.FormatHomeScreenDataUseCase
 import com.jesse.ohunelo.presentation.uistates.HomeUiState
 import com.jesse.ohunelo.util.NetworkErrorException

@@ -1,7 +1,7 @@
 package com.jesse.ohunelo.domain.usecase
 
 import com.jesse.ohunelo.data.network.models.OhuneloResult
-import com.jesse.ohunelo.data.repository.RecipeRepository
+import com.jesse.ohunelo.domain.repository.RecipeRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

@@ -214,11 +214,9 @@ class FirebaseAuthenticationService @Inject constructor(
             }
         }
         catch (e: FirebaseNetworkException){
-            UiText.StringResource(R.string.network_error_occured)
             OhuneloResult.Error(error = NetworkErrorException())
         }
         catch (e: Exception){
-            UiText.StringResource(R.string.reset_password_email_failed)
             Timber.e("Has user been verified failed, Exception: $e")
             OhuneloResult.Error(error = e)
         }
@@ -436,7 +434,6 @@ class FirebaseAuthenticationService @Inject constructor(
             }
         }
         catch (e: Exception){
-
             Timber.e("Update password failed, Exception: $e")
             OhuneloResult.Error(error = e)
         }

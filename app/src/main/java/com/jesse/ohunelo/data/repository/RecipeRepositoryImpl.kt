@@ -11,6 +11,7 @@ import com.jesse.ohunelo.data.network.data_source.RecipeNetworkDataSource
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.di.DefaultDispatcher
 import com.jesse.ohunelo.di.IODispatcher
+import com.jesse.ohunelo.domain.repository.RecipeRepository
 import com.jesse.ohunelo.util.HOME_SCREEN_RECIPES_AMOUNT
 import com.jesse.ohunelo.util.NetworkErrorException
 import com.jesse.ohunelo.util.NotFoundException
@@ -156,8 +157,7 @@ class RecipeRepositoryImpl @Inject constructor(
                         recipeEntity ->  recipeEntity.toRecipe()
                     }
                 }
-                Timber.e("GeneralError: $e, ErrorMessage: ${e.message}")
-                UiText.StringResource(R.string.failed_to_get_recipes)
+                Timber.e("GeneralRecipeError: $e, ErrorMessage: ${e.message}")
                 OhuneloResult.Error(error = e, data = recipes)
             }
         }

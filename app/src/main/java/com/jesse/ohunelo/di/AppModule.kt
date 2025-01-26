@@ -12,11 +12,11 @@ import com.jesse.ohunelo.data.network.service.AuthenticationService
 import com.jesse.ohunelo.data.network.service.SpoonacularService
 import com.jesse.ohunelo.data.network.signin_handlers.FacebookSignInHandler
 import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
-import com.jesse.ohunelo.data.repository.AuthenticationRepository
+import com.jesse.ohunelo.domain.repository.AuthenticationRepository
 import com.jesse.ohunelo.data.repository.AuthenticationRepositoryImpl
-import com.jesse.ohunelo.data.repository.NotificationRepository
+import com.jesse.ohunelo.domain.repository.NotificationRepository
 import com.jesse.ohunelo.data.repository.NotificationRepositoryImpl
-import com.jesse.ohunelo.data.repository.RecipeRepository
+import com.jesse.ohunelo.domain.repository.RecipeRepository
 import com.jesse.ohunelo.data.repository.RecipeRepositoryImpl
 import com.jesse.ohunelo.domain.usecase.FormatHomeScreenDataUseCase
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase

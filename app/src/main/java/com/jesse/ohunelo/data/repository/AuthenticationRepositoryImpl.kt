@@ -6,6 +6,7 @@ import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.network.service.AuthenticationService
 import com.jesse.ohunelo.di.IODispatcher
+import com.jesse.ohunelo.domain.repository.AuthenticationRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

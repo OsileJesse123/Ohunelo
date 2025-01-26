@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.network.models.OhuneloResult
-import com.jesse.ohunelo.data.repository.AuthenticationRepository
+import com.jesse.ohunelo.domain.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateNameUseCase
 import com.jesse.ohunelo.presentation.uistates.UpdateUsernameUiState
 import com.jesse.ohunelo.util.AuthenticationException

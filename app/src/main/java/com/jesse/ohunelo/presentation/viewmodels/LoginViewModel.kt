@@ -9,7 +9,7 @@ import com.jesse.ohunelo.R
 import com.jesse.ohunelo.data.model.AuthUser
 import com.jesse.ohunelo.data.network.models.OhuneloResult
 import com.jesse.ohunelo.data.network.signin_handlers.GoogleSignInHandler
-import com.jesse.ohunelo.data.repository.AuthenticationRepository
+import com.jesse.ohunelo.domain.repository.AuthenticationRepository
 import com.jesse.ohunelo.domain.usecase.ValidateEmailUseCase
 import com.jesse.ohunelo.domain.usecase.ValidatePasswordUseCase
 import com.jesse.ohunelo.presentation.uistates.LoginUiState
